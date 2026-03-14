@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Contact page for a simple HTML-only multi-page site." />
+    <meta name="keywords" content="contact, frontend developer, HTML" />
+    <meta name="author" content="Uonlra" />
+    <title>Contact | Basic HTML Website</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <img width="64" height="64" src="logo.png" alt="Logo">
+        <span>your name</span>
+      </div>
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="articles.html">Articles</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="contact">
+        <h1>Contact Me</h1>
+        <p>Use the form to get in touch. All fields are required.</p>
+        <section class="contact-details">
+          <h2>Contact Information</h2>
+          <p>Email: john.doe@example.com</p>
+          <p>Phone: (123) 456-7890</p>
+          <p>Location: Remote / Worldwide</p>
+        </section>
+        <form action="#" method="post">
+          <label for="name">Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            autocomplete="name"
+            minlength="2"
+            maxlength="50"
+            placeholder="Enter your full name"
+            required
+          >
+
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            autocomplete="email"
+            maxlength="100"
+            placeholder="you@example.com"
+            required
+          >
+
+          <label for="phone">Phone</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            autocomplete="tel"
+            inputmode="tel"
+            pattern="^\+?[0-9\s\-()]{7,20}$"
+            placeholder="+86 138 0000 0000"
+            required
+          >
+
+          <label for="subject">Subject</label>
+          <input
+            type="text"
+            id="subject"
+            name="subject"
+            minlength="3"
+            maxlength="80"
+            placeholder="What do you want to discuss?"
+            required
+          >
+
+          <label for="message">Message</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="6"
+            minlength="10"
+            maxlength="500"
+            placeholder="Write your message here..."
+            aria-describedby="message-help"
+            required
+          ></textarea>
+          <small id="message-help">Please write between 10 and 500 characters.</small>
+
+          <button type="submit">Send Message</button>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; all rights reserved 2025</p>
+    </footer>
+  </body>
+</html>
