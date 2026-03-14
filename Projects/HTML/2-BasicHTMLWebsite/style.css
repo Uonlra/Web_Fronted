@@ -1,0 +1,316 @@
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap');
+
+:root {
+  --border: #2f2f2f;
+  --text: #2f2f2f;
+  --muted: #5c5c5c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Georgia", "Times New Roman", serif;
+  color: var(--text);
+  background: #fafafa;
+}
+
+a {
+  color: #1a4b9a;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border: 2px solid var(--border);
+  border-radius: 14px 14px 0 0;
+  margin: 24px auto 0;
+  max-width: 1080px;
+  background: #fff;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 18px;
+  font-family: 'Gloria Hallelujah', cursive;
+}
+
+.brand img {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+}
+
+nav ul {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+  font-family: 'Gloria Hallelujah', cursive;
+}
+
+nav a {
+  color: var(--text);
+}
+
+main {
+  max-width: 1080px;
+  margin: 0 auto 32px;
+  padding: 0 24px 32px;
+  background: #fff;
+  border: 2px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 14px 14px;
+}
+
+.hero {
+  text-align: center;
+  padding: 24px 0 8px;
+}
+
+.hero h1 {
+  margin: 0 0 8px;
+  font-size: 42px;
+  font-family: 'Gloria Hallelujah', cursive;
+}
+
+.hero p {
+  margin: 0;
+  color: var(--muted);
+  font-family: 'Gloria Hallelujah', cursive;
+}
+
+.intro {
+  text-align: center;
+  margin: 16px 0 32px;
+  color: var(--muted);
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  border: 2px solid var(--border);
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  margin-bottom: 32px;
+}
+
+.content-grid > section {
+  padding: 16px;
+  border-right: 2px solid var(--border);
+  min-height: 240px;
+}
+
+.content-grid > section:last-child {
+  border-right: none;
+}
+
+.projects ul,
+.education ul {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+.projects li,
+.education li {
+  padding: 6px 0;
+  border-bottom: 1px solid #dadada;
+}
+
+.projects li:last-child,
+.education li:last-child {
+  border-bottom: none;
+}
+
+.work-experience article {
+  margin-bottom: 16px;
+}
+
+.work-experience h3 {
+  margin: 0 0 4px;
+}
+
+.work-experience p {
+  margin: 4px 0;
+}
+
+.education h3 {
+  margin: 12px 0 8px;
+}
+
+.reviews {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 2px solid var(--border);
+}
+
+.review-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.review-list article {
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.contact {
+  max-width: 760px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+.contact h1,
+.contact h2 {
+  font-family: 'Gloria Hallelujah', cursive;
+}
+
+.contact-details {
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin: 14px 0 18px;
+}
+
+.contact form {
+  display: grid;
+  gap: 8px;
+}
+
+.contact label {
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.contact input,
+.contact textarea {
+  width: 100%;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font: inherit;
+  background: #fff;
+}
+
+.contact input:focus,
+.contact textarea:focus {
+  outline: 2px solid #1a4b9a;
+  outline-offset: 1px;
+}
+
+.contact small {
+  color: var(--muted);
+  margin-top: -2px;
+}
+
+.contact button {
+  margin-top: 8px;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  font-family: 'Gloria Hallelujah', cursive;
+}
+
+.contact button:hover {
+  background: #f2f2f2;
+}
+
+.page-projects .projects,
+.page-articles .articles {
+  max-width: 860px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+.page-projects .projects h1,
+.page-articles .articles h1 {
+  margin: 0 0 12px;
+  font-family: 'Gloria Hallelujah', cursive;
+  font-size: 40px;
+  line-height: 1.1;
+}
+
+.page-projects .projects > p,
+.page-articles .articles > p {
+  margin: 0 0 18px;
+  color: var(--muted);
+}
+
+.page-projects .projects ul,
+.page-articles .articles ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.page-projects .projects li,
+.page-articles .articles li {
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: #fff;
+}
+
+.page-projects .projects h2,
+.page-articles .articles h2 {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-family: 'Gloria Hallelujah', cursive;
+}
+
+.page-projects .projects li p,
+.page-articles .articles li p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.page-articles .articles h2 a {
+  color: var(--text);
+}
+
+.page-articles .articles h2 a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 720px) {
+  .page-projects .projects h1,
+  .page-articles .articles h1 {
+    font-size: 34px;
+  }
+
+  .page-projects .projects h2,
+  .page-articles .articles h2 {
+    font-size: 22px;
+  }
+}
+
+footer {
+  text-align: center;
+  padding: 16px 0 24px;
+  font-size: 14px;
+  color: var(--text);
+  border-top: 2px solid var(--border);
+  font-family: 'Gloria Hallelujah', cursive;
+}
