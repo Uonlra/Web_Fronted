@@ -11,9 +11,14 @@
 
 ## 页面说明
 
+<img src="https://github.com/Uonlra/2th_HTML_Project/blob/main/resume.png?raw=true">
+
 - Home: 个人简介、项目概览、工作经历、教育背景、教师评价
+
 - Projects: 项目列表与简要说明
+
 - Articles: 文章列表与简介
+
 - Contact: 联系方式与表单输入
 
 ## 技术栈
@@ -69,4 +74,6 @@
 - 增加项目筛选与标签分类
 - 接入真实后端提交联系表单
 
+## 参考项目
 
+https://roadmap.sh/projects/basic-html-website
