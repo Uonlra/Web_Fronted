@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Personal portfolio homepage with responsive sections for projects, work experience, education, and reviews.">
+    <meta name="keywords" content="portfolio, frontend developer, HTML, CSS, JavaScript">
+    <meta name="author" content="Uonra">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://example.com/portfolio">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Home | Personal Portfolio">
+    <meta property="og:description" content="Responsive personal portfolio homepage.">
+    <meta property="og:url" content="https://example.com/portfolio">
+    <meta property="og:image" content="https://example.com/cover.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Home | Personal Portfolio">
+    <meta name="twitter:description" content="Responsive personal portfolio homepage.">
+    <meta name="twitter:image" content="https://example.com/cover.jpg">
+    <meta name="theme-color" content="#ffffff">
+    <title>Home | Personal Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="site-header">
+      <div class="brand-block">
+        <a class="brand" href="index.html" aria-label="Go to homepage">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-text">Uonlra</span>
+        </a>
+        <p class="brand-role">Frontend Developer</p>
+      </div>
+      <div class="header-actions">
+        <nav class="site-nav" aria-label="Primary navigation">
+          <ul>
+            <li><a href="index.html" aria-current="page">Home</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="articles.html">Articles</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+        <button class="theme-toggle" type="button" aria-label="切换主题">
+          <svg id="sun_icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg id="moon_icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="page-shell homepage-shell">
+      <section class="hero panel hero-panel">
+        <p class="eyebrow">Frontend Portfolio</p>
+        <h1>Frontend Developer</h1>
+        <p class="hero-copy">html only with proper layout, no styling</p>
+      </section>
+
+      <section class="home-grid">
+        <section class="panel section-panel projects-panel">
+          <h2>Projects</h2>
+          <ul class="stack-list compact-list">
+            <li><a class="project-link" href="projects.html#html-only-portfolio">HTML Only Portfolio</a></li>
+            <li><a class="project-link" href="projects.html#calculator">Calculator</a></li>
+            <li><a class="project-link" href="projects.html#quiz-app">Quiz App</a></li>
+            <li><a class="project-link" href="projects.html#countdown-timer">Countdown Timer</a></li>
+            <li><a class="project-link" href="projects.html#product-upcoming-page">Product Upcoming Page</a></li>
+          </ul>
+        </section>
+
+        <section class="panel section-panel work-panel">
+          <h2>Work Experience</h2>
+          <article class="entry-block">
+            <h3>roadmap.sh</h3>
+            <p>Solved all the frontend projects</p>
+            <a href="https://roadmap.sh/u/akinghill">Visit my Profile</a>
+          </article>
+          <article class="entry-block">
+            <h3>OpenSource Work</h3>
+            <p>Contributed to 50 opensource projects. Made my own projects with 200 GitHub Stars.</p>
+            <a href="https://github.com/akinghill">Visit my GitHub Profile</a>
+          </article>
+        </section>
+
+        <section class="panel section-panel education-panel">
+          <h2>Education</h2>
+          <p>Graduated with 3.76 out of 4 CGPA. Won Acme Hackathon. Organized 30 sessions.</p>
+          <p>Courses I took:</p>
+          <ul class="course-list">
+            <li>Object Oriented Programming</li>
+            <li>Data Structures and Algorithms</li>
+            <li>Web Engineering</li>
+            <li>Artificial Intelligence</li>
+            <li>Human-Computer Interaction</li>
+            <li>Computer Graphics</li>
+            <li>Database Management Systems</li>
+            <li>Distributed Database Systems</li>
+            <li>Discrete Mathematics</li>
+          </ul>
+        </section>
+      </section>
+
+      <aside class="panel reviews-panel">
+        <h2>Reviews from my Teachers</h2>
+        <div class="review-grid">
+          <blockquote class="review-card">
+            <p>John Doe was a brilliant student; always stood out with his assignments.</p>
+            <footer>
+              <span>Jane Doe</span>
+              <span>Assistant Professor</span>
+            </footer>
+          </blockquote>
+          <blockquote class="review-card">
+            <p>John Doe was a brilliant student; always stood out with his assignments.</p>
+            <footer>
+              <span>Jane Doe</span>
+              <span>Assistant Professor</span>
+            </footer>
+          </blockquote>
+          <blockquote class="review-card">
+            <p>John Doe was a brilliant student; always stood out with his assignments.</p>
+            <footer>
+              <span>Jane Doe</span>
+              <span>Assistant Professor</span>
+            </footer>
+          </blockquote>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; all rights reserved 2025</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

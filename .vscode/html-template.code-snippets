@@ -1,0 +1,37 @@
+{
+  "HTML Initial Template": {
+    "scope": "html",
+    "prefix": "htmlbase",
+    "body": [
+      "<!DOCTYPE html>",
+      "<html lang=\"zh-CN\">",
+      "<head>",
+      "    <meta charset=\"UTF-8\">",
+      "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",
+      "    <meta name=\"description\" content=\"${1:页面描述}\">",
+      "    <meta name=\"keywords\" content=\"${2:HTML,CSS,JavaScript}\">",
+      "    <meta name=\"author\" content=\"Uonra\">",
+      "    <meta name=\"robots\" content=\"index, follow\">",
+      "    <link rel=\"canonical\" href=\"${3:https://example.com}\">",
+      "    <meta property=\"og:type\" content=\"website\">",
+      "    <meta property=\"og:title\" content=\"${4:Document}\">",
+      "    <meta property=\"og:description\" content=\"${5:页面分享描述}\">",
+      "    <meta property=\"og:url\" content=\"${6:https://example.com}\">",
+      "    <meta property=\"og:image\" content=\"${7:https://example.com/cover.jpg}\">",
+      "    <meta name=\"twitter:card\" content=\"summary_large_image\">",
+      "    <meta name=\"twitter:title\" content=\"${8:Document}\">",
+      "    <meta name=\"twitter:description\" content=\"${9:页面分享描述}\">",
+      "    <meta name=\"twitter:image\" content=\"${10:https://example.com/cover.jpg}\">",
+      "    <meta name=\"theme-color\" content=\"#ffffff\">",
+      "    <title>${11:Document}</title>",
+      "    <link rel=\"stylesheet\" href=\"${12:style.css}\">",
+      "</head>",
+      "<body>",
+
+
+      "</body>",
+      "</html>"
+    ],
+    "description": "HTML 初始模板"
+  }
+}
