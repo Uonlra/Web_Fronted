@@ -25,7 +25,6 @@
 
 - HTML5
 - CSS3
-- Google Fonts (Gloria Hallelujah)
 
 ## 目录结构
 
