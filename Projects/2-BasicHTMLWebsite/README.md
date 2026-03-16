@@ -20,7 +20,6 @@
 
 - HTML5
 - CSS3
-- Google Fonts (Gloria Hallelujah)
 
 ## 目录结构
 
@@ -70,6 +69,4 @@
 - 增加项目筛选与标签分类
 - 接入真实后端提交联系表单
 
-## 作者
 
-Uonlra
