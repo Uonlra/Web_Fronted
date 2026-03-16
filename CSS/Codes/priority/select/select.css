@@ -1,0 +1,57 @@
+body {
+  font: 1.2em / 1.5 sans-serif;
+}
+h1 {
+  color: blue;
+}
+
+h2 {
+  background-color: blue;
+  color: white;
+}
+
+span {
+  font-size: 200%;
+}
+body {
+  font: 1.2em / 1.5 sans-serif;
+}
+#special {
+  background-color: yellow;
+}
+
+.alert {
+  border: 2px solid grey;
+}
+
+.alert.stop {
+  background-color: red;
+}
+
+.alert.go {
+  background-color: green;
+}
+.container p:first-child {
+  font-size: 150%;
+}
+
+.container p:first-child::first-line {
+  color: red;
+}
+
+a:link {
+  color: orange;
+}
+
+a:visited {
+  color: green;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+tr:nth-child(even) {
+  background-color: #333;
+  color: #fff;
+}

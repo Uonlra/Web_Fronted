@@ -20,7 +20,6 @@
 
 - HTML5
 - CSS3
-- VS Code plugs
 
 ## 目录结构
 
@@ -70,6 +69,4 @@
 - 增加项目筛选与标签分类
 - 接入真实后端提交联系表单
 
-## 参考项目地址
 
-https://roadmap.sh/projects/basic-html-website

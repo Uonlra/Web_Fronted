@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact page for the responsive personal portfolio website.">
+    <meta name="keywords" content="contact page, portfolio contact, frontend developer">
+    <meta name="author" content="Uonra">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://example.com/portfolio/contact">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Contact | Personal Portfolio">
+    <meta property="og:description" content="Contact page for the responsive personal portfolio website.">
+    <meta property="og:url" content="https://example.com/portfolio/contact">
+    <meta property="og:image" content="https://example.com/cover.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Contact | Personal Portfolio">
+    <meta name="twitter:description" content="Contact page for the responsive personal portfolio website.">
+    <meta name="twitter:image" content="https://example.com/cover.jpg">
+    <meta name="theme-color" content="#ffffff">
+    <title>Contact | Personal Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="site-header">
+      <div class="brand-block">
+        <a class="brand" href="index.html" aria-label="Go to homepage">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-text">Uonlra</span>
+        </a>
+        <p class="brand-role">Frontend Developer</p>
+      </div>
+      <div class="header-actions">
+        <nav class="site-nav" aria-label="Primary navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="articles.html">Articles</a></li>
+          <li><a href="contact.html" aria-current="page">Contact</a></li>
+        </ul>
+        </nav>
+        <button class="theme-toggle" type="button" aria-label="切换主题">
+        <svg id="sun_icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg id="moon_icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="page-shell inner-page-shell">
+      <section class="panel page-top-banner">
+        <p class="page-kicker">Get in touch</p>
+        <h1>Let&apos;s Build Something Useful</h1>
+        <p class="page-top-copy">Send a message if you want to collaborate, ask a question, or discuss a frontend project.</p>
+      </section>
+
+      <section class="panel page-panel contact-panel">
+        <h2>Contact Me</h2>
+        <p class="section-intro">You can use the form below for project inquiries, feedback, or general questions.</p>
+        <form action="#" method="post" class="contact-form">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required>
+
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required>
+
+          <label for="message">Message:</label>
+          <textarea id="message" name="message" rows="5" required></textarea>
+
+          <button type="submit">Send Message</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; all rights reserved 2025</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
