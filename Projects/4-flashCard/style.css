@@ -1,0 +1,279 @@
+:root {
+  --bg: #ececec;
+  --card-bg: #f4f4f4;
+  --ink: #161616;
+  --muted: #7a7a7a;
+  --stroke: #303030;
+  --danger: #dc2f2f;
+  --danger-soft: #f2c0c0;
+  --focus: #005fcc;
+  --panel: #dedede;
+  --done: #8a8a8a;
+  --radius-xl: 28px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Space Grotesk", "Noto Sans SC", "Segoe UI", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 12% 10%, #ffffff 0%, #ececec 35%),
+    radial-gradient(circle at 90% 85%, #e0e0e0 0%, #ececec 30%),
+    var(--bg);
+  display: grid;
+  place-items: center;
+  padding: 28px;
+}
+
+.shell {
+  width: min(980px, 100%);
+}
+
+.card {
+  border: 3px solid var(--stroke);
+  border-radius: calc(var(--radius-xl) + 2px);
+  background: linear-gradient(180deg, #f7f7f7 0%, #efefef 100%);
+  padding: clamp(20px, 3vw, 40px);
+  box-shadow: 0 16px 40px rgb(0 0 0 / 10%);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: clamp(20px, 3vw, 44px);
+}
+
+.profile-form {
+  display: grid;
+  gap: 18px;
+}
+
+.field-group label {
+  display: inline-block;
+  font-size: 1.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin-bottom: 8px;
+}
+
+input,
+.submit-btn,
+.toggle-password {
+  font: inherit;
+}
+
+input {
+  width: 100%;
+  height: 62px;
+  border-radius: var(--radius-md);
+  border: 3px solid var(--stroke);
+  background: #f8f8f8;
+  color: var(--ink);
+  padding: 0 18px;
+  font-size: 1.95rem;
+  font-weight: 500;
+}
+
+input::placeholder {
+  color: #a1a8ae;
+}
+
+input[aria-invalid="true"] {
+  border-color: var(--danger);
+  color: var(--danger);
+  background: #fffafa;
+}
+
+.field-hint {
+  margin: 8px 4px 0;
+  font-size: 1.65rem;
+  font-weight: 500;
+}
+
+.field-hint.error {
+  color: var(--danger);
+}
+
+.password-wrap {
+  position: relative;
+}
+
+.password-wrap input {
+  padding-right: 62px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 1.4rem;
+}
+
+.toggle-password:focus-visible,
+.submit-btn:focus-visible,
+input:focus-visible {
+  outline: 4px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.submit-btn {
+  margin-top: 8px;
+  width: 100%;
+  height: 76px;
+  border: 3px solid #111;
+  border-radius: var(--radius-md);
+  background: #060606;
+  color: #ffffff;
+  font-size: 2rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background: #111;
+}
+
+.status-area {
+  display: grid;
+  gap: 28px;
+  align-content: start;
+}
+
+.progress {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+}
+
+.progress-ring {
+  --p: 65;
+  width: clamp(150px, 20vw, 220px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side, var(--card-bg) 83%, transparent 84%),
+    conic-gradient(#111 calc(var(--p) * 1%), #9aa2a8 0);
+  display: grid;
+  place-items: center;
+}
+
+.progress-ring span {
+  font-size: clamp(2rem, 3vw, 3rem);
+  font-weight: 650;
+}
+
+.progress-label {
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  margin: 0;
+  font-weight: 600;
+}
+
+.checklist {
+  background: linear-gradient(180deg, #dfdfdf 0%, #d7d7d7 100%);
+  border-radius: 34px;
+  min-height: 320px;
+  padding: 26px 30px;
+}
+
+.checklist ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.checklist li {
+  font-size: 1.85rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.checklist li.done {
+  color: var(--done);
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .status-area {
+    order: -1;
+  }
+
+  .checklist {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 14px;
+  }
+
+  .card {
+    padding: 16px;
+    border-width: 2px;
+  }
+
+  .field-group label {
+    font-size: 1.35rem;
+  }
+
+  input {
+    height: 50px;
+    border-width: 2px;
+    font-size: 1.2rem;
+  }
+
+  .field-hint {
+    font-size: 1rem;
+  }
+
+  .submit-btn {
+    height: 58px;
+    border-width: 2px;
+    font-size: 1.35rem;
+  }
+
+  .checklist {
+    border-radius: 18px;
+    padding: 16px;
+  }
+
+  .checklist li {
+    font-size: 1.05rem;
+  }
+}

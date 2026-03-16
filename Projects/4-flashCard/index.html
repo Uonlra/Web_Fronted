@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accessible Profile Form UI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="shell">
+    <section class="card" aria-labelledby="form-title">
+      <h1 class="sr-only" id="form-title">更新个人资料表单</h1>
+
+      <div class="layout">
+        <section class="form-area" aria-label="表单区域">
+          <form class="profile-form" action="#" method="post" novalidate>
+            <div class="field-group">
+              <label for="full-name">Full Name</label>
+              <input
+                id="full-name"
+                name="fullName"
+                type="text"
+                autocomplete="name"
+                placeholder="What should we call you?"
+                aria-required="true"
+                required
+              />
+            </div>
+
+            <div class="field-group">
+              <label for="email">Email</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                placeholder="john@doe.com"
+                value="john@doe.com"
+                aria-required="true"
+                aria-invalid="true"
+                aria-describedby="email-error"
+                required
+              />
+              <p class="field-hint error" id="email-error" role="alert">
+                Email is already taken
+              </p>
+            </div>
+
+            <div class="field-group">
+              <label for="password">Enter Password</label>
+              <div class="password-wrap">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autocomplete="new-password"
+                  placeholder="xxxxxxxx"
+                  aria-required="true"
+                  required
+                />
+                <button
+                  class="toggle-password"
+                  type="button"
+                  aria-label="显示密码（当前为隐藏）"
+                  aria-pressed="false"
+                >
+                  <span aria-hidden="true">👁</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="confirm-password">Confirm Password</label>
+              <div class="password-wrap">
+                <input
+                  id="confirm-password"
+                  name="confirmPassword"
+                  type="password"
+                  autocomplete="new-password"
+                  placeholder="xxxxxxxx"
+                  aria-required="true"
+                  required
+                />
+                <button
+                  class="toggle-password"
+                  type="button"
+                  aria-label="显示确认密码（当前为隐藏）"
+                  aria-pressed="false"
+                >
+                  <span aria-hidden="true">👁</span>
+                </button>
+              </div>
+            </div>
+
+            <button class="submit-btn" type="submit" aria-label="更新资料（静态界面）">
+              Update Profile
+            </button>
+          </form>
+        </section>
+
+        <aside class="status-area" aria-label="完成进度与要求">
+          <div
+            class="progress"
+            role="progressbar"
+            aria-label="Profile Completeness"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="65"
+          >
+            <div class="progress-ring" aria-hidden="true">
+              <span>65%</span>
+            </div>
+            <p class="progress-label">Profile Completeness</p>
+          </div>
+
+          <section class="checklist" aria-labelledby="checklist-title">
+            <h2 class="sr-only" id="checklist-title">完成资料所需步骤</h2>
+            <ul>
+              <li class="done" aria-label="Create Account 已完成">Create Account</li>
+              <li class="done" aria-label="Update Roadmap Progress 已完成">Update Roadmap Progress</li>
+              <li class="done" aria-label="Setup Public Profile 已完成">Setup Public Profile</li>
+              <li>Complete your first project</li>
+              <li>Invite your Friends</li>
+            </ul>
+          </section>
+        </aside>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
