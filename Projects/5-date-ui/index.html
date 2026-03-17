@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Datepicker UI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="page">
+    <section class="datepicker-demo" aria-label="Interactive datepicker user interface">
+      <header class="demo-heading">
+        <p class="eyebrow">Booking Widget</p>
+        <h1>Select a Date</h1>
+      </header>
+
+      <div class="input-wrap">
+        <input id="date-input" type="text" placeholder="dd / mm / yyyy" aria-label="Date input" readonly />
+        <button id="toggle-calendar" type="button" aria-label="Open calendar" aria-expanded="true">
+          <span class="calendar-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <div class="calendar-panel" role="application" aria-label="Datepicker calendar">
+        <div class="calendar-header">
+          <button id="prev-month" type="button" aria-label="Previous month">&#9664;</button>
+          <div class="month-picker">
+            <label class="sr-only" for="month-select">Month</label>
+            <select id="month-select" aria-label="Select month"></select>
+            <label class="sr-only" for="year-select">Year</label>
+            <select id="year-select" aria-label="Select year"></select>
+          </div>
+          <button id="next-month" type="button" aria-label="Next month">&#9654;</button>
+        </div>
+
+        <div class="weekdays" aria-hidden="true">
+          <span>S</span>
+          <span>M</span>
+          <span>T</span>
+          <span>W</span>
+          <span>T</span>
+          <span>F</span>
+          <span>S</span>
+        </div>
+
+        <div id="days-grid" class="days" aria-live="polite"></div>
+
+        <div class="calendar-footer" aria-live="polite">
+          <p id="selected-label">Selected: --</p>
+          <div class="chip-row">
+            <button id="today-btn" class="chip" type="button">Today</button>
+            <!-- <span class="chip">Pick day</span>
+            <span class="chip">JS enabled</span> -->
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
