@@ -1,0 +1,16 @@
+=button-skin($bg, $color)
+  background: $bg
+  color: $color
+  border: 1px solid transparent
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease
+
+  &:hover
+    transform: translateY(-2px)
+    box-shadow: 0 14px 24px rgba(0, 0, 0, 0.12)
+
+=panel
+  background: $surface
+  border: 1px solid $line
+  border-radius: $radius-lg
+  box-shadow: $shadow
+  backdrop-filter: blur(12px)
