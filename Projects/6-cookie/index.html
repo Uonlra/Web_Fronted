@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cookie Consent Popup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="page-shell" aria-label="Demo page content">
+    <header class="topbar">
+      <div class="brand-mark" aria-hidden="true"></div>
+      <h1>Frontend Learning Demo</h1>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#">Docs</a>
+        <a href="#">Blog</a>
+      </nav>
+    </header>
+
+    <section class="hero"></section>
+    <section class="search-bar"></section>
+
+    <section class="content-grid">
+      <article>
+        <h2>Learn DOM Events</h2>
+        <p>
+          This page simulates a website layout so the cookie notice feels realistic.
+          It appears the first time a visitor opens the page.
+        </p>
+      </article>
+      <article>
+        <h2>Persistent Consent</h2>
+        <p>
+          Once accepted, the state is stored in localStorage and the popup will not
+          show again on later visits.
+        </p>
+      </article>
+    </section>
+  </main>
+
+  <aside class="cookie-popup" id="cookiePopup" role="dialog" aria-live="polite" aria-label="Cookie consent">
+    <button class="close-btn" id="closePopupBtn" type="button" aria-label="Close cookie popup">&times;</button>
+
+    <div class="cookie-icon" aria-hidden="true">
+      <span class="chip chip-1"></span>
+      <span class="chip chip-2"></span>
+      <span class="chip chip-3"></span>
+      <span class="chip chip-4"></span>
+      <span class="bite"></span>
+    </div>
+
+    <p>
+      We use cookies to improve your user experience.
+    </p>
+
+    <button class="accept-btn" id="acceptCookieBtn" type="button">I like Cookies</button>
+  </aside>
+
+  <script src="script.js"></script>
+</body>
+</html>
