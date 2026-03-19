@@ -1,0 +1,197 @@
+.feature-card p {
+  margin: 0;
+  color: #5d5a55;
+  line-height: 1.7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", sans-serif;
+  color: #1f1f1f;
+  background: linear-gradient(160deg, #f4efe3 0%, #e7dcc5 100%);
+}
+
+.page-shell {
+  width: min(1080px, 100% - 2rem);
+  margin: 0 auto;
+  padding: 4rem 0;
+  display: grid;
+  gap: 2.5rem;
+}
+
+.hero {
+  background: rgba(255, 252, 246, 0.82);
+  border: 1px solid rgba(77, 62, 38, 0.18);
+  border-radius: 28px;
+  box-shadow: 0 18px 42px rgba(42, 33, 18, 0.14);
+  backdrop-filter: blur(12px);
+  padding: 3rem;
+}
+.hero__eyebrow {
+  margin: 0 0 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #7b5d38;
+}
+.hero__title {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.4rem, 4vw, 4.6rem);
+  line-height: 0.95;
+}
+.hero__subtitle {
+  margin: 1rem 0 0;
+  max-width: 52ch;
+  color: #5d5a55;
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.feature-card {
+  background: rgba(255, 252, 246, 0.82);
+  border: 1px solid rgba(77, 62, 38, 0.18);
+  border-radius: 28px;
+  box-shadow: 0 18px 42px rgba(42, 33, 18, 0.14);
+  backdrop-filter: blur(12px);
+  padding: 1.75rem;
+}
+.feature-card h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+}
+.feature-card__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-bottom: 1rem;
+  border-radius: 999px;
+  font-weight: 800;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.feature-card--1 {
+  border-top: 6px solid #b55233;
+}
+.feature-card--1 .feature-card__badge {
+  color: #b55233;
+}
+
+.feature-card--2 {
+  border-top: 6px solid #1f7a63;
+}
+.feature-card--2 .feature-card__badge {
+  color: #1f7a63;
+}
+
+.feature-card--3 {
+  border-top: 6px solid #315cbb;
+}
+.feature-card--3 .feature-card__badge {
+  color: #315cbb;
+}
+
+.cta-panel {
+  background: rgba(255, 252, 246, 0.82);
+  border: 1px solid rgba(77, 62, 38, 0.18);
+  border-radius: 28px;
+  box-shadow: 0 18px 42px rgba(42, 33, 18, 0.14);
+  backdrop-filter: blur(12px);
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+.cta-panel h2 {
+  margin: 0.25rem 0 0;
+  font-size: 1.5rem;
+}
+.cta-panel__label {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.72rem;
+  color: #7f6948;
+  font-weight: 700;
+}
+.cta-panel__actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 132px;
+  padding: 0.9rem 1.2rem;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+}
+.btn--primary {
+  background: #201a15;
+  color: #fffdf8;
+  border: 1px solid transparent;
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+.btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 24px rgba(0, 0, 0, 0.12);
+}
+.btn--ghost {
+  background: transparent;
+  color: #1f1f1f;
+  border: 1px solid transparent;
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+.btn--ghost:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 24px rgba(0, 0, 0, 0.12);
+}
+.btn--ghost {
+  border-color: rgba(77, 62, 38, 0.18);
+}
+
+@media (max-width: 820px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+  .cta-panel {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+@media (max-width: 560px) {
+  .page-shell {
+    width: min(100% - 1rem, 1080px);
+    padding: 1rem 0 2rem;
+  }
+  .hero,
+  .feature-card,
+  .cta-panel {
+    padding: 1.25rem;
+  }
+  .cta-panel__actions {
+    width: 100%;
+    flex-direction: column;
+  }
+  .btn {
+    width: 100%;
+  }
+}/*# sourceMappingURL=hello.css.map */

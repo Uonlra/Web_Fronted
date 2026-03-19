@@ -1,3 +1,9 @@
+const config = {
+  startYearOffset: -80,
+  endYearOffset: 20,
+  defaultOpen: true
+};
+
 const monthNames = [
   "January",
   "February",
@@ -23,12 +29,13 @@ const daysGrid = document.getElementById("days-grid");
 const selectedLabel = document.getElementById("selected-label");
 const todayBtn = document.getElementById("today-btn");
 const calendarPanel = document.querySelector(".calendar-panel");
+const datepickerDemo = document.querySelector(".datepicker-demo");
 
 const today = new Date();
 let viewYear = today.getFullYear();
 let viewMonth = today.getMonth();
 let selectedDate = null;
-let isCalendarOpen = true;
+let isCalendarOpen = config.defaultOpen;
 
 function padNumber(value) {
   return String(value).padStart(2, "0");
@@ -52,8 +59,8 @@ function buildMonthOptions() {
 }
 
 function buildYearOptions() {
-  const startYear = today.getFullYear() - 80;
-  const endYear = today.getFullYear() + 20;
+  const startYear = today.getFullYear() + config.startYearOffset;
+  const endYear = today.getFullYear() + config.endYearOffset;
 
   for (let year = startYear; year <= endYear; year += 1) {
     const option = document.createElement("option");
@@ -67,6 +74,13 @@ function setSelectedDate(date) {
   selectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
   input.value = toInputValue(selectedDate);
   selectedLabel.textContent = `Selected: ${toLabelValue(selectedDate)}`;
+}
+
+function setCalendarOpen(nextOpen) {
+  isCalendarOpen = nextOpen;
+  calendarPanel.classList.toggle("is-hidden", !isCalendarOpen);
+  toggleCalendarBtn.setAttribute("aria-expanded", String(isCalendarOpen));
+  toggleCalendarBtn.setAttribute("aria-label", isCalendarOpen ? "Close calendar" : "Open calendar");
 }
 
 function renderCalendar() {
@@ -93,6 +107,7 @@ function renderCalendar() {
     dayButton.type = "button";
     dayButton.className = "day";
     dayButton.textContent = String(dayNumber);
+    dayButton.dataset.day = String(dayNumber);
     dayButton.setAttribute("aria-label", `${monthNames[viewMonth]} ${dayNumber}, ${viewYear}`);
 
     const isToday =
@@ -115,11 +130,6 @@ function renderCalendar() {
       dayButton.setAttribute("aria-pressed", "true");
     }
 
-    dayButton.addEventListener("click", () => {
-      setSelectedDate(new Date(viewYear, viewMonth, dayNumber));
-      renderCalendar();
-    });
-
     daysGrid.append(dayButton);
   }
 }
@@ -141,9 +151,40 @@ function updateView(monthDelta) {
 }
 
 function toggleCalendar() {
-  isCalendarOpen = !isCalendarOpen;
-  calendarPanel.classList.toggle("is-hidden", !isCalendarOpen);
-  toggleCalendarBtn.setAttribute("aria-expanded", String(isCalendarOpen));
+  setCalendarOpen(!isCalendarOpen);
+}
+
+function handleDaySelection(event) {
+  const dayButton = event.target.closest(".day");
+
+  if (!dayButton) {
+    return;
+  }
+
+  const dayNumber = Number(dayButton.dataset.day);
+  setSelectedDate(new Date(viewYear, viewMonth, dayNumber));
+  renderCalendar();
+  setCalendarOpen(false);
+  toggleCalendarBtn.focus();
+}
+
+function handleDocumentClick(event) {
+  if (!isCalendarOpen) {
+    return;
+  }
+
+  if (!datepickerDemo.contains(event.target)) {
+    setCalendarOpen(false);
+  }
+}
+
+function handleDocumentKeydown(event) {
+  if (event.key !== "Escape" || !isCalendarOpen) {
+    return;
+  }
+
+  setCalendarOpen(false);
+  toggleCalendarBtn.focus();
 }
 
 function init() {
@@ -151,6 +192,7 @@ function init() {
   buildYearOptions();
 
   setSelectedDate(today);
+  setCalendarOpen(config.defaultOpen);
   renderCalendar();
 
   prevMonthBtn.addEventListener("click", () => updateView(-1));
@@ -171,9 +213,14 @@ function init() {
     viewMonth = today.getMonth();
     setSelectedDate(today);
     renderCalendar();
+    setCalendarOpen(false);
+    toggleCalendarBtn.focus();
   });
 
+  daysGrid.addEventListener("click", handleDaySelection);
   toggleCalendarBtn.addEventListener("click", toggleCalendar);
+  document.addEventListener("click", handleDocumentClick);
+  document.addEventListener("keydown", handleDocumentKeydown);
 }
 
 init();
