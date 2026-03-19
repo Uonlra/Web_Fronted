@@ -123,9 +123,14 @@ body::after {
   width: 52px;
   border: 0;
   background: var(--button-bg);
-  cursor: default;
+  cursor: pointer;
   display: grid;
   place-items: center;
+  transition: background-color 180ms ease, transform 180ms ease;
+}
+
+.input-wrap button:hover {
+  background: #e6d6b7;
 }
 
 .calendar-icon {
@@ -224,7 +229,13 @@ body::after {
   font-size: 0.9rem;
   line-height: 1;
   color: var(--ink);
-  cursor: default;
+  cursor: pointer;
+  transition: background-color 180ms ease, transform 180ms ease;
+}
+
+.calendar-header button:hover {
+  background: #ecdec0;
+  transform: translateY(-1px);
 }
 
 .calendar-header button:focus-visible {
@@ -348,6 +359,13 @@ body::after {
 .chip[type="button"] {
   cursor: pointer;
   font-family: inherit;
+  transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.chip[type="button"]:hover {
+  background: #daf2ea;
+  color: #174f43;
+  transform: translateY(-1px);
 }
 
 .sr-only {
