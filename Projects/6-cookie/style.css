@@ -8,6 +8,9 @@
   --popup-ink: #f8fafc;
   --btn-bg: #f3f4f6;
   --btn-ink: #111827;
+  --reject-bg: rgba(255, 255, 255, 0.08);
+  --reject-ink: #f8fafc;
+  --backdrop: rgba(15, 23, 42, 0.18);
 }
 
 * {
@@ -32,6 +35,14 @@ body {
   border-radius: 20px;
   background: var(--surface);
   padding: 26px;
+}
+
+.cookie-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--backdrop);
+  backdrop-filter: blur(4px);
+  z-index: 20;
 }
 
 .topbar {
@@ -117,12 +128,37 @@ body {
   opacity: 0;
   pointer-events: none;
   transition: transform 0.35s ease, opacity 0.35s ease;
+  z-index: 30;
 }
 
 .cookie-popup.show {
   transform: translateY(0) scale(1);
   opacity: 1;
   pointer-events: auto;
+}
+
+.cookie-eyebrow {
+  margin: 14px 0 8px;
+  color: #a1a1aa;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+.cookie-popup h2 {
+  margin: 0;
+  font-size: clamp(1.45rem, 2.6vw, 2.1rem);
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.cookie-copy {
+  margin: 14px 0 20px;
+  color: #d4d4d8;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  font-weight: 400;
 }
 
 .close-btn {
@@ -171,13 +207,9 @@ body {
     4px 10px 0 var(--popup-bg);
 }
 
-.cookie-popup p {
-  margin: 18px 0 20px;
-  font-size: 2rem;
-  font-size: clamp(1.5rem, 2.4vw, 2.15rem);
-  line-height: 1.32;
-  letter-spacing: -0.02em;
-  font-weight: 600;
+.cookie-actions {
+  display: grid;
+  gap: 10px;
 }
 
 .accept-btn {
@@ -197,6 +229,32 @@ body {
 .accept-btn:hover {
   transform: translateY(-1px);
   filter: brightness(0.96);
+}
+
+.reject-btn {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--reject-ink);
+  background: var(--reject-bg);
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.reject-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.cookie-footnote {
+  margin: 16px 0 0;
+  color: #9ca3af;
+  font-size: 0.82rem;
+  line-height: 1.5;
 }
 
 @media (max-width: 720px) {
@@ -224,5 +282,17 @@ body {
   .cookie-popup {
     right: 16px;
     bottom: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+  }
+
+  .cookie-popup,
+  .accept-btn,
+  .reject-btn {
+    transition: none;
   }
 }

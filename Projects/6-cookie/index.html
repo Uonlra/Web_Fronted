@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cookie Consent Popup</title>
+  <title>Cookie Consent Center</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="page-shell" aria-label="Demo page content">
+  <main class="page-shell" aria-label="Demo page content" id="pageContent">
     <header class="topbar">
       <div class="brand-mark" aria-hidden="true"></div>
       <h1>Frontend Learning Demo</h1>
@@ -42,7 +42,18 @@
     </section>
   </main>
 
-  <aside class="cookie-popup" id="cookiePopup" role="dialog" aria-live="polite" aria-label="Cookie consent">
+  <div class="cookie-backdrop" id="cookieBackdrop" hidden></div>
+
+  <aside
+    class="cookie-popup"
+    id="cookiePopup"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="cookieTitle"
+    aria-describedby="cookieDescription"
+    aria-live="polite"
+    hidden
+  >
     <button class="close-btn" id="closePopupBtn" type="button" aria-label="Close cookie popup">&times;</button>
 
     <div class="cookie-icon" aria-hidden="true">
@@ -53,11 +64,21 @@
       <span class="bite"></span>
     </div>
 
-    <p>
-      We use cookies to improve your user experience.
+    <p class="cookie-eyebrow">Privacy preference center</p>
+    <h2 id="cookieTitle">We use cookies to improve your user experience.</h2>
+    <p id="cookieDescription" class="cookie-copy">
+      Cookies help us remember your preferences, understand traffic patterns, and keep the site running smoothly.
+      Choose whether to accept or decline non-essential cookies.
     </p>
 
-    <button class="accept-btn" id="acceptCookieBtn" type="button">I like Cookies</button>
+    <div class="cookie-actions">
+      <button class="accept-btn" id="acceptCookieBtn" type="button">Accept all</button>
+      <button class="reject-btn" id="rejectCookieBtn" type="button">Reject non-essential</button>
+    </div>
+
+    <p class="cookie-footnote">
+      You can update this choice anytime by clearing site storage.
+    </p>
   </aside>
 
   <script src="script.js"></script>
