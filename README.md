@@ -10,23 +10,23 @@
 
 ## Projects 目录项目简介
 
-1. 1-singlePageCv
+1. singlePageCv
 - 单页简历练习项目。
 - 使用语义化 HTML 组织个人信息、技能、教育、经历与链接，侧重页面结构与基础 SEO 元信息。
 
-2. 2-BasicHTMLWebsite
+2. BasicHTMLWebsite
 - 纯 HTML 多页面网站练习项目。
 - 包含首页、项目页、文章页、联系页，并配套基础样式，重点是多页面组织与语义化标签实践。
 
-3. 3-according
+3. according
 - 多页面项目（含响应式与主题切换）。
 - 在多页面导航基础上加入 JavaScript 主题切换，强调信息层级、布局适配和可读性。
 
-4. 4-flashCard
+4. flashCard
 - 可访问表单 UI 练习项目。
 - 以静态表单界面为核心，重点训练可访问性语义（如 label 关联、错误提示语义、焦点可见性等）。
 
-5. 5-date-ui
+5. date-ui
 - 交互式日期选择器项目。
 - 支持年月切换、日期选择、输入框回填和 Today 快捷定位，综合练习布局、状态样式与基础交互逻辑。
 
