@@ -249,7 +249,7 @@ body {
         min-width: 2.8rem;
         padding: .14rem .5rem;
         border-radius: var(--radius-pill);
-        background: linear-gradient(135deg, rgba(220, 252, 231, 0.95) 0%, rgba(167, 243, 208, 0.85) 100%);
+        background: rgba(22, 163, 74, -0.12);
         border: 1px solid rgba(22, 163, 74, 0.24);
         color: #065f46;
         font-size: .8rem;
