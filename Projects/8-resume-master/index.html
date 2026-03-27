@@ -33,13 +33,33 @@
 
     <header class="header"></header>
 
-    <div class="resume-toolbar">
-        <input id="cb" class="switch-input" type="checkbox" checked>
-        <label class="switch" for="cb">
-            <span class="switch-track" aria-hidden="true"></span>
-            <span class="switch-text">hide</span>
-        </label>
+    <div class="resume-topbar" role="toolbar" aria-label="简历工具栏">
+        <button class="top-btn" id="toggleSidebarBtn" type="button" title="隐藏或显示侧栏" aria-label="隐藏或显示侧栏" aria-pressed="false">
+            <i class="fa fa-columns" aria-hidden="true"></i>
+            <span class="top-btn-label">关闭侧栏</span>
+        </button>
+        <button class="top-btn" id="downloadPdfBtn" type="button" title="下载 PDF" aria-label="下载 PDF">
+            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+            <span class="top-btn-label">PDF下载</span>
+        </button>
+        <button class="top-btn" id="downloadImageBtn" type="button" title="下载图片" aria-label="下载图片">
+            <i class="fa fa-picture-o" aria-hidden="true"></i>
+            <span class="top-btn-label">图片下载</span>
+        </button>
+        <button class="top-btn" id="themeToggleBtn" type="button" title="切换主题" aria-label="切换主题" aria-pressed="false">
+            <i class="fa fa-moon-o" aria-hidden="true"></i>
+            <span class="top-btn-label">主题</span>
+        </button>
+        <button class="top-btn" id="toggleTopbarBtn" type="button" title="关闭顶部栏" aria-label="关闭顶部栏" aria-pressed="false">
+            <i class="fa fa-chevron-up" aria-hidden="true"></i>
+            <span class="top-btn-label">关闭顶部栏</span>
+        </button>
     </div>
+
+    <button class="topbar-launcher" id="showTopbarBtn" type="button" title="打开顶部栏" aria-label="打开顶部栏">
+        <i class="fa fa-chevron-down" aria-hidden="true"></i>
+        <span>打开顶部栏</span>
+    </button>
 
     <article class="container">
         <section class="side" id="side">
@@ -408,6 +428,8 @@
             <time>2026-3-27</time>.</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
     <script src="./assets/js/index.js"></script>
 </body>
 

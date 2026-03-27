@@ -1,12 +1,19 @@
-# 在线简历项目说明
+# 在线简历项目
 
-这是一个纯静态的个人在线简历模板，核心文件是 [index.html](index.html)，样式和脚本位于 [assets](assets/) 目录。
+一个纯静态的在线简历模板，适合用来展示个人信息、技能栈、教育经历和项目经验。项目不依赖框架，直接修改 HTML、CSS 和少量 JavaScript 就能快速上线。
 
-适用场景：
+## 项目亮点
 
-- 前端/程序员在线简历展示
-- 个人主页（简历型）
-- 面试投递时提供在线访问链接
+- 纯静态实现，部署简单，适合新人练手和个人展示
+- 页面结构完整，包含头像、联系方式、技能、教育经历和工作经历
+- 支持本地直接预览，也适合部署到 GitHub Pages、Netlify、Vercel
+- 文件结构清晰，便于二次修改和扩展
+
+## 适合谁使用
+
+- 想做第一份在线简历的前端初学者
+- 需要一个可直接替换内容的个人主页模板的人
+- 想练习静态页面部署流程的人
 
 ## 目录结构
 
@@ -21,24 +28,33 @@
 └─ README.md
 ```
 
-## 1. 本地修改简历
+## 快速开始
 
-1. 打开 [index.html](index.html)，替换以下内容：
-- 个人信息（姓名、职位、联系方式）
-- 教育经历、项目经历、技能描述
-- 社交链接（GitHub、博客、掘金等）
+### 1. 修改简历内容
 
-2. 如需改样式，优先修改：
+打开 [index.html](index.html)，重点替换下面这些信息：
+
+- 姓名、职位、城市、联系方式
+- 教育经历和工作经历
+- 技能列表与技能熟练度
+- GitHub、博客、社交主页等链接
+
+如果需要替换图片资源，可以把文件放到 [assets/images](assets/images/) 中，再更新 HTML 路径。
+
+### 2. 修改样式
+
+常用样式文件：
+
 - [assets/css/index.css](assets/css/index.css)
 - [assets/css/typo.css](assets/css/typo.css)
 
-3. 如需替换头像或配图，把图片放到 [assets/images](assets/images/) 并更新 [index.html](index.html) 的路径。
+如果你想统一颜色、间距或版式，优先从这两个文件开始。
 
-## 2. 本地预览
+### 3. 本地预览
 
-直接双击 [index.html](index.html) 即可预览。
+最简单的方式是直接打开 [index.html](index.html)。
 
-如果你希望用本地服务预览（推荐，避免路径缓存问题），在项目目录执行：
+如果想用本地服务预览，进入项目目录后执行：
 
 ```bash
 python -m http.server 8080
@@ -50,69 +66,57 @@ python -m http.server 8080
 http://localhost:8080
 ```
 
-## 3. 部署在线简历教程
+## 部署方式
 
-下面给出 3 种常用部署方式，任选一种即可。
+### 方案 A：GitHub Pages
 
-### 方案 A：GitHub Pages（免费，推荐）
+适合想长期托管在 GitHub 上的人。
 
-适合：代码托管在 GitHub，希望长期稳定访问。
-
-1. 将项目推送到 GitHub 仓库（例如仓库名为 `resume`）。
-2. 进入仓库页面 -> `Settings` -> `Pages`。
-3. 在 `Build and deployment` 中设置：
-- `Source`: `Deploy from a branch`
-- `Branch`: 选择 `main`（或你的发布分支）
-- 文件夹选择 `/ (root)`
-4. 点击 `Save`。
-5. 等待 1-3 分钟，GitHub 会生成访问地址，例如：
-- `https://你的用户名.github.io/resume/`
+1. 把项目推送到 GitHub 仓库。
+2. 进入仓库的 `Settings` -> `Pages`。
+3. 选择 `Deploy from a branch`。
+4. 分支选择 `main`，目录选择 `/ (root)`。
+5. 保存后等待几分钟，即可获得公开访问链接。
 
 后续更新流程：
 
-1. 本地修改 [index.html](index.html) 或样式文件。
-2. `git add .`
-3. `git commit -m "update resume"`
-4. `git push`
-5. Pages 自动重新部署。
+```bash
+git add .
+git commit -m "update resume"
+git push
+```
 
-### 方案 B：Netlify（拖拽即部署）
+### 方案 B：Netlify
 
-适合：不想配置太多，想快速上线。
+适合想快速上线、少配置的人。
 
-1. 打开 Netlify 官网并登录。
-2. 在后台选择 `Add new site` -> `Deploy manually`。
-3. 将整个项目文件夹（包含 [index.html](index.html)）拖拽上传。
-4. 上传完成后会得到一个 `*.netlify.app` 域名。
-5. 可在站点设置中自定义二级域名。
+1. 登录 Netlify。
+2. 选择 `Add new site` -> `Deploy manually`。
+3. 直接拖拽整个项目文件夹上传。
+4. 上传完成后会生成一个 `*.netlify.app` 地址。
 
-后续更新：重新拖拽上传，或绑定 Git 仓库实现自动部署。
+### 方案 C：Vercel
 
-### 方案 C：Vercel（Git 自动部署）
-
-适合：已有 GitHub 仓库，希望每次 push 自动发布。
+适合已经把代码托管在 GitHub 上，并希望自动部署的人。
 
 1. 登录 Vercel。
-2. `Add New...` -> `Project`，导入你的 GitHub 仓库。
-3. 框架选择 `Other`（或保持自动识别）。
-4. 保持默认构建设置（静态站点通常不需要额外命令）。
-5. 点击 `Deploy`，完成后获得 `*.vercel.app` 访问地址。
+2. 选择 `Add New...` -> `Project`。
+3. 导入 GitHub 仓库。
+4. 保持默认配置并点击 `Deploy`。
 
-后续每次推送到主分支都会自动重新部署。
-
-## 4. 常见问题
+## 常见问题
 
 ### 页面样式错乱
 
-- 检查资源路径是否正确（尤其是 `assets/...`）。
-- 确认部署平台的发布根目录就是项目根目录（必须包含 [index.html](index.html)）。
+- 检查 `assets/...` 资源路径是否正确
+- 确认部署平台发布的根目录就是项目根目录
 
-### 修改后线上没更新
+### 修改后线上没有更新
 
-- 清理浏览器缓存后再访问。
-- 确认已 push 到正确分支。
-- 查看部署平台的构建日志是否报错。
+- 先清理浏览器缓存再访问
+- 确认代码已经推送到正确分支
+- 检查部署平台的构建日志
 
-## 5. 许可证
+## 许可证
 
-本项目采用 MIT License，详情见 [LICENSE](LICENSE)。
+项目采用 [MIT License](LICENSE)。
