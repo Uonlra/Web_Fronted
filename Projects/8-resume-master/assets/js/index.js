@@ -1,11 +1,21 @@
 (function () {
 	var sidebarToggle = document.getElementById('cb');
 	var sideContainer = document.getElementById('side');
+	var switchText = document.querySelector('.resume-toolbar .switch-text');
+	var switchLabel = document.querySelector('.resume-toolbar .switch');
 	var skillItems = document.querySelectorAll('.skill-list li[data-level]');
 
 	if (sidebarToggle && sideContainer) {
 		var updateSidebarState = function () {
 			document.body.classList.toggle('sidebar-hidden', !sidebarToggle.checked);
+
+			if (switchText) {
+				switchText.textContent = sidebarToggle.checked ? '隐藏侧栏' : '显示侧栏';
+			}
+
+			if (switchLabel) {
+				switchLabel.setAttribute('aria-label', sidebarToggle.checked ? '点击隐藏左侧栏' : '点击显示左侧栏');
+			}
 		};
 
 		sidebarToggle.addEventListener('change', updateSidebarState);
@@ -43,4 +53,4 @@
 	}
 }());
 
-console.log("感谢您的浏览，期待能够加入贵公司！我的博客：http://if2er.com/");
+console.log("感谢您的浏览，期待能够加入贵公司！");
