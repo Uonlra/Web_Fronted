@@ -64,7 +64,7 @@
 		});
 	}
 
-	setTopbarState(false);
+	setTopbarState(true);
 
 	var updateThemeButton = function (isNight) {
 		if (!themeToggleBtn) {
