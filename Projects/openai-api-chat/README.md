@@ -1,24 +1,27 @@
-# OpenAI API Project Assistant
+# OpenAI Project Assistant
 
-这是一个适合日常项目开发的 OpenAI API 基础示例。它不是把 API 当作“网页聊天框”，而是演示如何通过你自己的服务端，把 OpenAI 接成一个可复用的开发助手层。
+这是一个基于 Express + OpenAI Responses API 的轻量项目助手示例。它保留了任务模式的组织方式，同时补上了连续会话、流式输出和更接近真实使用的前后端结构。
 
-它现在支持这些常见任务：
+当前版本支持：
 
-- 通用开发问答
-- 代码解释
-- 重构建议
-- 文档生成
-- 结构化 JSON 输出
+- 5 种任务模式：通用开发问答、代码解释、重构建议、文档生成、结构化 JSON 输出
+- 服务端内存会话历史
+- 流式输出
+- 清空当前会话
+- 健康检查与启动配置提示
+- 非流式接口回退
 
-## 1. 安装依赖
+## 启动方式
+
+1. 安装依赖
 
 ```bash
 npm install
 ```
 
-## 2. 配置环境变量
+2. 创建环境变量文件
 
-把 `.env.example` 复制为 `.env`，并填入你的 OpenAI API Key：
+把 `.env.example` 复制为 `.env`，然后填入你的配置：
 
 ```env
 OPENAI_API_KEY=your_openai_api_key_here
@@ -26,7 +29,13 @@ OPENAI_MODEL=gpt-5.2
 PORT=3000
 ```
 
-## 3. 启动项目
+默认行为：
+
+- `OPENAI_MODEL` 未配置时默认使用 `gpt-5.2`
+- `PORT` 未配置或非法时回退到 `3000`
+- `OPENAI_API_KEY` 未配置时，页面仍可打开，但聊天接口不可用
+
+3. 启动项目
 
 ```bash
 npm run dev
@@ -40,47 +49,73 @@ npm start
 
 然后访问 `http://localhost:3000`
 
-## 4. 项目结构
+## 接口概览
 
-- `server.js`：Express 服务端，封装任务模式和 OpenAI 调用
-- `public/`：浏览器端页面，用于提交开发任务和上下文
-- `.env`：本地环境变量，不要提交到仓库
+### `GET /api/health`
 
-## 5. 为什么这种结构更适合真实项目？
+返回服务状态、模型名、API Key 是否存在，以及启动期发现的问题。
 
-因为 API Key 不能暴露在浏览器里。前端页面应该请求你自己的后端服务，再由服务端统一处理：
+### `GET /api/tasks`
 
-- 模型选择
-- prompt 模板
-- 错误处理
-- 日志和成本控制
-- 敏感信息过滤
+返回当前支持的任务模式列表。
 
-## 6. 推荐你在真实项目里这样接
+### `GET /api/session?sessionId=...`
 
-先把这个 demo 当成一个独立的 AI 服务层，再逐步接入你的业务项目：
+读取指定会话；如果会话不存在，会自动创建一个新会话并返回：
 
-1. 为不同任务建立固定入口  
-   例如：`explainCode`、`generateDocs`、`buildFormSchema`
+```json
+{
+  "sessionId": "uuid",
+  "messages": []
+}
+```
 
-2. 把 prompt 写成模板  
-   不要每次都临时拼一句“帮我写一下”，而要固定角色、目标、上下文和输出格式。
+### `DELETE /api/session/:sessionId`
 
-3. 关键结果优先走结构化输出  
-   页面配置、表单定义、测试数据、任务拆解这类结果，尽量让模型直接输出 JSON。
+清空当前会话并返回一个全新的空会话。
 
-4. 给 AI 一个明确的上下文输入区  
-   比如代码片段、接口定义、报错日志、目录结构、约束条件。
+### `POST /api/chat`
 
-5. 业务关键链路一定要人工校验  
-   模型适合提效，不适合代替你的最终判断。
+非流式回退接口，请求体：
 
-## 7. 下一步可以扩展什么？
+```json
+{
+  "sessionId": "uuid",
+  "task": "general",
+  "message": "请帮我拆解这个需求",
+  "context": "这里放补充代码和限制"
+}
+```
 
-如果你想把它继续升级成真正的项目助手，下一步最值得加的是：
+### `POST /api/chat/stream`
 
-- 流式输出
-- 对话历史
-- 文件上传
-- 结构化输出校验
-- 你自己的工具调用，比如“读取项目配置”或“查询数据库 schema”
+流式接口，返回 SSE 事件流，前端消费的事件包括：
+
+- `start`
+- `delta`
+- `done`
+- `error`
+
+## 项目结构
+
+- `server.js`：Express 入口和 API 路由
+- `src/config.js`：环境变量读取与启动问题收集
+- `src/tasks.js`：任务模式配置
+- `src/session-store.js`：内存会话仓库
+- `src/prompt-builder.js`：消息构建与上下文拼接
+- `src/openai-service.js`：OpenAI 请求与流式调用封装
+- `src/errors.js`：统一错误对象与响应序列化
+- `public/`：前端页面、聊天 UI 和流式渲染逻辑
+
+## 当前约束
+
+- 历史记录只保存在 Node 进程内存里，服务重启后会丢失
+- 没有用户系统和数据库，适合本地开发、个人演示或二次扩展
+- JSON 模式通过 OpenAI JSON mode 与提示词共同约束输出
+
+## 下一步可扩展
+
+- 历史持久化到 SQLite / PostgreSQL
+- 文件上传和代码片段管理
+- 更细的任务模板配置页
+- 请求日志、成本统计与限流
