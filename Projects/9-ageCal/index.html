@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Age Calculator</title>
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="calculator" aria-labelledby="title">
+        <p class="eyebrow">Age Calculator</p>
+        <h1 id="title">Find your exact age</h1>
+
+        <form id="age-form" class="form">
+          <label for="birthdate">Enter your birth date</label>
+          <div class="input-wrap">
+            <input
+              id="birthdate"
+              name="birthdate"
+              type="text"
+              placeholder="DD/MM/YYYY"
+              autocomplete="off"
+              inputmode="none"
+              aria-describedby="birthdate-help"
+              required
+            />
+          </div>
+          <p id="birthdate-help" class="helper">Choose a valid date from the calendar.</p>
+          <button type="submit">Calculate</button>
+        </form>
+
+        <p id="error" class="message error" role="alert" aria-live="polite"></p>
+        <div id="result" class="result" aria-live="polite"></div>
+      </section>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
