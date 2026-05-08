@@ -1,0 +1,28 @@
+{
+  "name": "shadergradient-vite-demo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "dependencies": {
+    "@react-three/fiber": "latest",
+    "@shadergradient/react": "latest",
+    "camera-controls": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "three": "latest",
+    "three-stdlib": "latest"
+  },
+  "devDependencies": {
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@types/three": "latest",
+    "@vitejs/plugin-react": "latest",
+    "typescript": "latest",
+    "vite": "latest"
+  }
+}
