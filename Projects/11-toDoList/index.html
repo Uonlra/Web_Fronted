@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo List</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">JavaScript DOM Project</p>
+        <h1>Todo List</h1>
+      </div>
+      <button id="clearCompletedButton" class="ghost-button" type="button">清除已完成</button>
+    </header>
+
+    <section class="composer" aria-label="添加待办">
+      <form id="todoForm" class="todo-form">
+        <label class="sr-only" for="todoInput">Todo 标题</label>
+        <input id="todoInput" type="text" placeholder="输入一个待办事项" autocomplete="off">
+        <button type="submit">添加</button>
+      </form>
+      <p id="message" class="message" aria-live="polite"></p>
+    </section>
+
+    <section class="stats-grid" aria-label="统计信息">
+      <div class="stat">
+        <span class="stat-label">总数</span>
+        <strong id="totalCount">0</strong>
+      </div>
+      <div class="stat">
+        <span class="stat-label">已完成</span>
+        <strong id="completedCount">0</strong>
+      </div>
+      <div class="stat">
+        <span class="stat-label">未完成</span>
+        <strong id="activeCount">0</strong>
+      </div>
+      <div class="stat">
+        <span class="stat-label">完成率</span>
+        <strong id="completedRate">0%</strong>
+      </div>
+    </section>
+
+    <section class="toolbar" aria-label="筛选待办">
+      <button class="filter-button active" type="button" data-filter="all">全部</button>
+      <button class="filter-button" type="button" data-filter="active">未完成</button>
+      <button class="filter-button" type="button" data-filter="completed">已完成</button>
+    </section>
+
+    <section class="todo-panel" aria-label="待办列表">
+      <ul id="todoList" class="todo-list"></ul>
+      <p id="emptyState" class="empty-state">暂无待办</p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
