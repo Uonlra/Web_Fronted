@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TODO List - 纯 JS + DOM + localStorage</title>
+  <link rel="stylesheet" href="/DOM/todo-app.css">
+</head>
+<body>
+  <div class="container">
+    <h1>TODO List</h1>
+
+    <!-- 输入区域 -->
+    <div class="input-group">
+      <input type="text" id="todo-input" placeholder="输入新任务...">
+      <button id="add-btn">添加</button>
+    </div>
+
+    <!-- 筛选按钮 -->
+    <div class="filter-group" id="filter-group">
+      <button class="filter-btn active" data-filter="all">全部</button>
+      <button class="filter-btn" data-filter="active">未完成</button>
+      <button class="filter-btn" data-filter="completed">已完成</button>
+    </div>
+
+    <!-- 任务列表 -->
+    <ul class="todo-list" id="todo-list"></ul>
+    
+    <!-- 统计信息 -->
+    <div class="stats" id="stats"></div>
+  </div>
+
+  <script src="/DOM/src/todo-app.js"></script>
+</body>
+</html>

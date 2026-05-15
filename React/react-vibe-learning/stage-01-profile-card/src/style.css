@@ -1,0 +1,52 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family:
+    Inter, "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+  background: #f4f7fb;
+  color: #1f2937;
+}
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.profile-card {
+  width: min(100%, 360px);
+  padding: 28px;
+  border: 1px solid #d7dee8;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 16px 40px rgb(31 41 55 / 10%);
+  text-align: center;
+}
+
+.profile-avatar {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-card h1 {
+  margin: 18px 0 8px;
+  font-size: 28px;
+}
+
+.profile-role {
+  margin: 0;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.profile-bio {
+  margin: 16px 0 0;
+  line-height: 1.7;
+  color: #4b5563;
+}

@@ -23,7 +23,7 @@ const todoInput = document.querySelector("#todo-input");
 const addBtn = document.querySelector("#add-btn");
 const todoList = document.querySelector("#todo-list");
 const filterGroup = document.querySelector("#filter-group");
-const statsEl = document.querySelector("#stats");
+const statsEl = document.querySelector("#stats");// 统计信息元素
 
 // ============================================
 // 核心函数
@@ -31,12 +31,13 @@ const statsEl = document.querySelector("#stats");
 
 // 生成唯一 ID
 function generateId() {
+  // 结合时间戳和随机数，生成一个相对唯一的字符串 ID
   return Date.now().toString(36) + Math.random().toString(36).slice(2);
 }
 
 // 保存到 localStorage
 function saveTodos() {
-  localStorage.setItem("todos", JSON.stringify(todos));
+  localStorage.setItem("todos", JSON.stringify(todos));// 将 todos 数组转换成字符串存储
 }
 
 // 添加任务
@@ -54,7 +55,7 @@ function addTodo() {
     id: generateId(),
     text: text,
     completed: false,
-    createdAt: new Date().toISOString(),
+    createdAt: new Date().toISOString(),// 可选：记录创建时间，方便以后扩展排序功能
   };
 
   // 添加到数组开头（新任务在最上面）
@@ -62,7 +63,7 @@ function addTodo() {
 
   // 保存并重新渲染
   saveTodos();
-  render();
+  render();//render() 函数会根据最新的 todos 数组重新生成 DOM，展示最新的任务列表
 
   // 清空输入框
   todoInput.value = "";
@@ -75,7 +76,7 @@ function toggleTodo(id) {
   if (todo) {
     todo.completed = !todo.completed;
     saveTodos();
-    render();
+    render(); // 切换状态后重新渲染列表，更新视图显示
   }
 }
 
@@ -165,36 +166,41 @@ todoInput.addEventListener("keydown", (e) => {
   }
 });
 
-// 事件委托 —— 处理列表内的点击事件
-todoList.addEventListener("click", (e) => {
-  const item = e.target.closest(".todo-item");
-  if (!item) return;
-
-  const id = item.dataset.id;
-
-  // 点击 checkbox
+// 事件委托 —— 用 change 事件处理 checkbox（比 click 更可靠）
+// change 事件在 checkbox 状态真正改变后才触发，不会有时序问题
+todoList.addEventListener("change", (e) => {
   if (e.target.type === "checkbox") {
-    toggleTodo(id);
+    const item = e.target.closest(".todo-item");
+    if (!item) return;
+    toggleTodo(item.dataset.id);
   }
+});
 
-  // 点击删除按钮
+// 事件委托 —— 用 click 事件处理删除按钮
+// 注意：删除按钮和 checkbox 的事件分开处理，互不干扰
+todoList.addEventListener("click", (e) => {
+  // 只处理删除按钮的点击
   if (e.target.classList.contains("delete-btn")) {
-    deleteTodo(id);
+    e.stopPropagation(); // 阻止冒泡，防止触发其他逻辑
+    const item = e.target.closest(".todo-item");
+    if (!item) return;
+    deleteTodo(item.dataset.id);//调用 deleteTodo 函数删除对应 ID 的任务，并重新渲染列表
   }
 });
 
 // 筛选按钮 —— 事件委托
 filterGroup.addEventListener("click", (e) => {
-  if (!e.target.classList.contains("filter-btn")) return;
+  const btn = e.target.closest(".filter-btn");
+  if (!btn) return;
 
   // 更新 active 状态
-  document.querySelectorAll(".filter-btn").forEach((btn) => {
-    btn.classList.remove("active");
+  filterGroup.querySelectorAll(".filter-btn").forEach((b) => {
+    b.classList.remove("active");
   });
-  e.target.classList.add("active");
+  btn.classList.add("active");
 
   // 更新筛选条件并重新渲染
-  currentFilter = e.target.dataset.filter;
+  currentFilter = btn.dataset.filter;
   render();
 });
 

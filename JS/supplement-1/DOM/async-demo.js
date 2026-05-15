@@ -20,7 +20,7 @@ function getUserByCallback(id, onSuccess, onError) {
   console.log(`[回调] 正在请求用户 ${id} 的数据...`);
 
   setTimeout(() => {
-    const user = usersDB.find((u) => u.id === id);
+    const user = usersDB.find((u) => u.id === id); // 模拟查询数据库
 
     if (user) {
       onSuccess(user); // 成功时调用 onSuccess
@@ -110,7 +110,7 @@ async function getUserByAsync(id) {
 getUserByAsync(3);
 
 // 请求不存在的用户（测试错误处理）
-// getUserByAsync(99);
+getUserByAsync(99);
 
 // ============================================
 // 三种方式对比
