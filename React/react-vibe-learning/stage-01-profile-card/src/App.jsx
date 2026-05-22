@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const profiles = [
   {
     id: 1,
@@ -43,6 +45,7 @@ function ProfileCard({
   buttonText = "查看资料",
   isAvailable = false,
   onFollow,
+  isFollowed = false,
 }) {
   return (
     <article className="profile-card">
@@ -68,24 +71,44 @@ function ProfileCard({
         {isAvailable ? "在线" : "离线"}
       </p>
 
-      <button className="profile-button" onClick={() => onFollow(name)}>
-        {buttonText}
+      <button
+        className={`profile-button ${isFollowed ? "followed" : ""}`}
+        onClick={() => onFollow(name)}
+      >
+        {isFollowed ? "已关注" : buttonText}
       </button>
     </article>
   );
 }
 
 export default function App() {
+  const [followedNames, setFollowedNames] = useState([]);
+
   function handleFollow(name) {
-    alert(`你关注了 ${name}！`);
+    if (followedNames.includes(name)) {
+      setFollowedNames(
+        followedNames.filter((followedName) => followedName !== name)
+      );
+    } else {
+      setFollowedNames([...followedNames, name]);
+    }
   }
-  
+
   return (
     <main className="page">
       <section className="profile-grid">
-        {profiles.map((profile) => (
-          <ProfileCard key={profile.id} {...profile} onFollow={handleFollow} />
-        ))}
+        {profiles.map((profile) => {
+          const isFollowed = followedNames.includes(profile.name);
+
+          return (
+            <ProfileCard
+              key={profile.id}
+              {...profile}
+              onFollow={handleFollow}
+              isFollowed={isFollowed}
+            />
+          );
+        })}
       </section>
     </main>
   );
