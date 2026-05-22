@@ -71,3 +71,97 @@ body {
   font-size: 14px;
   font-weight: 700;
 }
+
+.profile-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  margin-top: 20px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.profile-status::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  margin-right: 6px;
+  border-radius: 50%;
+}
+
+.profile-status.online {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.profile-status.online::before {
+  background: #10b981;
+}
+
+.profile-status.offline {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.profile-status.offline::before {
+  background: #9ca3af;
+}
+
+.profile-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 42px;
+  margin-top: 18px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.profile-button:hover {
+  background: #1d4ed8;
+  box-shadow: 0 10px 24px rgb(37 99 235 / 24%);
+  transform: translateY(-1px);
+}
+
+.profile-button:focus-visible {
+  outline: 3px solid #bfdbfe;
+  outline-offset: 3px;
+}
+
+.profile-grid {
+  width: min(100%, 1120px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 860px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.profile-button.followed {
+  background: #e5e7eb;
+  color: #374151;
+  box-shadow: none;
+}
+
+.profile-button.followed:hover {
+  background: #d1d5db;
+  box-shadow: none;
+}
