@@ -82,7 +82,7 @@ function ProfileCard({
 }
 
 export default function App() {
-  const [followedNames, setFollowedNames] = useState([]);
+  const [followedNames, setFollowedNames] = useState([]); // followedNames 是一个数组，存储已关注的名字；setFollowedNames 是一个函数，用于更新这个数组。
 
   function handleFollow(name) {
     if (followedNames.includes(name)) {
@@ -90,12 +90,17 @@ export default function App() {
         followedNames.filter((followedName) => followedName !== name)
       );
     } else {
-      setFollowedNames([...followedNames, name]);
+      setFollowedNames([...followedNames, name]); // [...followedNames, name ] 创建一个新的数组，包含之前的名字和新关注的名字 
     }
   }
 
   return (
     <main className="page">
+      <header className="profile-summary">
+        <h2>推荐关注</h2>
+        <p>已关注 {followedNames.length} 人</p>
+      </header>
+
       <section className="profile-grid">
         {profiles.map((profile) => {
           const isFollowed = followedNames.includes(profile.name);
