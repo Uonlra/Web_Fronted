@@ -205,3 +205,19 @@ body {
   background: #d1d5db;
   box-shadow: none;
 }
+.profile-search {
+  width: min(100%, 360px);
+  min-height: 42px;
+  margin-top: 16px;
+  padding: 10px 14px;
+  border: 1px solid #d7dee8;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1f2937;
+  font: inherit;
+}
+
+.profile-search:focus {
+  border-color: #2563eb;
+  outline: 3px solid #bfdbfe;
+}

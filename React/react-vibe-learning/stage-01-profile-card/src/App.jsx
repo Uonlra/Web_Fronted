@@ -81,8 +81,13 @@ function ProfileCard({
   );
 }
 
-export default function App() {
+export default function App() { //export default function App() 定义了一个名为 App 的 React 组件，并将其导出为默认导出，使其可以在其他文件中被导入和使用。
   const [followedNames, setFollowedNames] = useState([]); // followedNames 是一个数组，存储已关注的名字；setFollowedNames 是一个函数，用于更新这个数组。
+  const [searchText, setSearchText] = useState(""); // searchText 是一个字符串，存储搜索输入的文本；setSearchText 是一个函数，用于更新这个字符串。
+
+  function handleSearchChange(event) {
+    setSearchText(event.target.value); // event.target.value 获取输入框的当前值，并通过 setSearchText 更新 searchText 状态。
+  }
 
   function handleFollow(name) {
     if (followedNames.includes(name)) {
@@ -94,18 +99,36 @@ export default function App() {
     }
   }
 
+  const filteredProfiles = profiles.filter((profile) => {
+    const keyword = searchText.trim().toLowerCase(); // trim() 去除输入文本的前后空格，toLowerCase() 将输入文本转换为小写，以实现不区分大小写的搜索。
+
+    return (
+      profile.name.toLowerCase().includes(keyword) || // includes() 方法检查 profile.name 是否包含搜索关键词。
+      profile.role.includes(keyword)
+    );
+  }
+  );
+
+
   return (
     <main className="page">
       <header className="profile-summary">
         <h2>推荐关注</h2>
         <p>已关注 {followedNames.length} 人</p>
+        <input
+          className="profile-search"
+          type="search"
+          placeholder="搜索名字或职业..."
+          value={searchText}
+          onChange={handleSearchChange}
+        />
       </header>
 
       <section className="profile-grid">
-        {profiles.map((profile) => {
+        {filteredProfiles.map((profile) => {
           const isFollowed = followedNames.includes(profile.name);
 
-          return (
+          return ( //return 语句返回一个 ProfileCard 组件实例，传递了 profile 对象的属性、handleFollow 函数和 isFollowed 状态作为 props。每个 ProfileCard 都有一个唯一的 key 属性，使用 profile.id 来确保列表渲染的性能和正确性。
             <ProfileCard
               key={profile.id}
               {...profile}
