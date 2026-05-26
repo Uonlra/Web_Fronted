@@ -1,0 +1,171 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  color: #111;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  line-height: 1.5;
+  background: #fff;
+}
+
+header,
+footer {
+  border-bottom: 2px solid #111;
+}
+
+header {
+  padding-bottom: 20px;
+}
+
+footer {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 2px solid #111;
+  border-bottom: 0;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 16px;
+  font-size: 48px;
+  line-height: 1.1;
+}
+
+h2 {
+  margin: 32px 0 16px;
+  font-size: 40px;
+  line-height: 1.15;
+}
+
+nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 48px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+nav a:hover,
+nav a:focus-visible {
+  text-decoration: underline;
+}
+
+form {
+  margin-top: 32px;
+}
+
+form > p {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: 16px 24px;
+  align-items: start;
+  margin-bottom: 24px;
+}
+
+label,
+legend {
+  font-weight: 700;
+}
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
+}
+
+input[type="text"],
+input[type="email"],
+select,
+textarea {
+  width: 100%;
+  border: 2px solid #111;
+  border-radius: 4px;
+  padding: 10px 12px;
+  background: #fff;
+}
+
+textarea {
+  min-height: 180px;
+  resize: vertical;
+}
+
+fieldset {
+  margin: 32px 0 24px;
+  padding: 0;
+  border: 0;
+}
+
+fieldset p {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  accent-color: #111;
+}
+
+button {
+  border: 2px solid #111;
+  border-radius: 4px;
+  padding: 10px 28px;
+  color: #111;
+  background: #fff;
+  cursor: pointer;
+}
+
+button:hover,
+button:focus-visible {
+  color: #fff;
+  background: #111;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+  outline: 3px solid #4b9fff;
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 24px 16px;
+    font-size: 16px;
+  }
+
+  h1 {
+    font-size: 36px;
+  }
+
+  h2 {
+    font-size: 32px;
+  }
+
+  form > p {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
