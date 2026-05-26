@@ -205,22 +205,6 @@ body {
   background: #d1d5db;
   box-shadow: none;
 }
-.profile-search {
-  width: min(100%, 360px);
-  min-height: 42px;
-  margin-top: 16px;
-  padding: 10px 14px;
-  border: 1px solid #d7dee8;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #1f2937;
-  font: inherit;
-}
-
-.profile-search:focus {
-  border-color: #2563eb;
-  outline: 3px solid #bfdbfe;
-}
 .empty-state {
   width: min(100%, 1120px);
   padding: 48px 24px;
@@ -238,4 +222,46 @@ body {
 .empty-state p {
   margin: 10px 0 0;
   color: #64748b;
+  font-weight: 700;
+}
+
+.search-row {
+  display: flex;
+  gap: 10px;
+  width: min(100%, 480px);
+  margin-top: 16px;
+}
+
+.profile-search {
+  flex: 1;
+  width: auto;
+  min-height: 42px;
+  margin-top: 0;
+  padding: 10px 14px;
+  border: 1px solid #d7dee8;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1f2937;
+  font: inherit;
+}
+
+.profile-search:focus {
+  border-color: #2563eb;
+  outline: 3px solid #bfdbfe;
+}
+
+.clear-search-button {
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid #d7dee8;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #374151;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.clear-search-button:hover {
+  background: #f3f4f6;
 }
