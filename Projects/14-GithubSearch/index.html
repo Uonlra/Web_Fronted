@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub Repository Finder</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="finder" aria-labelledby="app-title">
+        <header class="app-header">
+          <span class="github-mark" aria-hidden="true">
+            <svg viewBox="0 0 16 16" role="img">
+              <path
+                d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.49-2.7-1.08-2.7-1.08-.37-.92-.9-1.17-.9-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.22 1.88.87 2.34.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.6 7.6 0 0 1 8 2.39c.68 0 1.36.09 2 .27 1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0Z"
+              />
+            </svg>
+          </span>
+          <h1 id="app-title">GitHub Repository Finder</h1>
+        </header>
+
+        <label class="select-wrap" for="language-select">
+          <span class="sr-only">Programming language</span>
+          <select id="language-select" name="language">
+            <option value="">Select a Language</option>
+          </select>
+        </label>
+
+        <div class="filter-grid" aria-label="Repository filters">
+          <label class="field-wrap" for="description-input">
+            <span>Description keywords</span>
+            <input
+              id="description-input"
+              name="description"
+              type="search"
+              placeholder="e.g. dashboard, animation"
+              autocomplete="off"
+            />
+          </label>
+
+          <label class="field-wrap" for="stars-select">
+            <span> * Minimum stars</span>
+            <select id="stars-select" name="stars">
+              <option value="">Any stars</option>
+              <option value="100">100+</option>
+              <option value="1000">1,000+</option>
+              <option value="5000">5,000+</option>
+              <option value="10000">10,000+</option>
+              <option value="50000">50,000+</option>
+            </select>
+          </label>
+
+          <label class="field-wrap" for="sort-select">
+            <span> * Match by</span>
+            <select id="sort-select" name="sort">
+              <option value="best-match">Best match</option>
+              <option value="stars">Highest stars</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="status-panel" class="status-panel empty" aria-live="polite">
+          <p>Please select a language</p>
+        </div>
+
+        <article id="repo-card" class="repo-card" hidden>
+          <a id="repo-name" class="repo-name" href="#" target="_blank" rel="noreferrer"></a>
+          <p id="repo-description" class="repo-description"></p>
+          <dl class="repo-stats">
+            <div>
+              <dt>Language</dt>
+              <dd id="repo-language">
+                <span class="language-dot" aria-hidden="true"></span>
+                <span></span>
+              </dd>
+            </div>
+            <div>
+              <dt>Stars</dt>
+              <dd id="repo-stars"></dd>
+            </div>
+            <div>
+              <dt>Forks</dt>
+              <dd id="repo-forks"></dd>
+            </div>
+            <div>
+              <dt>Issues</dt>
+              <dd id="repo-issues"></dd>
+            </div>
+          </dl>
+        </article>
+
+        <button id="action-button" class="action-button" type="button" hidden>
+          Refresh
+        </button>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
