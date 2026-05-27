@@ -37,7 +37,6 @@ function TodoPractice() {
   function handleDeleteTodo(id) {
     setTodos(todos.filter((todo) => todo.id !== id));
   }
-
   
   const totalCount = todos.length;
   const completedCount = todos.filter((todo) => todo.completed).length;
