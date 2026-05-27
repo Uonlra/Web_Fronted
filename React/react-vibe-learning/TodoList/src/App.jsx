@@ -37,7 +37,7 @@ function TodoPractice() {
   function handleDeleteTodo(id) {
     setTodos(todos.filter((todo) => todo.id !== id));
   }
-
+  
   const totalCount = todos.length;
   const completedCount = todos.filter((todo) => todo.completed).length;
   const activeCount = totalCount - completedCount;
@@ -143,3 +143,12 @@ export default function App() {
     </main>
   );
 }
+
+{/*
+// state 写在最上面
+// 事件函数写中间
+// 派生数据写在 return 前
+// JSX 写在 return 里  
+state 是原始数据
+派生函数是计算过程
+派生数据是计算结果*/}
