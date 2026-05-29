@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function TodoPractice() {
   const [todoText, setTodoText] = useState("");
@@ -6,7 +6,13 @@ function TodoPractice() {
   const [filter, setFilter] = useState("all");
   const [editingId, setEditingId] = useState(null);
   const [editingText, setEditingText] = useState("");
+  const editInputRef = useRef(null);
 
+  useEffect(() => {
+    if (editingId !== null && editInputRef.current) {
+      editInputRef.current.focus();
+    }
+  }, [editingId]);
 
   function handleTodoTextChange(event) {
     setTodoText(event.target.value);
@@ -78,6 +84,16 @@ function TodoPractice() {
   function handleCancelEditing() {
     setEditingId(null);
     setEditingText("");
+  }
+
+  function handleEditKeyDown(event, id) {
+    if (event.key === "Enter") {
+      handleSaveEditing(id);
+    }
+
+    if (event.key === "Escape") {
+      handleCancelEditing();
+    }
   }
 
   const totalCount = todos.length;
@@ -176,9 +192,11 @@ function TodoPractice() {
                 {isEditing ? (
                   <>
                     <input
+                      ref={editInputRef}
                       className="todo-edit-input"
                       value={editingText}
                       onChange={handleEditingTextChange}
+                      onKeyDown={(event) => handleEditKeyDown(event, todo.id)}
                     />
 
                     <div className="todo-actions">
