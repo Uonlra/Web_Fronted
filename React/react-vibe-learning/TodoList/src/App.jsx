@@ -2,7 +2,19 @@ import { useEffect, useRef, useState } from "react";
 
 function TodoPractice() {
   const [todoText, setTodoText] = useState("");
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(() => {
+    const savedTodos = localStorage.getItem("todos");
+
+    if (!savedTodos) {
+      return [];
+    }
+
+    try {
+      return JSON.parse(savedTodos);
+    } catch {
+      return [];
+    }
+  });
   const [filter, setFilter] = useState("all");
   const [editingId, setEditingId] = useState(null);
   const [editingText, setEditingText] = useState("");
@@ -11,8 +23,13 @@ function TodoPractice() {
   useEffect(() => {
     if (editingId !== null && editInputRef.current) {
       editInputRef.current.focus();
+      editInputRef.current.select();
     }
   }, [editingId]);
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   function handleTodoTextChange(event) {
     setTodoText(event.target.value);
@@ -55,6 +72,16 @@ function TodoPractice() {
 
   function handleClearCompleted() {
     setTodos(todos.filter((todo) => !todo.completed));
+  }
+
+  function handleClearAllTodos() {
+    const shouldClear = window.confirm("确定要清空全部任务吗？");
+
+    if (!shouldClear) {
+      return;
+    }
+
+    setTodos([]);
   }
 
   function handleStartEditing(todo) {
@@ -160,6 +187,12 @@ function TodoPractice() {
             onClick={handleClearCompleted}
           >
             清空已完成
+          </button>
+        )}
+
+        {todos.length > 0 && (
+          <button className="clear-all-button" onClick={handleClearAllTodos}>
+            清空全部
           </button>
         )}
       </div>
