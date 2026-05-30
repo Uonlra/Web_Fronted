@@ -260,3 +260,19 @@ body {
 .clear-completed-button:hover {
   background: #ffe4e6;
 }
+
+.clear-all-button {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid #fecaca;
+  border-radius: 999px;
+  background: #be123c;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.clear-all-button:hover {
+  background: #9f1239;
+}
