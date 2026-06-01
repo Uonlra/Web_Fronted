@@ -1,5 +1,29 @@
 import { useEffect, useRef, useState } from "react";
 
+function TodoForm({
+  todoText,
+  onTodoTextChange,
+  onTodoKeyDown,
+  onAddTodo,
+}) {
+  return (
+    <div className="todo-form">
+      <input
+        className="todo-input"
+        type="text"
+        placeholder="输入一个任务..."
+        value={todoText}
+        onChange={onTodoTextChange}
+        onKeyDown={onTodoKeyDown}
+      />
+
+      <button className="todo-add-button" onClick={onAddTodo}>
+        添加
+      </button>
+    </div>
+  );
+}
+
 function TodoPractice() {
   const [todoText, setTodoText] = useState("");
   const [todos, setTodos] = useState(() => {
@@ -197,20 +221,12 @@ function TodoPractice() {
         )}
       </div>
 
-      <div className="todo-form">
-        <input
-          className="todo-input"
-          type="text"
-          placeholder="输入一个任务..."
-          value={todoText}
-          onChange={handleTodoTextChange}
-          onKeyDown={handleTodoKeyDown}
-        />
-
-        <button className="todo-add-button" onClick={handleAddTodo}>
-          添加
-        </button>
-      </div>
+      <TodoForm
+        todoText={todoText}
+        onTodoTextChange={handleTodoTextChange}
+        onTodoKeyDown={handleTodoKeyDown}
+        onAddTodo={handleAddTodo}
+      />
 
       {visibleTodos.length > 0 ? (
         <ul className="todo-list">
