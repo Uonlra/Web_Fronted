@@ -87,6 +87,117 @@ function TodoEmpty({ message }) {
   return <p className="todo-empty">{message}</p>;
 }
 
+function TodoList({
+  todos,
+  emptyMessage,
+  editingId,
+  editingText,
+  editInputRef,
+  onToggleTodo,
+  onDeleteTodo,
+  onStartEditing,
+  onEditingTextChange,
+  onSaveEditing,
+  onCancelEditing,
+  onEditKeyDown,
+}) {
+  if (todos.length === 0) {
+    return <TodoEmpty message={emptyMessage} />;
+  }
+
+  return (
+    <ul className="todo-list">
+      {todos.map((todo) => (
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          isEditing={editingId === todo.id}
+          editingText={editingText}
+          editInputRef={editInputRef}
+          onToggleTodo={onToggleTodo}
+          onDeleteTodo={onDeleteTodo}
+          onStartEditing={onStartEditing}
+          onEditingTextChange={onEditingTextChange}
+          onSaveEditing={onSaveEditing}
+          onCancelEditing={onCancelEditing}
+          onEditKeyDown={onEditKeyDown}
+        />
+      ))}
+    </ul>
+  );
+}
+
+function TodoItem({
+  todo,
+  isEditing,
+  editingText,
+  editInputRef,
+  onToggleTodo,
+  onDeleteTodo,
+  onStartEditing,
+  onEditingTextChange,
+  onSaveEditing,
+  onCancelEditing,
+  onEditKeyDown,
+}) {
+  return (
+    <li className={`todo-item ${todo.completed ? "completed" : ""}`}>
+      {isEditing ? (
+        <>
+          <input
+            ref={editInputRef}
+            className="todo-edit-input"
+            type="text"
+            value={editingText}
+            onChange={onEditingTextChange}
+            onKeyDown={(event) => onEditKeyDown(event, todo.id)}
+          />
+
+          <div className="todo-actions">
+            <button
+              className="todo-save-button"
+              onClick={() => onSaveEditing(todo.id)}
+            >
+              保存
+            </button>
+
+            <button className="todo-cancel-button" onClick={onCancelEditing}>
+              取消
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+          <span>{todo.text}</span>
+
+          <div className="todo-actions">
+            <button
+              className="todo-toggle-button"
+              onClick={() => onToggleTodo(todo.id)}
+            >
+              {todo.completed ? "未完成" : "已完成"}
+            </button>
+
+            <button
+              className="todo-edit-button"
+              onClick={() => onStartEditing(todo)}
+            >
+              编辑
+            </button>
+
+            <button
+              className="todo-delete-button"
+              onClick={() => onDeleteTodo(todo.id)}
+            >
+              X
+            </button>
+          </div>
+        </>
+      )}
+    </li>
+  );
+}
+
 function TodoPractice() {
   const [todoText, setTodoText] = useState("");
   const [todos, setTodos] = useState(() => {
@@ -258,78 +369,21 @@ function TodoPractice() {
         onTodoKeyDown={handleTodoKeyDown}
         onAddTodo={handleAddTodo}
       />
-
-      {visibleTodos.length > 0 ? (
-        <ul className="todo-list">
-          {visibleTodos.map((todo) => {
-            const isEditing = editingId === todo.id;
-
-            return (
-              <li
-                className={`todo-item ${todo.completed ? "completed" : ""}`}
-                key={todo.id}
-              >
-                {isEditing ? (
-                  <>
-                    <input
-                      ref={editInputRef}
-                      className="todo-edit-input"
-                      value={editingText}
-                      onChange={handleEditingTextChange}
-                      onKeyDown={(event) => handleEditKeyDown(event, todo.id)}
-                    />
-
-                    <div className="todo-actions">
-                      <button
-                        className="todo-save-button"
-                        onClick={() => handleSaveEditing(todo.id)}
-                      >
-                        保存
-                      </button>
-
-                      <button
-                        className="todo-cancel-button"
-                        onClick={handleCancelEditing}
-                      >
-                        取消
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <span>{todo.text}</span>
-
-                    <div className="todo-actions">
-                      <button
-                        className="todo-toggle-button"
-                        onClick={() => handleToggleTodo(todo.id)}
-                      >
-                        {todo.completed ? "未完成" : "已完成"}
-                      </button>
-
-                      <button
-                        className="todo-edit-button"
-                        onClick={() => handleStartEditing(todo)}
-                      >
-                        编辑
-                      </button>
-
-                      <button
-                        className="todo-delete-button"
-                        onClick={() => handleDeleteTodo(todo.id)}
-                      >
-                        X
-                      </button>
-                    </div>
-                  </>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      ) : (
-        <TodoEmpty message={emptyMessage} />
-      )}
+      
+      <TodoList
+        todos={visibleTodos}
+        emptyMessage={emptyMessage}
+        editingId={editingId}
+        editingText={editingText}
+        editInputRef={editInputRef}
+        onToggleTodo={handleToggleTodo}
+        onDeleteTodo={handleDeleteTodo}
+        onStartEditing={handleStartEditing}
+        onEditingTextChange={handleEditingTextChange}
+        onSaveEditing={handleSaveEditing}
+        onCancelEditing={handleCancelEditing}
+        onEditKeyDown={handleEditKeyDown}
+      />
     </section>
   );
 }
