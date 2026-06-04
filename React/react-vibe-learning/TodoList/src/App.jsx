@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import TodoForm from "./components/TodoForm";
-import TodoHeader from "./components/TodoHeader";
-import TodoList from "./components/TodoList";
-import TodoFilters from "./components/TodoFilters";
-import TodoEmpty from "./components/TodoEmpty";
+import TodoFilters from "./components/TodoFilters.jsx";
+import TodoForm from "./components/TodoForm.jsx";
+import TodoHeader from "./components/TodoHeader.jsx";
+import TodoList from "./components/TodoList.jsx";
 
 
 function TodoPractice() {
