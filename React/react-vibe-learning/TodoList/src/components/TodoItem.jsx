@@ -1,4 +1,6 @@
-export default function TodoItem({
+import { memo } from "react";
+
+function TodoItem({
     todo,
     isEditing,
     editingText,
@@ -66,5 +68,7 @@ export default function TodoItem({
                 </>
             )}
         </li>
-    )
+    );
 }
+
+export default memo(TodoItem);

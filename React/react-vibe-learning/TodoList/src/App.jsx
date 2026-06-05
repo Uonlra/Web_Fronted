@@ -1,25 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import TodoFilters from "./components/TodoFilters.jsx";
 import TodoForm from "./components/TodoForm.jsx";
 import TodoHeader from "./components/TodoHeader.jsx";
 import TodoList from "./components/TodoList.jsx";
-
+import useLocalStorageState from "./hooks/useLocalStorageState.js";
 
 function TodoPractice() {
+  // 任务文本,useState 是一个 React Hook, 用来在函数组件中添加状态, 传入的初始值是一个空字符串
   const [todoText, setTodoText] = useState("");
-  const [todos, setTodos] = useState(() => {
-    const savedTodos = localStorage.getItem("todos");
-
-    if (!savedTodos) {
-      return [];
-    }
-
-    try {
-      return JSON.parse(savedTodos);
-    } catch {
-      return [];
-    }
-  });
+  // 任务列表,  setTodos 是一个函数, 用来更新 todos 的值
+  const [todos, setTodos] = useLocalStorageState("todos", []);
   const [filter, setFilter] = useState("all");
   const [editingId, setEditingId] = useState(null);
   const [editingText, setEditingText] = useState("");
@@ -32,13 +22,9 @@ function TodoPractice() {
     }
   }, [editingId]);
 
-  useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
-
-  function handleTodoTextChange(event) {
+  const handleTodoTextChange = useCallback((event) => {
     setTodoText(event.target.value);
-  }
+  }, []);
 
   function handleAddTodo() {
     const nextTodo = todoText.trim();
@@ -71,9 +57,11 @@ function TodoPractice() {
     );
   }
 
-  function handleDeleteTodo(id) {
-    setTodos(todos.filter((todo) => todo.id !== id));
-  }
+  const handleDeleteTodo = useCallback((id) => {
+    setTodos((currentTodos) =>
+      currentTodos.filter((todo) => todo.id !== id)
+    );
+  }, [setTodos]);
 
   function handleClearCompleted() {
     setTodos(todos.filter((todo) => !todo.completed));
@@ -128,20 +116,33 @@ function TodoPractice() {
     }
   }
 
-  const totalCount = todos.length;
-  const completedCount = todos.filter((todo) => todo.completed).length;
-  const activeCount = totalCount - completedCount;
-  const visibleTodos = todos.filter((todo) => {
-    if (filter === "active") {
-      return !todo.completed;
-    }
+  const todoStats = useMemo(() => {
+    const totalCount = todos.length;
+    const completedCount = todos.filter((todo) => todo.completed).length;
+    const activeCount = totalCount - completedCount;
 
-    if (filter === "completed") {
-      return todo.completed;
-    }
+    return {
+      totalCount,
+      completedCount,
+      activeCount,
+    };
+  }, [todos]);
 
-    return true;
-  });
+  const { totalCount, completedCount, activeCount } = todoStats;
+
+  const visibleTodos = useMemo(() => {
+    return todos.filter((todo) => {
+      if (filter === "active") {
+        return !todo.completed;
+      }
+
+      if (filter === "completed") {
+        return todo.completed;
+      }
+
+      return true;
+    });
+  }, [todos, filter]);
 
   let emptyMessage = "还没有任务，先添加一条吧。";
   if (todos.length > 0 && filter === "active" && activeCount === 0) {
