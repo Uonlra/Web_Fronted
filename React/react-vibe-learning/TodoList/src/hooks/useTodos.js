@@ -1,9 +1,23 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import useLocalStorageState from "./useLocalStorageState.js";
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import todosReducer, { TODO_ACTIONS } from "../reducers/todosReducer.js";
+
+function getInitialTodos() {
+    const savedTodos = localStorage.getItem("todos");
+
+    if (!savedTodos) {
+        return [];
+    }
+
+    try {
+        return JSON.parse(savedTodos);
+    } catch {
+        return [];
+    }
+}
 
 export default function useTodos() {
     const [todoText, setTodoText] = useState("");
-    const [todos, setTodos] = useLocalStorageState("todos", []);
+    const [todos, dispatch] = useReducer(todosReducer, undefined, getInitialTodos);
     const [filter, setFilter] = useState("all");
     const [editingId, setEditingId] = useState(null);
     const [editingText, setEditingText] = useState("");
@@ -15,6 +29,10 @@ export default function useTodos() {
             editInputRef.current.select();
         }
     }, [editingId]);
+
+    useEffect(() => {
+        localStorage.setItem("todos", JSON.stringify(todos));
+    }, [todos]);
 
     const handleTodoTextChange = useCallback((event) => {
         setTodoText(event.target.value);
@@ -32,7 +50,7 @@ export default function useTodos() {
             completed: false,
         };
 
-        setTodos([...todos, newTodo]);
+        dispatch({ type: TODO_ACTIONS.ADD, todo: newTodo });
         setTodoText(""); // 添加完后清空输入框
     }
 
@@ -43,22 +61,15 @@ export default function useTodos() {
     }
 
     function handleToggleTodo(id) {
-        setTodos(
-            todos.map((todo) =>
-                todo.id === id ? { ...todo, completed: !todo.completed } : todo
-            )
-        );
+        dispatch({ type: TODO_ACTIONS.TOGGLE, id });
     }
 
     const handleDeleteTodo = useCallback((id) => {
-        setTodos((currentTodos) =>
-            currentTodos.filter((todo) => todo.id !== id))
-    },
-        [setTodos]
-    );
+        dispatch({ type: TODO_ACTIONS.DELETE, id });
+    }, []);
 
     function handleClearCompleted() {
-        setTodos(todos.filter((todo) => !todo.completed));
+        dispatch({ type: TODO_ACTIONS.CLEAR_COMPLETED });
     }
 
     function handleClearAllTodos() {
@@ -68,7 +79,7 @@ export default function useTodos() {
             return;
         }
 
-        setTodos([]);
+        dispatch({ type: TODO_ACTIONS.CLEAR_ALL });
     }
 
     function handleStartEditing(todo) {
@@ -86,11 +97,7 @@ export default function useTodos() {
             return;
         }
 
-        setTodos(
-            todos.map((todo) =>
-                todo.id === id ? { ...todo, text: nextEditingText } : todo
-            )
-        );
+        dispatch({ type: TODO_ACTIONS.EDIT, id, text: nextEditingText });
         setEditingId(null);
         setEditingText("");
     }
