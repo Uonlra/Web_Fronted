@@ -1,5 +1,6 @@
 import MovieCard from "../components/MovieCard"
 import {useState} from 'react'
+import '../css/Home.css'
 
 function Home() {
     
@@ -31,7 +32,6 @@ function Home() {
     const handleSearch = (e) => {
         e.preventDefault(); //阻止表单默认提交行为，防止页面刷新
         alert(`Searching for: ${searchQuery}`)
-        setSearchQuery('') 
     }
 
     return (
@@ -46,7 +46,7 @@ function Home() {
                 />
                 <button type="submit" className="search-button">Search</button>
             </form>
-            <div className="movie-grid">
+            <div className="movies-grid">
                 {movies.map((movie) => (
                     movie.title.toLowerCase().startsWith(searchQuery.toLowerCase()) 
                     && (<MovieCard key={movie.id} movie={movie} />
