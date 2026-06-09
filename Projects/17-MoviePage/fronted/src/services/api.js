@@ -18,7 +18,7 @@ const createTmdbUrl = (endpoint, params = {}) => {
     return url
 }
 
-const requestMovies = async (endpoint, params) => {
+const requestTmdb = async (endpoint, params) => {
     const url = createTmdbUrl(endpoint, params)
 
     let response
@@ -41,6 +41,12 @@ const requestMovies = async (endpoint, params) => {
         throw new Error(data.status_message || `TMDB request failed with status ${response.status}.`)
     }
 
+    return data
+}
+
+const requestMovies = async (endpoint, params) => {
+    const data = await requestTmdb(endpoint, params)
+
     if (!Array.isArray(data.results)) {
         throw new Error("TMDB response did not include a movie list.")
     }
@@ -52,6 +58,22 @@ export const getPopularMovies = () => {
     return requestMovies("/movie/popular")
 }
 
+export const getTrendingMovies = () => {
+    return requestMovies("/trending/movie/week")
+}
+
+export const getNowPlayingMovies = () => {
+    return requestMovies("/movie/now_playing")
+}
+
+export const getTopRatedMovies = () => {
+    return requestMovies("/movie/top_rated")
+}
+
 export const searchMovies = (query) => {
     return requestMovies("/search/movie", { query })
+}
+
+export const getMovieDetails = (movieId) => {
+    return requestTmdb(`/movie/${movieId}`)
 }

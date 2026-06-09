@@ -1,0 +1,42 @@
+.page-placeholder {
+  width: 100%;
+  max-width: 760px;
+  margin: var(--space-4xl) auto;
+  padding: var(--space-4xl);
+  border: 1px solid rgba(247, 245, 240, 0.11);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(145deg, rgba(21, 26, 29, 0.92), rgba(9, 13, 15, 0.96));
+  text-align: center;
+}
+
+.page-eyebrow {
+  margin-bottom: var(--space-md);
+  color: var(--color-accent);
+  font-size: var(--text-caption);
+  font-weight: 700;
+  line-height: var(--leading-caption);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+.page-placeholder h1 {
+  color: var(--color-ink);
+  font-size: var(--text-display-md);
+  font-weight: 600;
+  line-height: var(--leading-display-md);
+}
+
+.page-placeholder p:last-child {
+  max-width: 520px;
+  margin: var(--space-lg) auto 0;
+  color: var(--color-body);
+  font-size: var(--text-body-md);
+  line-height: var(--leading-body-md);
+}
+
+@media (max-width: 639px) {
+  .page-placeholder {
+    margin: var(--space-xl) auto;
+    padding: var(--space-2xl) var(--space-xl);
+  }
+}

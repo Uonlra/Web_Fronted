@@ -8,6 +8,12 @@
   --color-canvas: #2b2622;
   --color-canvas-soft: #383330;
   --color-hairline: #3f3a36;
+  --color-page-deep: #090d0f;
+  --color-panel: #101416;
+  --color-panel-soft: #151a1d;
+  --color-accent: #e8b84a;
+  --color-accent-strong: #f2c45a;
+  --color-accent-ink: #19130a;
   --color-danger: #ff6b6b;
   --color-favorite: #ff5c70;
   --color-rating: #f4c95d;
@@ -52,13 +58,14 @@
   --radius-full: 9999px;
 
   --container-width: 1200px;
+  --dashboard-width: 1500px;
   --hairline: 1px solid var(--color-hairline);
 
   font-family: var(--font-sans);
   line-height: 1.5;
   font-weight: 400;
   color: var(--color-ink);
-  background-color: var(--color-canvas);
+  background-color: var(--color-page-deep);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -74,7 +81,7 @@
 
 html, body {
   overflow-x: hidden;
-  background: var(--color-canvas);
+  background: var(--color-page-deep);
 }
 
 body {

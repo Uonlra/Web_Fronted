@@ -1,11 +1,13 @@
 .main-content {
   flex: 1;
-  padding: var(--space-3xl) var(--space-xl);
+  padding: var(--space-lg) var(--space-xl) var(--space-3xl);
   box-sizing: border-box;
   width: 100%;
   display: flex;
   flex-direction: column;
-  background: var(--color-canvas);
+  background:
+    radial-gradient(circle at top left, rgba(232, 184, 74, 0.08), transparent 32rem),
+    var(--color-page-deep);
 }
 
 .movies-grid {
@@ -20,7 +22,7 @@
 
 @media (max-width: 639px) {
   .main-content {
-    padding: var(--space-xl) var(--space-lg);
+    padding: var(--space-lg) var(--space-lg) var(--space-2xl);
   }
 
   .movies-grid {
