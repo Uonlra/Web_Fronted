@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reddit Lanes</title>
+    <link rel="preconnect" href="https://www.reddit.com" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">Reddit Client</p>
+          <h1>Subreddit Lanes</h1>
+        </div>
+        <button class="icon-button add-lane-top" id="add-lane-button" type="button" aria-label="Add subreddit">
+          <span aria-hidden="true">+</span>
+        </button>
+      </header>
+
+      <section class="board" id="board" aria-label="Subreddit lanes"></section>
+    </main>
+
+    <div class="modal-backdrop" id="modal-backdrop" hidden>
+      <form class="modal" id="add-subreddit-form" aria-labelledby="modal-title">
+        <div class="modal-header">
+          <h2 id="modal-title">Add subreddit</h2>
+          <button class="icon-button" id="close-modal-button" type="button" aria-label="Close dialog">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <label for="subreddit-input">Subreddit name</label>
+        <input
+          id="subreddit-input"
+          name="subreddit"
+          type="text"
+          placeholder="javascript"
+          autocomplete="off"
+          spellcheck="false"
+          required
+        />
+        <p class="form-error" id="form-error" role="alert"></p>
+        <button class="primary-button" type="submit">Add Subreddit</button>
+      </form>
+    </div>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
