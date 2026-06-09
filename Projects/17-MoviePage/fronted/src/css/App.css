@@ -1,8 +1,32 @@
 .main-content {
   flex: 1;
-  padding: 2rem;
+  padding: var(--space-lg) var(--space-xl) var(--space-3xl);
   box-sizing: border-box;
   width: 100%;
   display: flex;
   flex-direction: column;
+  background:
+    radial-gradient(circle at top left, rgba(232, 184, 74, 0.08), transparent 32rem),
+    var(--color-page-deep);
+}
+
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-xl);
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+@media (max-width: 639px) {
+  .main-content {
+    padding: var(--space-lg) var(--space-lg) var(--space-2xl);
+  }
+
+  .movies-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--space-lg);
+  }
 }
