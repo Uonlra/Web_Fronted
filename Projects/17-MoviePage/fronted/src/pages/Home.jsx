@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import FeaturedMovie from "../components/FeaturedMovie"
+import HomeSkeleton from "../components/HomeSkeleton"
 import MovieSection from "../components/MovieSection"
+import MovieSearchForm from "../components/MovieSearchForm"
 import WatchlistPanel from "../components/WatchlistPanel"
 import {
     getNowPlayingMovies,
@@ -39,6 +41,7 @@ function Home() {
     const [featuredMovie, setFeaturedMovie] = useState(null)
     const [sections, setSections] = useState(INITIAL_SECTIONS)
     const [isSearchMode, setIsSearchMode] = useState(false)
+    const [submittedQuery, setSubmittedQuery] = useState('')
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(true)
     const {
@@ -76,6 +79,7 @@ function Home() {
         setFeaturedMovie(homeMovieGroups.featuredMovie)
         setSections(homeMovieGroups.sections)
         setIsSearchMode(false)
+        setSubmittedQuery('')
     }
 
     const handleSearch = async (e) => {
@@ -102,6 +106,21 @@ function Home() {
                 topRated: results.slice(11, 16)
             })
             setIsSearchMode(true)
+            setSubmittedQuery(query)
+        } catch (error) {
+            setError(error.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const handleClearSearch = async () => {
+        setSearchQuery('')
+        setLoading(true)
+        setError(null)
+
+        try {
+            await loadHomeMovies()
         } catch (error) {
             setError(error.message)
         } finally {
@@ -146,7 +165,7 @@ function Home() {
             {error && <div className="error-message">{error}</div>}
 
             {loading ? (
-                <div className="loading">Loading dashboard...</div>
+                <HomeSkeleton />
             ) : hasAnyMovies ? (
                 <>
                     <section className="dashboard-top">
@@ -161,19 +180,18 @@ function Home() {
                             />
                         )}
 
-                        <WatchlistPanel movies={watchlistMovies} />
+                        <WatchlistPanel movies={watchlistMovies} onRemove={removeFromWatchlist} />
                     </section>
 
-                    <form onSubmit={handleSearch} className="search-form">
-                        <input
-                            type="text"
-                            placeholder="Search for movies..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="search-input"
-                        />
-                        <button type="submit" className="search-button">Search</button>
-                    </form>
+                    <MovieSearchForm
+                        value={searchQuery}
+                        loading={loading}
+                        isSearchMode={isSearchMode}
+                        submittedQuery={submittedQuery}
+                        onChange={setSearchQuery}
+                        onSubmit={handleSearch}
+                        onClear={handleClearSearch}
+                    />
 
                     <MovieSection
                         title={sectionTitles.trending}
@@ -201,7 +219,11 @@ function Home() {
                     />
                 </>
             ) : (
-                <p className="empty-message">No movies found.</p>
+                <div className="empty-message">
+                    <h2>No movies found.</h2>
+                    <p>Try a different title or clear the search to return to the dashboard.</p>
+                    <button type="button" className="search-button" onClick={handleClearSearch}>Clear Search</button>
+                </div>
             )}
         </div>
     )
