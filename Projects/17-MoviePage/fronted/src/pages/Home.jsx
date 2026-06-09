@@ -1,37 +1,48 @@
 import MovieCard from "../components/MovieCard"
-import {useState} from 'react'
+import { useEffect, useState } from 'react'
+import { searchMovies, getPopularMovies } from "../services/api"
 import '../css/Home.css'
 
 function Home() {
     
     const [searchQuery, setSearchQuery] = useState('')
+    const [movies, setMovies] = useState([])
+    const [error, setError] = useState(null)
+    const [loading, setLoading] = useState(true)
     
-    
-    const movies = [
-        {
-            id: 1,
-            title: "Inception",
-            releaseDate: "2010",
-            posterUrl: "https://m.media-amazon.com/images/I/51s+qvXoG9L._AC_.jpg"
-        },
-        {
-            id: 2,
-            title: "The Dark Knight",
-            releaseDate: "2008",
-            posterUrl: "https://m.media-amazon.com/images/I/51k0qa2q9lL._AC_.jpg"
-        },
-        {
-            id: 3,
-            title: "Interstellar",
-            releaseDate: "2014",
-            posterUrl: "https://m.media-amazon.com/images/I/71nq+9s+8eL._AC_SY679_.jpg"
+    useEffect(() => {
+        const loadPopularMovies = async () => {
+            try {
+                setError(null)
+                const popularMovies = await getPopularMovies()
+                setMovies(popularMovies)
+            } catch (error) {
+                setError(error.message)
+            } finally {
+                setLoading(false)
+            }
         }
+        
+        loadPopularMovies()
+    }, [])
 
-    ]
-
-    const handleSearch = (e) => {
+    const handleSearch = async (e) => {
         e.preventDefault(); //阻止表单默认提交行为，防止页面刷新
-        alert(`Searching for: ${searchQuery}`)
+
+        if (loading) { return }
+
+        setLoading(true)
+        setError(null)
+
+        try {
+            const query = searchQuery.trim()
+            const results = query ? await searchMovies(query) : await getPopularMovies()
+            setMovies(results)
+        } catch (error) {
+            setError(error.message)
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -46,14 +57,22 @@ function Home() {
                 />
                 <button type="submit" className="search-button">Search</button>
             </form>
-            <div className="movies-grid">
-                {movies.map((movie) => (
-                    movie.title.toLowerCase().startsWith(searchQuery.toLowerCase()) 
-                    && (<MovieCard key={movie.id} movie={movie} />
 
-                    )
-                ))}
-            </div>
+            {error && <div className="error-message">{error}</div>}
+
+            {loading ? (
+                <div className="loading">Loading...</div>
+            ) : (
+                <div className="movies-grid">
+                    {movies.length > 0 ? (
+                        movies.map((movie) => (
+                            <MovieCard key={movie.id} movie={movie} />
+                        ))
+                    ) : (
+                        <p className="empty-message">No movies found.</p>
+                    )}
+                </div>
+            )}
         </div>
     )
 }

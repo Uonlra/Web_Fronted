@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import '../css/Navbar.css'
 
 function NavBar() {
@@ -8,8 +8,8 @@ function NavBar() {
                 <Link to="/">Movie App</Link>
             </div>
             <div className="navbar-links">
-                <Link to="/" className="nav-link">Home</Link>
-                <Link to="/favorites" className="nav-link">Favorites</Link>
+                <NavLink to="/" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>Home</NavLink>
+                <NavLink to="/favorites" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>Favorites</NavLink>
             </div>
         </nav>
     )

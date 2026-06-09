@@ -1,16 +1,18 @@
 .movie-card {
   position: relative;
-  border-radius: 8px;
+  border: var(--hairline);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  background-color: #1a1a1a;
-  transition: transform 0.2s;
+  background-color: var(--color-canvas-soft);
+  transition: border-color 0.2s ease, transform 0.2s ease;
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
 .movie-card:hover {
-  transform: translateY(-5px);
+  border-color: var(--color-body);
+  transform: translateY(-2px);
 }
 
 .movie-poster {
@@ -25,6 +27,18 @@
   object-fit: cover;
 }
 
+.movie-poster-placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-canvas);
+  color: var(--color-mute);
+  font: 400 var(--text-body-sm) / var(--leading-body-sm) var(--font-sans);
+}
+
 .movie-overlay {
   position: absolute;
   top: 0;
@@ -34,14 +48,14 @@
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0.1),
-    rgba(0, 0, 0, 0.8)
+    rgba(43, 38, 34, 0.88)
   );
   opacity: 0;
   transition: opacity 0.2s;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 1rem;
+  padding: var(--space-lg);
 }
 
 .movie-card:hover .movie-overlay {
@@ -50,60 +64,68 @@
 
 .favorite-btn {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  color: white;
-  font-size: 1.5rem;
-  padding: 0.5rem;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
+  top: var(--space-lg);
+  right: var(--space-lg);
+  color: var(--color-ink);
+  font-size: var(--text-body-lg);
+  padding: 0;
+  background-color: rgba(43, 38, 34, 0.78);
+  border: var(--hairline);
+  border-radius: var(--radius-full);
   width: 40px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .favorite-btn:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-on-primary);
 }
 
 .favorite-btn.active {
-  color: #ff4757;
+  color: var(--color-favorite);
 }
 
 .rating-select {
-  background-color: rgba(0, 0, 0, 0.7);
-  color: white;
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
   border: none;
-  padding: 0.5rem;
-  border-radius: 4px;
+  padding: var(--space-sm);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  margin-top: 0.5rem;
+  margin-top: var(--space-sm);
 }
 
 .movie-info {
-  padding: 1rem;
+  padding: var(--space-lg);
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--space-xs);
 }
 
 .movie-info h3 {
-  font-size: 1rem;
+  color: var(--color-ink);
+  font-size: var(--text-body-md);
+  font-weight: 500;
+  line-height: var(--leading-body-md);
   margin: 0;
 }
 
 .movie-info p {
-  color: #999;
-  font-size: 0.9rem;
+  color: var(--color-mute);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
 }
 
 .user-rating {
-  color: #ffd700;
-  font-size: 0.9rem;
+  color: var(--color-rating);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
   margin-top: auto;
 }
 
@@ -113,7 +135,7 @@
   }
 
   .movie-info {
-    padding: 0.75rem;
+    padding: var(--space-md);
   }
 
   .favorite-btn {

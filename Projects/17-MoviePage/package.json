@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix fronted run dev",
+    "build": "npm --prefix fronted run build",
+    "lint": "npm --prefix fronted run lint",
+    "preview": "npm --prefix fronted run preview"
+  },
+  "dependencies": {
+    "antd": "^6.4.3"
+  }
+}
