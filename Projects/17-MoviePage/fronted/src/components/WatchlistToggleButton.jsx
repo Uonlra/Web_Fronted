@@ -5,6 +5,7 @@ function WatchlistToggleButton({ movie, inWatchlist, onToggle, className = "" })
             className={`watchlist-toggle ${inWatchlist ? "active" : ""} ${className}`}
             aria-label={`${inWatchlist ? "Remove" : "Add"} ${movie.title} ${inWatchlist ? "from" : "to"} watchlist`}
             aria-pressed={inWatchlist}
+            title={inWatchlist ? "Remove from watchlist" : "Add to watchlist"}
             onClick={(event) => {
                 event.preventDefault()
                 event.stopPropagation()

@@ -1,11 +1,12 @@
+import { Link } from "react-router-dom"
 import { getMoviePoster, getRating, getReleaseYear } from "../utils/movieFormatters"
 
-function WatchlistPanel({ movies }) {
+function WatchlistPanel({ movies, onRemove }) {
     return (
         <aside className="watchlist-panel">
             <div className="watchlist-heading">
                 <h2>My Watchlist</h2>
-                <button type="button">View all</button>
+                <Link to="/watchlist">View all</Link>
             </div>
 
             {movies.length > 0 ? (
@@ -26,8 +27,13 @@ function WatchlistPanel({ movies }) {
                                     <h3>{movie.title}</h3>
                                     <p>{getReleaseYear(movie)} <span>★</span> {getRating(movie)}</p>
                                 </div>
-                                <button className="watchlist-more" type="button" aria-label={`More options for ${movie.title}`}>
-                                    ⋮
+                                <button
+                                    className="watchlist-remove"
+                                    type="button"
+                                    aria-label={`Remove ${movie.title} from watchlist`}
+                                    onClick={() => onRemove(movie.id)}
+                                >
+                                    ×
                                 </button>
                             </article>
                         )
