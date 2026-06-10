@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import FeaturedMovie from "../components/FeaturedMovie"
 import HomeSkeleton from "../components/HomeSkeleton"
 import MovieSection from "../components/MovieSection"
@@ -26,10 +26,17 @@ const getHomeMovieGroups = async () => {
         getTopRatedMovies()
     ])
 
+    const fallbackFeaturedMovies = [
+        ...newReleaseMovies,
+        ...topRatedMovies
+    ].slice(0, 5)
+
     return {
-        featuredMovie: trendingMovies[0] || newReleaseMovies[0] || topRatedMovies[0] || null,
+        featuredMovies: trendingMovies.slice(0, 5).length > 0
+            ? trendingMovies.slice(0, 5)
+            : fallbackFeaturedMovies,
         sections: {
-            trending: trendingMovies.slice(1, 6),
+            trending: trendingMovies.slice(5, 10),
             newReleases: newReleaseMovies.slice(0, 5),
             topRated: topRatedMovies.slice(0, 5)
         }
@@ -38,7 +45,10 @@ const getHomeMovieGroups = async () => {
 
 function Home() {
     const [searchQuery, setSearchQuery] = useState('')
-    const [featuredMovie, setFeaturedMovie] = useState(null)
+    const [featuredMovies, setFeaturedMovies] = useState([])
+    const [featuredIndex, setFeaturedIndex] = useState(0)
+    const [isFeaturedHovered, setIsFeaturedHovered] = useState(false)
+    const [isFeaturedFocused, setIsFeaturedFocused] = useState(false)
     const [sections, setSections] = useState(INITIAL_SECTIONS)
     const [isSearchMode, setIsSearchMode] = useState(false)
     const [submittedQuery, setSubmittedQuery] = useState('')
@@ -60,7 +70,8 @@ function Home() {
                 setError(null)
                 const homeMovieGroups = await getHomeMovieGroups()
 
-                setFeaturedMovie(homeMovieGroups.featuredMovie)
+                setFeaturedMovies(homeMovieGroups.featuredMovies)
+                setFeaturedIndex(0)
                 setSections(homeMovieGroups.sections)
                 setIsSearchMode(false)
             } catch (error) {
@@ -73,10 +84,71 @@ function Home() {
         loadHomeMovies()
     }, [])
 
+    const showFeaturedMovie = useCallback((nextIndex) => {
+        setFeaturedIndex(() => {
+            if (featuredMovies.length === 0) {
+                return 0
+            }
+
+            return (nextIndex + featuredMovies.length) % featuredMovies.length
+        })
+    }, [featuredMovies.length])
+
+    const showNextFeaturedMovie = useCallback(() => {
+        setFeaturedIndex((currentIndex) => {
+            if (featuredMovies.length <= 1) {
+                return currentIndex
+            }
+
+            return (currentIndex + 1) % featuredMovies.length
+        })
+    }, [featuredMovies.length])
+
+    const showPreviousFeaturedMovie = useCallback(() => {
+        setFeaturedIndex((currentIndex) => {
+            if (featuredMovies.length <= 1) {
+                return currentIndex
+            }
+
+            return (currentIndex - 1 + featuredMovies.length) % featuredMovies.length
+        })
+    }, [featuredMovies.length])
+
+    const handleFeaturedHoverStart = useCallback(() => {
+        setIsFeaturedHovered(true)
+    }, [])
+
+    const handleFeaturedHoverEnd = useCallback(() => {
+        setIsFeaturedHovered(false)
+    }, [])
+
+    const handleFeaturedFocusStart = useCallback(() => {
+        setIsFeaturedFocused(true)
+    }, [])
+
+    const handleFeaturedFocusEnd = useCallback(() => {
+        setIsFeaturedFocused(false)
+    }, [])
+
+    useEffect(() => {
+        const isFeaturedPaused = isFeaturedHovered || isFeaturedFocused
+
+        if (featuredMovies.length <= 1 || isFeaturedPaused) {
+            return undefined
+        }
+
+        const intervalId = window.setInterval(showNextFeaturedMovie, 5000)
+
+        return () => window.clearInterval(intervalId)
+    }, [featuredIndex, featuredMovies.length, isFeaturedFocused, isFeaturedHovered, showNextFeaturedMovie])
+
     const loadHomeMovies = async () => {
         const homeMovieGroups = await getHomeMovieGroups()
 
-        setFeaturedMovie(homeMovieGroups.featuredMovie)
+        setFeaturedMovies(homeMovieGroups.featuredMovies)
+        setFeaturedIndex(0)
+        setIsFeaturedHovered(false)
+        setIsFeaturedFocused(false)
         setSections(homeMovieGroups.sections)
         setIsSearchMode(false)
         setSubmittedQuery('')
@@ -99,11 +171,14 @@ function Home() {
 
             const results = await searchMovies(query)
 
-            setFeaturedMovie(results[0] || null)
+            setFeaturedMovies(results.slice(0, 5))
+            setFeaturedIndex(0)
+            setIsFeaturedHovered(false)
+            setIsFeaturedFocused(false)
             setSections({
-                trending: results.slice(1, 6),
-                newReleases: results.slice(6, 11),
-                topRated: results.slice(11, 16)
+                trending: results.slice(5, 10),
+                newReleases: results.slice(10, 15),
+                topRated: results.slice(15, 20)
             })
             setIsSearchMode(true)
             setSubmittedQuery(query)
@@ -147,7 +222,8 @@ function Home() {
     }
 
     const watchlistMovies = watchlist.slice(0, 3)
-    const hasAnyMovies = Boolean(featuredMovie) || Object.values(sections).some((movies) => movies.length > 0)
+    const featuredMovie = featuredMovies[featuredIndex] || null
+    const hasAnyMovies = featuredMovies.length > 0 || Object.values(sections).some((movies) => movies.length > 0)
     const sectionTitles = isSearchMode
         ? {
             trending: "Search Matches",
@@ -172,9 +248,18 @@ function Home() {
                         {featuredMovie && (
                             <FeaturedMovie
                                 movie={featuredMovie}
+                                movies={featuredMovies}
+                                activeIndex={featuredIndex}
                                 eyebrow={isSearchMode ? "Search Highlight" : "Featured"}
                                 favorite={isFavorite(featuredMovie.id)}
                                 inWatchlist={isInWatchlist(featuredMovie.id)}
+                                onSelectMovie={showFeaturedMovie}
+                                onShowNext={showNextFeaturedMovie}
+                                onShowPrevious={showPreviousFeaturedMovie}
+                                onHoverStart={handleFeaturedHoverStart}
+                                onHoverEnd={handleFeaturedHoverEnd}
+                                onFocusStart={handleFeaturedFocusStart}
+                                onFocusEnd={handleFeaturedFocusEnd}
                                 onToggleFavorite={handleToggleFavorite}
                                 onToggleWatchlist={handleToggleWatchlist}
                             />

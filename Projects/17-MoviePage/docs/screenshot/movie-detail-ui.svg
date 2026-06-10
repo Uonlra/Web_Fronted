@@ -1,0 +1,184 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" fill="#0d0f10"/>
+  <rect x="1" y="1" width="1598" height="998" stroke="#25282b"/>
+
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#f2c15f"/>
+      <stop offset="1" stop-color="#ad7b2d"/>
+    </linearGradient>
+    <linearGradient id="hero" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#1b1512"/>
+      <stop offset="0.55" stop-color="#111315"/>
+      <stop offset="1" stop-color="#0d0f10"/>
+    </linearGradient>
+    <linearGradient id="posterA" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#3e2518"/>
+      <stop offset="0.45" stop-color="#b56b28"/>
+      <stop offset="1" stop-color="#14191d"/>
+    </linearGradient>
+    <linearGradient id="posterB" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#243447"/>
+      <stop offset="0.48" stop-color="#0e1216"/>
+      <stop offset="1" stop-color="#c8943a"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="30" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Top nav -->
+  <rect x="0" y="0" width="1600" height="72" fill="#101214"/>
+  <line x1="0" y1="72" x2="1600" y2="72" stroke="#25282b"/>
+  <circle cx="36" cy="36" r="17" fill="url(#gold)"/>
+  <circle cx="30" cy="30" r="4" fill="#17100a"/>
+  <circle cx="43" cy="30" r="4" fill="#17100a"/>
+  <circle cx="30" cy="43" r="4" fill="#17100a"/>
+  <circle cx="43" cy="43" r="4" fill="#17100a"/>
+  <circle cx="36" cy="36" r="4" fill="#17100a"/>
+  <text x="68" y="43" fill="#f3c36b" font-family="Inter, Arial, sans-serif" font-size="18" letter-spacing="7" font-weight="700">CINEVERSE</text>
+
+  <text x="250" y="43" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="15">Home</text>
+  <text x="318" y="43" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="15">Movies</text>
+  <text x="398" y="43" fill="#b8b4aa" font-family="Inter, Arial, sans-serif" font-size="15">Favorites</text>
+  <text x="498" y="43" fill="#b8b4aa" font-family="Inter, Arial, sans-serif" font-size="15">Watchlist</text>
+  <rect x="316" y="58" width="52" height="2" rx="1" fill="#d8a84f"/>
+
+  <rect x="1000" y="17" width="300" height="38" rx="6" fill="#151719" stroke="#25282b"/>
+  <circle cx="1024" cy="36" r="7" stroke="#e9e1d3" stroke-width="1.5"/>
+  <line x1="1029" y1="41" x2="1035" y2="47" stroke="#e9e1d3" stroke-width="1.5"/>
+  <text x="1050" y="41" fill="#8f8b84" font-family="Inter, Arial, sans-serif" font-size="14">Search movies...</text>
+  <path d="M1408 26v12l-6 8h24l-6-8V26a6 6 0 0 0-12 0Z" stroke="#f3eadc" stroke-width="1.5"/>
+  <circle cx="1427" cy="22" r="4" fill="#d8a84f"/>
+  <circle cx="1460" cy="36" r="16" fill="url(#gold)"/>
+  <circle cx="1455" cy="32" r="5" fill="#2a2017"/>
+  <path d="M1449 47c3-7 18-7 22 0" fill="#2a2017"/>
+  <text x="1488" y="41" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="14">Alex Morgan</text>
+  <path d="M1580 33l6 6 6-6" stroke="#b8b4aa" stroke-width="1.5"/>
+
+  <!-- Hero backdrop -->
+  <rect x="24" y="96" width="1552" height="448" rx="8" fill="url(#hero)" stroke="#262a2d"/>
+  <rect x="24" y="96" width="1552" height="448" rx="8" fill="#000" opacity="0.16"/>
+  <path d="M24 470C250 400 410 490 610 400C760 332 902 236 1110 270C1290 300 1430 218 1576 145V544H24V470Z" fill="#17191b" opacity="0.55"/>
+  <path d="M86 502C286 300 370 360 528 190C665 42 820 160 930 112C1056 58 1160 135 1280 112C1400 88 1480 150 1576 116V544H24V520L86 502Z" fill="#2a1a12" opacity="0.35"/>
+
+  <rect x="82" y="144" width="268" height="360" rx="8" fill="url(#posterA)" filter="url(#softShadow)"/>
+  <rect x="96" y="160" width="240" height="328" rx="6" stroke="#f6f1e7" opacity="0.12"/>
+  <circle cx="156" cy="232" r="42" fill="#151719" opacity="0.45"/>
+  <path d="M95 442C142 356 206 334 256 392C292 434 316 434 336 422V488H96V442Z" fill="#101214" opacity="0.72"/>
+  <text x="126" y="472" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">OPPENHEIMER</text>
+
+  <text x="408" y="164" fill="#d8a84f" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="1.5">FEATURED MOVIE</text>
+  <text x="408" y="220" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="54" font-weight="700">Oppenheimer</text>
+  <text x="410" y="256" fill="#b8b4aa" font-family="Inter, Arial, sans-serif" font-size="16">2023  /  Biography, Drama, History  /  3h 0m  /  R</text>
+
+  <text x="410" y="304" fill="#d8a84f" font-family="Inter, Arial, sans-serif" font-size="24">★</text>
+  <text x="440" y="304" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="18">8.6 / 10</text>
+  <rect x="535" y="281" width="48" height="26" rx="4" fill="#e3b64f"/>
+  <text x="545" y="300" fill="#15110a" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="800">IMDb</text>
+  <text x="595" y="304" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="18">8.3</text>
+
+  <text x="410" y="354" fill="#d8d2c8" font-family="Inter, Arial, sans-serif" font-size="17">The story of J. Robert Oppenheimer's role in the development of the</text>
+  <text x="410" y="382" fill="#d8d2c8" font-family="Inter, Arial, sans-serif" font-size="17">atomic bomb during World War II and the consequences of scientific</text>
+  <text x="410" y="410" fill="#d8d2c8" font-family="Inter, Arial, sans-serif" font-size="17">progress, power, and personal responsibility.</text>
+
+  <rect x="410" y="454" width="116" height="44" rx="5" fill="url(#gold)"/>
+  <polygon points="454,468 454,484 468,476" fill="#ffffff"/>
+  <text x="480" y="482" fill="#17110b" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700">Play</text>
+  <rect x="542" y="454" width="178" height="44" rx="5" fill="#151719" stroke="#48423b"/>
+  <text x="570" y="482" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="16">+ Add to Watchlist</text>
+  <rect x="736" y="454" width="126" height="44" rx="5" fill="#151719" stroke="#48423b"/>
+  <text x="766" y="482" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="16">Trailer</text>
+
+  <!-- Right detail panel -->
+  <rect x="1220" y="138" width="300" height="330" rx="8" fill="#111315" stroke="#272b2f"/>
+  <text x="1248" y="180" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="700">Movie Info</text>
+  <line x1="1248" y1="202" x2="1490" y2="202" stroke="#272b2f"/>
+  <text x="1248" y="236" fill="#8f8b84" font-family="Inter, Arial, sans-serif" font-size="13">Director</text>
+  <text x="1350" y="236" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="14">Christopher Nolan</text>
+  <text x="1248" y="276" fill="#8f8b84" font-family="Inter, Arial, sans-serif" font-size="13">Language</text>
+  <text x="1350" y="276" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="14">English</text>
+  <text x="1248" y="316" fill="#8f8b84" font-family="Inter, Arial, sans-serif" font-size="13">Release</text>
+  <text x="1350" y="316" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="14">Jul 21, 2023</text>
+  <text x="1248" y="356" fill="#8f8b84" font-family="Inter, Arial, sans-serif" font-size="13">Status</text>
+  <rect x="1350" y="339" width="76" height="28" rx="14" fill="#211a10" stroke="#6f5522"/>
+  <text x="1366" y="358" fill="#d8a84f" font-family="Inter, Arial, sans-serif" font-size="13">Watched</text>
+  <text x="1248" y="410" fill="#8f8b84" font-family="Inter, Arial, sans-serif" font-size="13">Your rating</text>
+  <text x="1350" y="412" fill="#d8a84f" font-family="Inter, Arial, sans-serif" font-size="19">★★★★☆</text>
+
+  <!-- Cast -->
+  <text x="36" y="600" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">Cast</text>
+  <text x="1475" y="600" fill="#b8b4aa" font-family="Inter, Arial, sans-serif" font-size="14">View all</text>
+  <g>
+    <rect x="36" y="626" width="240" height="112" rx="8" fill="#111315" stroke="#272b2f"/>
+    <circle cx="88" cy="682" r="32" fill="url(#posterB)"/>
+    <text x="136" y="674" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700">Cillian Murphy</text>
+    <text x="136" y="700" fill="#9d9890" font-family="Inter, Arial, sans-serif" font-size="13">J. Robert Oppenheimer</text>
+  </g>
+  <g>
+    <rect x="300" y="626" width="240" height="112" rx="8" fill="#111315" stroke="#272b2f"/>
+    <circle cx="352" cy="682" r="32" fill="url(#posterA)"/>
+    <text x="400" y="674" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700">Emily Blunt</text>
+    <text x="400" y="700" fill="#9d9890" font-family="Inter, Arial, sans-serif" font-size="13">Kitty Oppenheimer</text>
+  </g>
+  <g>
+    <rect x="564" y="626" width="240" height="112" rx="8" fill="#111315" stroke="#272b2f"/>
+    <circle cx="616" cy="682" r="32" fill="#4a3424"/>
+    <text x="664" y="674" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700">Robert Downey Jr.</text>
+    <text x="664" y="700" fill="#9d9890" font-family="Inter, Arial, sans-serif" font-size="13">Lewis Strauss</text>
+  </g>
+  <g>
+    <rect x="828" y="626" width="240" height="112" rx="8" fill="#111315" stroke="#272b2f"/>
+    <circle cx="880" cy="682" r="32" fill="#26313b"/>
+    <text x="928" y="674" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700">Matt Damon</text>
+    <text x="928" y="700" fill="#9d9890" font-family="Inter, Arial, sans-serif" font-size="13">Leslie Groves</text>
+  </g>
+
+  <!-- Similar movies -->
+  <text x="36" y="802" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">Similar Movies</text>
+  <text x="1475" y="802" fill="#b8b4aa" font-family="Inter, Arial, sans-serif" font-size="14">View all</text>
+
+  <g>
+    <rect x="36" y="828" width="184" height="142" rx="7" fill="#111315" stroke="#272b2f"/>
+    <rect x="36" y="828" width="184" height="82" rx="7" fill="url(#posterB)"/>
+    <text x="52" y="936" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="15">The Dark Knight</text>
+    <text x="52" y="958" fill="#b8b4aa" font-family="Inter, Arial, sans-serif" font-size="13">2008  -  ★ 9.0</text>
+  </g>
+  <g>
+    <rect x="244" y="828" width="184" height="142" rx="7" fill="#111315" stroke="#272b2f"/>
+    <rect x="244" y="828" width="184" height="82" rx="7" fill="url(#posterA)"/>
+    <text x="260" y="936" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="15">Interstellar</text>
+    <text x="260" y="958" fill="#b8b4aa" font-family="Inter, Arial, sans-serif" font-size="13">2014  -  ★ 8.6</text>
+  </g>
+  <g>
+    <rect x="452" y="828" width="184" height="142" rx="7" fill="#111315" stroke="#272b2f"/>
+    <rect x="452" y="828" width="184" height="82" rx="7" fill="#2f3439"/>
+    <text x="468" y="936" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="15">Dunkirk</text>
+    <text x="468" y="958" fill="#b8b4aa" font-family="Inter, Arial, sans-serif" font-size="13">2017  -  ★ 7.8</text>
+  </g>
+  <g>
+    <rect x="660" y="828" width="184" height="142" rx="7" fill="#111315" stroke="#272b2f"/>
+    <rect x="660" y="828" width="184" height="82" rx="7" fill="#6b4425"/>
+    <text x="676" y="936" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="15">The Prestige</text>
+    <text x="676" y="958" fill="#b8b4aa" font-family="Inter, Arial, sans-serif" font-size="13">2006  -  ★ 8.5</text>
+  </g>
+  <g>
+    <rect x="868" y="828" width="184" height="142" rx="7" fill="#111315" stroke="#272b2f"/>
+    <rect x="868" y="828" width="184" height="82" rx="7" fill="#232a33"/>
+    <text x="884" y="936" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="15">Inception</text>
+    <text x="884" y="958" fill="#b8b4aa" font-family="Inter, Arial, sans-serif" font-size="13">2010  -  ★ 8.8</text>
+  </g>
+
+  <!-- Review panel -->
+  <rect x="1120" y="626" width="400" height="344" rx="8" fill="#111315" stroke="#272b2f"/>
+  <text x="1148" y="666" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="700">Audience Review</text>
+  <text x="1148" y="710" fill="#d8a84f" font-family="Inter, Arial, sans-serif" font-size="20">★★★★☆</text>
+  <text x="1148" y="750" fill="#d8d2c8" font-family="Inter, Arial, sans-serif" font-size="15">A tense, restrained biographical drama with</text>
+  <text x="1148" y="776" fill="#d8d2c8" font-family="Inter, Arial, sans-serif" font-size="15">precise pacing, excellent performances, and</text>
+  <text x="1148" y="802" fill="#d8d2c8" font-family="Inter, Arial, sans-serif" font-size="15">a huge sense of historical consequence.</text>
+  <line x1="1148" y1="834" x2="1492" y2="834" stroke="#272b2f"/>
+  <text x="1148" y="872" fill="#8f8b84" font-family="Inter, Arial, sans-serif" font-size="13">Simple personal project version:</text>
+  <text x="1148" y="900" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="15">Poster, rating, cast, actions, similar movies.</text>
+  <rect x="1148" y="924" width="128" height="34" rx="5" fill="#151719" stroke="#48423b"/>
+  <text x="1174" y="946" fill="#f6f1e7" font-family="Inter, Arial, sans-serif" font-size="14">Write Review</text>
+</svg>
