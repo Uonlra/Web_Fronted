@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import FeaturedMovie from "../components/FeaturedMovie"
 import HomeSkeleton from "../components/HomeSkeleton"
 import MovieSection from "../components/MovieSection"
-import MovieSearchForm from "../components/MovieSearchForm"
 import WatchlistPanel from "../components/WatchlistPanel"
 import {
     getNowPlayingMovies,
@@ -44,16 +44,16 @@ const getHomeMovieGroups = async () => {
 }
 
 function Home() {
-    const [searchQuery, setSearchQuery] = useState('')
     const [featuredMovies, setFeaturedMovies] = useState([])
     const [featuredIndex, setFeaturedIndex] = useState(0)
     const [isFeaturedHovered, setIsFeaturedHovered] = useState(false)
     const [isFeaturedFocused, setIsFeaturedFocused] = useState(false)
     const [sections, setSections] = useState(INITIAL_SECTIONS)
     const [isSearchMode, setIsSearchMode] = useState(false)
-    const [submittedQuery, setSubmittedQuery] = useState('')
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [searchParams, setSearchParams] = useSearchParams()
+    const submittedQuery = searchParams.get('q')?.trim() || ''
     const {
         watchlist,
         addToFavorites,
@@ -65,24 +65,59 @@ function Home() {
     } = useMovieContext()
 
     useEffect(() => {
-        const loadHomeMovies = async () => {
+        let ignoreResult = false
+
+        const loadMovies = async () => {
+            setLoading(true)
             try {
                 setError(null)
+                const query = submittedQuery.trim()
+
+                if (query) {
+                    const results = await searchMovies(query)
+
+                    if (ignoreResult) { return }
+
+                    setFeaturedMovies(results.slice(0, 5))
+                    setFeaturedIndex(0)
+                    setIsFeaturedHovered(false)
+                    setIsFeaturedFocused(false)
+                    setSections({
+                        trending: results.slice(5, 10),
+                        newReleases: results.slice(10, 15),
+                        topRated: results.slice(15, 20)
+                    })
+                    setIsSearchMode(true)
+                    return
+                }
+
                 const homeMovieGroups = await getHomeMovieGroups()
+
+                if (ignoreResult) { return }
 
                 setFeaturedMovies(homeMovieGroups.featuredMovies)
                 setFeaturedIndex(0)
+                setIsFeaturedHovered(false)
+                setIsFeaturedFocused(false)
                 setSections(homeMovieGroups.sections)
                 setIsSearchMode(false)
             } catch (error) {
-                setError(error.message)
+                if (!ignoreResult) {
+                    setError(error.message)
+                }
             } finally {
-                setLoading(false)
+                if (!ignoreResult) {
+                    setLoading(false)
+                }
             }
         }
 
-        loadHomeMovies()
-    }, [])
+        loadMovies()
+
+        return () => {
+            ignoreResult = true
+        }
+    }, [submittedQuery])
 
     const showFeaturedMovie = useCallback((nextIndex) => {
         setFeaturedIndex(() => {
@@ -130,6 +165,10 @@ function Home() {
         setIsFeaturedFocused(false)
     }, [])
 
+    const handleClearSearch = () => {
+        setSearchParams({})
+    }
+
     useEffect(() => {
         const isFeaturedPaused = isFeaturedHovered || isFeaturedFocused
 
@@ -141,67 +180,6 @@ function Home() {
 
         return () => window.clearInterval(intervalId)
     }, [featuredIndex, featuredMovies.length, isFeaturedFocused, isFeaturedHovered, showNextFeaturedMovie])
-
-    const loadHomeMovies = async () => {
-        const homeMovieGroups = await getHomeMovieGroups()
-
-        setFeaturedMovies(homeMovieGroups.featuredMovies)
-        setFeaturedIndex(0)
-        setIsFeaturedHovered(false)
-        setIsFeaturedFocused(false)
-        setSections(homeMovieGroups.sections)
-        setIsSearchMode(false)
-        setSubmittedQuery('')
-    }
-
-    const handleSearch = async (e) => {
-        e.preventDefault()
-
-        if (loading) { return }
-
-        setLoading(true)
-        setError(null)
-
-        try {
-            const query = searchQuery.trim()
-            if (!query) {
-                await loadHomeMovies()
-                return
-            }
-
-            const results = await searchMovies(query)
-
-            setFeaturedMovies(results.slice(0, 5))
-            setFeaturedIndex(0)
-            setIsFeaturedHovered(false)
-            setIsFeaturedFocused(false)
-            setSections({
-                trending: results.slice(5, 10),
-                newReleases: results.slice(10, 15),
-                topRated: results.slice(15, 20)
-            })
-            setIsSearchMode(true)
-            setSubmittedQuery(query)
-        } catch (error) {
-            setError(error.message)
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    const handleClearSearch = async () => {
-        setSearchQuery('')
-        setLoading(true)
-        setError(null)
-
-        try {
-            await loadHomeMovies()
-        } catch (error) {
-            setError(error.message)
-        } finally {
-            setLoading(false)
-        }
-    }
 
     const handleToggleFavorite = (movie) => {
         if (isFavorite(movie.id)) {
@@ -267,16 +245,6 @@ function Home() {
 
                         <WatchlistPanel movies={watchlistMovies} onRemove={removeFromWatchlist} />
                     </section>
-
-                    <MovieSearchForm
-                        value={searchQuery}
-                        loading={loading}
-                        isSearchMode={isSearchMode}
-                        submittedQuery={submittedQuery}
-                        onChange={setSearchQuery}
-                        onSubmit={handleSearch}
-                        onClear={handleClearSearch}
-                    />
 
                     <MovieSection
                         title={sectionTitles.trending}
