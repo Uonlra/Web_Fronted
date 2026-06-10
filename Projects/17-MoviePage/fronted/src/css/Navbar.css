@@ -79,7 +79,26 @@
   border-radius: var(--radius-md);
 }
 
-.nav-search-icon,
+.nav-search-submit,
+.nav-search-clear {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  color: var(--color-mute);
+  border-radius: var(--radius-full);
+}
+
+.nav-search-submit:hover,
+.nav-search-clear:hover {
+  color: var(--color-accent);
+  background: rgba(232, 184, 74, 0.1);
+}
+
 .nav-search-key {
   flex: 0 0 auto;
   color: var(--color-mute);

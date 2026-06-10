@@ -1,25 +1,99 @@
+import { useEffect, useRef } from "react"
 import { getMovieImage, getRating, getReleaseYear } from "../utils/movieFormatters"
 import FavoriteToggleButton from "./FavoriteToggleButton"
 import WatchlistToggleButton from "./WatchlistToggleButton"
 
 function FeaturedMovie({
     movie,
+    movies = [],
+    activeIndex = 0,
     eyebrow,
     favorite,
     inWatchlist,
+    onSelectMovie,
+    onShowNext,
+    onShowPrevious,
+    onHoverStart,
+    onHoverEnd,
+    onFocusStart,
+    onFocusEnd,
     onToggleFavorite,
     onToggleWatchlist
 }) {
     const featuredImage = getMovieImage(movie)
+    const canSwitchMovies = movies.length > 1
+    const featuredPanelRef = useRef(null)
+
+    useEffect(() => {
+        const handlePointerMove = (event) => {
+            if (featuredPanelRef.current?.contains(event.target)) {
+                onHoverStart?.()
+                return
+            }
+
+            onHoverEnd?.()
+        }
+
+        window.addEventListener("pointermove", handlePointerMove)
+
+        return () => window.removeEventListener("pointermove", handlePointerMove)
+    }, [onHoverEnd, onHoverStart])
+
+    const handleKeyDown = (event) => {
+        if (!canSwitchMovies) {
+            return
+        }
+
+        if (event.key === "ArrowRight") {
+            event.preventDefault()
+            onShowNext?.()
+            return
+        }
+
+        if (event.key === "ArrowLeft") {
+            event.preventDefault()
+            onShowPrevious?.()
+        }
+    }
+
+    const handleBlur = (event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+            onFocusEnd?.()
+        }
+    }
+
+    const handleHoverEnd = (event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+            onHoverEnd?.()
+        }
+    }
 
     return (
-        <article className="featured-panel">
+        <article
+            ref={featuredPanelRef}
+            className="featured-panel"
+            tabIndex={0}
+            aria-label={`Featured movie: ${movie.title}`}
+            onPointerEnter={onHoverStart}
+            onPointerMove={onHoverStart}
+            onPointerLeave={onHoverEnd}
+            onPointerOut={handleHoverEnd}
+            onMouseEnter={onHoverStart}
+            onMouseMove={onHoverStart}
+            onMouseLeave={onHoverEnd}
+            onMouseOut={handleHoverEnd}
+            onFocus={onFocusStart}
+            onBlur={handleBlur}
+            onKeyDown={handleKeyDown}
+        >
             <div className="featured-art">
-                {featuredImage ? (
-                    <img src={featuredImage} alt={movie.title} />
-                ) : (
-                    <div className="featured-placeholder">Featured movie</div>
-                )}
+                <div key={`featured-art-${movie.id}`} className="featured-art-media">
+                    {featuredImage ? (
+                        <img src={featuredImage} alt={movie.title} />
+                    ) : (
+                        <div className="featured-placeholder">Featured movie</div>
+                    )}
+                </div>
                 <FavoriteToggleButton
                     movie={movie}
                     favorite={favorite}
@@ -32,16 +106,21 @@ function FeaturedMovie({
                     onToggle={onToggleWatchlist}
                     className="featured-watchlist"
                 />
-                <div className="featured-dots" aria-hidden="true">
-                    <span className="active"></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <div className="featured-dots" role="group" aria-label="Featured movie selector">
+                    {movies.map((featuredMovie, index) => (
+                        <button
+                            key={featuredMovie.id}
+                            type="button"
+                            className={index === activeIndex ? "active" : ""}
+                            aria-label={`Show ${featuredMovie.title}`}
+                            aria-pressed={index === activeIndex}
+                            onClick={() => onSelectMovie?.(index)}
+                        />
+                    ))}
                 </div>
             </div>
 
-            <div className="featured-copy">
+            <div key={`featured-copy-${movie.id}`} className="featured-copy">
                 <p className="eyebrow">{eyebrow}</p>
                 <h1>{movie.title}</h1>
                 <div className="featured-meta">

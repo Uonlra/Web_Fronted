@@ -1,9 +1,72 @@
-import { Link, NavLink } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, NavLink, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import '../css/Navbar.css'
 
 const getNavLinkClass = ({ isActive }) => `nav-link ${isActive ? "active" : ""}`
 
+function NavSearch({ currentSearchQuery, currentPathname, navigate }) {
+    const [searchValue, setSearchValue] = useState(currentPathname === '/' ? currentSearchQuery : '')
+
+    const handleSearchSubmit = (event) => {
+        event.preventDefault()
+
+        const query = searchValue.trim()
+        if (!query) {
+            navigate('/')
+            return
+        }
+
+        navigate(`/?q=${encodeURIComponent(query)}`)
+    }
+
+    const handleSearchKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            handleSearchSubmit(event)
+        }
+    }
+
+    const handleClearSearch = () => {
+        setSearchValue('')
+
+        if (currentPathname === '/' && currentSearchQuery) {
+            navigate('/')
+        }
+    }
+
+    return (
+        <form className="nav-search" role="search" onSubmit={handleSearchSubmit}>
+            <button className="nav-search-submit" type="submit" aria-label="Search movies">
+                <span aria-hidden="true">⌕</span>
+            </button>
+            <input
+                type="search"
+                placeholder="Search movies, shows..."
+                aria-label="Search movies"
+                value={searchValue}
+                onChange={(event) => setSearchValue(event.target.value)}
+                onKeyDown={handleSearchKeyDown}
+            />
+            {(searchValue || currentSearchQuery) && (
+                <button
+                    className="nav-search-clear"
+                    type="button"
+                    aria-label="Clear search"
+                    onClick={handleClearSearch}
+                >
+                    <span aria-hidden="true">×</span>
+                </button>
+            )}
+            <span className="nav-search-key" aria-hidden="true">⌘ K</span>
+        </form>
+    )
+}
+
 function NavBar() {
+    const navigate = useNavigate()
+    const location = useLocation()
+    const [searchParams] = useSearchParams()
+    const currentSearchQuery = searchParams.get('q') || ''
+
     return (
         <nav className="navbar">
             <div className="navbar-brand">
@@ -20,11 +83,12 @@ function NavBar() {
                 <NavLink to="/watchlist" className={getNavLinkClass}>Watchlist</NavLink>
             </div>
 
-            <form className="nav-search" role="search" onSubmit={(event) => event.preventDefault()}>
-                <span className="nav-search-icon" aria-hidden="true">⌕</span>
-                <input type="search" placeholder="Search movies, shows..." aria-label="Search movies" />
-                <span className="nav-search-key" aria-hidden="true">⌘ K</span>
-            </form>
+            <NavSearch
+                key={`${location.pathname}-${currentSearchQuery}`}
+                currentSearchQuery={currentSearchQuery}
+                currentPathname={location.pathname}
+                navigate={navigate}
+            />
 
             <div className="navbar-actions" aria-label="User actions">
                 <button className="notification-button" type="button" aria-label="Notifications">
