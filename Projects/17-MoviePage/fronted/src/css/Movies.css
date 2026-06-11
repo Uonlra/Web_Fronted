@@ -31,7 +31,7 @@
 }
 
 .movies-search,
-.movies-sort,
+.sort-trigger,
 .movies-genres button {
   min-height: 42px;
   border: 1px solid rgba(247, 245, 240, 0.12);
@@ -67,28 +67,89 @@
   color: var(--color-mute);
 }
 
-.movies-sort {
+.sort-dropdown {
+  position: relative;
+  z-index: 4;
+  flex: 0 0 auto;
+}
+
+.sort-trigger {
   display: inline-flex;
   align-items: center;
   gap: var(--space-xs);
+  min-width: 172px;
   padding: 0 var(--space-lg);
   color: var(--color-body);
   font-size: var(--text-body-sm);
   line-height: var(--leading-body-sm);
 }
 
-.movies-sort select {
-  min-width: 104px;
-  border: 0;
-  outline: 0;
-  background: transparent;
+.sort-trigger:hover,
+.sort-trigger[aria-expanded="true"] {
+  border-color: rgba(232, 184, 74, 0.5);
   color: var(--color-ink);
-  font: 500 var(--text-body-sm) / var(--leading-body-sm) var(--font-sans);
+  background: rgba(232, 184, 74, 0.07);
 }
 
-.movies-sort option {
+.sort-label {
+  color: var(--color-body);
+}
+
+.sort-value {
   color: var(--color-ink);
-  background: var(--color-panel);
+  font-weight: 500;
+}
+
+.sort-chevron {
+  margin-left: auto;
+  color: var(--color-mute);
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.sort-chevron.open {
+  color: var(--color-accent);
+  transform: rotate(180deg);
+}
+
+.sort-menu {
+  position: absolute;
+  top: calc(100% + var(--space-xs));
+  left: 0;
+  z-index: 12;
+  display: grid;
+  width: 100%;
+  min-width: 172px;
+  padding: var(--space-xs);
+  border: 1px solid rgba(247, 245, 240, 0.14);
+  border-radius: var(--radius-md);
+  background: rgba(9, 13, 15, 0.98);
+  backdrop-filter: blur(14px);
+}
+
+.sort-option {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 34px;
+  width: 100%;
+  padding: 0 var(--space-md);
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: var(--color-body);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  text-align: left;
+}
+
+.sort-option:hover,
+.sort-option:focus-visible {
+  color: var(--color-ink);
+  background: rgba(247, 245, 240, 0.07);
+}
+
+.sort-option.active {
+  color: var(--color-accent);
+  background: rgba(232, 184, 74, 0.12);
 }
 
 .movies-genres {
@@ -379,9 +440,11 @@
   }
 
   .movies-search,
-  .movies-sort {
+  .sort-dropdown,
+  .sort-trigger {
     flex: 1 1 100%;
     max-width: none;
+    width: 100%;
   }
 
   .movies-genres {

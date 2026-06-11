@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import MovieCatalogCard from "../components/MovieCatalogCard"
+import SortDropdown from "../components/SortDropdown"
 import { discoverMovies, searchMoviePage } from "../services/api"
 import "../css/Movies.css"
 
@@ -171,8 +172,8 @@ function Movies() {
         setCurrentPage(1)
     }
 
-    const handleSortChange = (event) => {
-        setSortValue(event.target.value)
+    const handleSortChange = (nextSortValue) => {
+        setSortValue(nextSortValue)
         setCurrentPage(1)
     }
 
@@ -199,16 +200,11 @@ function Movies() {
                     />
                 </form>
 
-                <label className="movies-sort">
-                    <span>Sort by:</span>
-                    <select value={sortValue} onChange={handleSortChange}>
-                        {SORT_OPTIONS.map((option) => (
-                            <option key={option.value} value={option.value}>
-                                {option.label}
-                            </option>
-                        ))}
-                    </select>
-                </label>
+                <SortDropdown
+                    options={SORT_OPTIONS}
+                    value={sortValue}
+                    onChange={handleSortChange}
+                />
 
                 <div className="movies-genres" aria-label="Movie genres">
                     {GENRE_FILTERS.map((genre) => (
