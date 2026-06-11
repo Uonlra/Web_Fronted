@@ -35,9 +35,7 @@ function NavSearch({ currentSearchQuery, currentPathname, navigate }) {
 
     return (
         <form className="nav-search" role="search" onSubmit={handleSearchSubmit}>
-            <button className="nav-search-submit" type="submit" aria-label="Search movies">
-                <span aria-hidden="true">⌕</span>
-            </button>
+            <span className="nav-search-icon" aria-hidden="true">⌕</span>
             <input
                 type="search"
                 placeholder="Search movies, shows..."
@@ -56,7 +54,9 @@ function NavSearch({ currentSearchQuery, currentPathname, navigate }) {
                     <span aria-hidden="true">×</span>
                 </button>
             )}
-            <span className="nav-search-key" aria-hidden="true">⌘ K</span>
+            <button className="nav-search-submit" type="submit" aria-label="Search movies">
+                <span aria-hidden="true">⌘ K</span>
+            </button>
         </form>
     )
 }
