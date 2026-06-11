@@ -1,83 +1,31 @@
-import TodoFilters from "./components/TodoFilters.jsx";
-import TodoForm from "./components/TodoForm.jsx";
-import TodoHeader from "./components/TodoHeader.jsx";
-import TodoList from "./components/TodoList.jsx";
-import useTodos from "./hooks/useTodos.js";
-
-function TodoPractice() {
-  const {
-    todoText,
-    filter,
-    editingId,
-    editingText,
-    editInputRef,
-    totalCount,
-    completedCount,
-    activeCount,
-    visibleTodos,
-    emptyMessage,
-    hasCompletedTodos,
-    setFilter,
-    handleTodoTextChange,
-    handleAddTodo,
-    handleTodoKeyDown,
-    handleToggleTodo,
-    handleDeleteTodo,
-    handleClearCompleted,
-    handleClearAllTodos,
-    handleStartEditing,
-    handleEditingTextChange,
-    handleSaveEditing,
-    handleCancelEditing,
-    handleEditKeyDown,
-  } = useTodos();
-
-  return (
-    <section className="todo-practice">
-      <TodoHeader
-        totalCount={totalCount}
-        completedCount={completedCount}
-        activeCount={activeCount}
-      />
-
-      <TodoFilters
-        filter={filter}
-        hasCompletedTodos={hasCompletedTodos}
-        hasTodos={totalCount > 0}
-        onFilterChange={setFilter}
-        onClearCompleted={handleClearCompleted}
-        onClearAllTodos={handleClearAllTodos}
-      />
-
-      <TodoForm
-        todoText={todoText}
-        onTodoTextChange={handleTodoTextChange}
-        onTodoKeyDown={handleTodoKeyDown}
-        onAddTodo={handleAddTodo}
-      />
-
-      <TodoList
-        todos={visibleTodos}
-        emptyMessage={emptyMessage}
-        editingId={editingId}
-        editingText={editingText}
-        editInputRef={editInputRef}
-        onToggleTodo={handleToggleTodo}
-        onDeleteTodo={handleDeleteTodo}
-        onStartEditing={handleStartEditing}
-        onEditingTextChange={handleEditingTextChange}
-        onSaveEditing={handleSaveEditing}
-        onCancelEditing={handleCancelEditing}
-        onEditKeyDown={handleEditKeyDown}
-      />
-    </section>
-  );
-}
+import { NavLink, Route, Routes } from "react-router-dom";
+import AboutPage from "./pages/AboutPage.jsx";
+import HomePage from "./pages/HomePage.jsx";
+import NotFoundPage from "./pages/NotFoundPage.jsx";
+import StatsPage from "./pages/StatsPage.jsx";
+import TodosPage from "./pages/TodosPage.jsx";
 
 export default function App() {
   return (
     <main className="page">
-      <TodoPractice />
+      <section className="app-shell">
+        <nav className="app-nav" aria-label="主导航">
+          <NavLink to="/" end>
+            首页
+          </NavLink>
+          <NavLink to="/todos">任务</NavLink>
+          <NavLink to="/stats">统计</NavLink>
+          <NavLink to="/about">关于</NavLink>
+        </nav>
+
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/todos" element={<TodosPage />} />
+          <Route path="/stats" element={<StatsPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </section>
     </main>
   );
 }
