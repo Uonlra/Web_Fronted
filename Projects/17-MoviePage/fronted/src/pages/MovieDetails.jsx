@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { getMovieDetails } from "../services/api"
 import { useMovieContext } from "../Contexts/MovieContextCore"
 import "../css/MovieDetails.css"
 
 const BACKDROP_BASE_URL = "https://image.tmdb.org/t/p/w1280"
 const POSTER_BASE_URL = "https://image.tmdb.org/t/p/w500"
+const WATCH_STATUS_OPTIONS = [
+    { label: "Not Started", value: "not-started" },
+    { label: "Watching", value: "watching" },
+    { label: "Watched", value: "watched" }
+]
 
 const getReleaseYear = (movie) => movie?.release_date?.split("-")[0] || "Unknown"
 
@@ -25,44 +30,146 @@ const getRating = (movie) => {
     return rating ? rating.toFixed(1) : "Not rated"
 }
 
-function MovieDetails() {
-    const { movieId } = useParams()
+const createLibraryMovie = (movie) => ({
+    ...movie,
+    genre_ids: movie.genre_ids || movie.genres?.map((genre) => genre.id) || []
+})
+
+export function MovieDetailsSkeleton({ onBack, backLabel = "Back" }) {
+    return (
+        <section className="movie-details movie-details-loading" aria-label="Loading movie details">
+            <div className="movie-details-shell">
+                <button className="details-back-link" type="button" onClick={onBack}>
+                    <span aria-hidden="true">←</span>
+                    {backLabel}
+                </button>
+
+                <div className="details-layout">
+                    <div className="details-poster details-skeleton-block"></div>
+                    <div className="details-copy details-skeleton-copy">
+                        <div className="details-skeleton-line is-eyebrow"></div>
+                        <div className="details-skeleton-line title"></div>
+                        <div className="details-skeleton-line title short"></div>
+                        <div className="details-skeleton-line meta"></div>
+                        <div className="details-skeleton-tags">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div className="details-skeleton-line overview"></div>
+                        <div className="details-skeleton-line overview wide"></div>
+                        <div className="details-skeleton-actions">
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    )
+}
+
+export function DetailsStatus({ title, message, onBack, backLabel = "Back to Movies" }) {
+    return (
+        <section className="movie-details-status" role="status">
+            <p className="details-status-kicker">Movie Details</p>
+            <h1>{title}</h1>
+            <p>{message}</p>
+            <button className="details-action-button" type="button" onClick={onBack}>
+                <span aria-hidden="true">←</span>
+                {backLabel}
+            </button>
+        </section>
+    )
+}
+
+export function MovieDetailsContent({ movieId, onBack, backLabel = "Back" }) {
     const [movie, setMovie] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
-    const { addToWatchlist, removeFromWatchlist, isInWatchlist } = useMovieContext()
+    const {
+        addToFavorites,
+        removeFromFavorites,
+        isFavorite,
+        addToWatchlist,
+        removeFromWatchlist,
+        isInWatchlist,
+        getWatchStatus,
+        updateWatchStatus
+    } = useMovieContext()
 
     useEffect(() => {
+        let ignoreResult = false
+
         const loadMovieDetails = async () => {
+            setLoading(true)
+            setError(null)
+            setMovie(null)
+
             try {
-                setError(null)
                 const movieDetails = await getMovieDetails(movieId)
-                setMovie(movieDetails)
+                if (!ignoreResult) {
+                    setMovie(movieDetails)
+                }
             } catch (error) {
-                setError(error.message)
+                if (!ignoreResult) {
+                    setError(error.message)
+                }
             } finally {
-                setLoading(false)
+                if (!ignoreResult) {
+                    setLoading(false)
+                }
             }
         }
 
         loadMovieDetails()
+
+        return () => {
+            ignoreResult = true
+        }
     }, [movieId])
 
     if (loading) {
-        return <div className="movie-details-status">Loading movie details...</div>
+        return <MovieDetailsSkeleton onBack={onBack} backLabel={backLabel} />
     }
 
     if (error) {
-        return <div className="movie-details-status error-message">{error}</div>
+        return (
+            <DetailsStatus
+                title="Movie details unavailable"
+                message={error}
+                onBack={onBack}
+                backLabel={backLabel}
+            />
+        )
     }
 
     if (!movie) {
-        return <div className="movie-details-status">Movie details unavailable.</div>
+        return (
+            <DetailsStatus
+                title="Movie details unavailable"
+                message="TMDB did not return details for this movie."
+                onBack={onBack}
+                backLabel={backLabel}
+            />
+        )
     }
 
     const backdropUrl = movie.backdrop_path ? `${BACKDROP_BASE_URL}${movie.backdrop_path}` : null
     const posterUrl = movie.poster_path ? `${POSTER_BASE_URL}${movie.poster_path}` : null
+    const favorite = isFavorite(movie.id)
     const inWatchlist = isInWatchlist(movie.id)
+    const watchStatus = getWatchStatus(movie.id)
+    const rating = getRating(movie)
+
+    const handleFavoriteClick = () => {
+        if (favorite) {
+            removeFromFavorites(movie.id)
+            return
+        }
+
+        addToFavorites(createLibraryMovie(movie))
+    }
 
     const handleWatchlistClick = () => {
         if (inWatchlist) {
@@ -70,7 +177,7 @@ function MovieDetails() {
             return
         }
 
-        addToWatchlist(movie)
+        addToWatchlist(createLibraryMovie(movie))
     }
 
     return (
@@ -80,9 +187,10 @@ function MovieDetails() {
             )}
 
             <div className="movie-details-shell">
-                <Link className="details-back-link" to="/">
-                    ← Back Home
-                </Link>
+                <button className="details-back-link" type="button" onClick={onBack}>
+                    <span aria-hidden="true">←</span>
+                    {backLabel}
+                </button>
 
                 <div className="details-layout">
                     <div className="details-poster">
@@ -112,8 +220,8 @@ function MovieDetails() {
 
                         <div className="details-rating">
                             <span>★</span>
-                            <strong>{getRating(movie)}</strong>
-                            <span>/10</span>
+                            <strong>{rating}</strong>
+                            {rating !== "Not rated" && <span>/10</span>}
                         </div>
 
                         <p className="details-overview">
@@ -121,12 +229,17 @@ function MovieDetails() {
                         </p>
 
                         <div className="details-actions">
-                            <button className="details-play-button" type="button">
-                                <span aria-hidden="true">▶</span>
-                                Play
+                            <button
+                                className={`details-action-button details-favorite-button ${favorite ? "active" : ""}`}
+                                type="button"
+                                aria-pressed={favorite}
+                                onClick={handleFavoriteClick}
+                            >
+                                <span aria-hidden="true">{favorite ? "♥" : "♡"}</span>
+                                {favorite ? "Favorited" : "Add Favorite"}
                             </button>
                             <button
-                                className={`details-watchlist-button ${inWatchlist ? "active" : ""}`}
+                                className={`details-action-button details-watchlist-button ${inWatchlist ? "active" : ""}`}
                                 type="button"
                                 aria-pressed={inWatchlist}
                                 onClick={handleWatchlistClick}
@@ -135,10 +248,40 @@ function MovieDetails() {
                                 {inWatchlist ? "In Watchlist" : "Add to Watchlist"}
                             </button>
                         </div>
+
+                        {inWatchlist && (
+                            <label className="details-status-field">
+                                <span>Watch status</span>
+                                <select
+                                    value={watchStatus}
+                                    aria-label={`Watch status for ${movie.title}`}
+                                    onChange={(event) => updateWatchStatus(movie.id, event.target.value)}
+                                >
+                                    {WATCH_STATUS_OPTIONS.map((option) => (
+                                        <option key={option.value} value={option.value}>
+                                            {option.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
+                        )}
                     </div>
                 </div>
             </div>
         </section>
+    )
+}
+
+function MovieDetails() {
+    const { movieId } = useParams()
+    const navigate = useNavigate()
+
+    return (
+        <MovieDetailsContent
+            movieId={movieId}
+            onBack={() => navigate("/movies")}
+            backLabel="Back to Movies"
+        />
     )
 }
 

@@ -13,7 +13,7 @@ export default function Layout() {
           <NavLink to="/about">关于</NavLink>
         </nav>
 
-        <Outlet />
+        <Outlet/>
       </section>
     </main>
   );

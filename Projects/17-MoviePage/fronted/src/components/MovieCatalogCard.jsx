@@ -1,7 +1,9 @@
+import { useMovieDetailsModal } from "../Contexts/MovieDetailsModalContext"
 import { useMovieContext } from "../Contexts/MovieContextCore"
 import { getMovieImage, getRating, getReleaseYear } from "../utils/movieFormatters"
 
 function MovieCatalogCard({ movie, genreNames }) {
+    const { openMovieDetails } = useMovieDetailsModal()
     const {
         addToFavorites,
         removeFromFavorites,
@@ -17,6 +19,7 @@ function MovieCatalogCard({ movie, genreNames }) {
 
     const handleFavoriteClick = (event) => {
         event.preventDefault()
+        event.stopPropagation()
 
         if (favorite) {
             removeFromFavorites(movie.id)
@@ -28,6 +31,12 @@ function MovieCatalogCard({ movie, genreNames }) {
 
     return (
         <article className="catalog-card">
+            <button
+                type="button"
+                className="catalog-card-link"
+                aria-label={`View details for ${movie.title}`}
+                onClick={() => openMovieDetails(movie.id)}
+            />
             <div className="catalog-card-image">
                 {imageUrl ? (
                     <img src={imageUrl} alt={movie.title} />
