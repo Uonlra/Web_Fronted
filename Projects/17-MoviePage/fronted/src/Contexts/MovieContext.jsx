@@ -1,6 +1,13 @@
 import { useEffect, useMemo, useState } from "react"
 import { MovieContext } from "./MovieContextCore"
 
+const DEFAULT_WATCH_STATUS = "not-started"
+const WATCH_STATUSES = new Set(["not-started", "watching", "watched"])
+
+const getValidWatchStatus = (status) => {
+    return WATCH_STATUSES.has(status) ? status : DEFAULT_WATCH_STATUS
+}
+
 const readJson = (key, fallback) => {
     try {
         const storedValue = localStorage.getItem(key)
@@ -38,7 +45,8 @@ const addMovieToLibrary = (library, movie, flags) => {
         [movie.id]: {
             movie: currentEntry.movie || movie,
             favorite: Boolean(currentEntry.favorite || flags.favorite),
-            watchlist: Boolean(currentEntry.watchlist || flags.watchlist)
+            watchlist: Boolean(currentEntry.watchlist || flags.watchlist),
+            watchStatus: getValidWatchStatus(currentEntry.watchStatus || flags.watchStatus)
         }
     }
 }
@@ -63,7 +71,8 @@ const normalizeLibrary = (library) => {
         normalizedLibrary[movieId] = {
             movie: entry.movie,
             favorite,
-            watchlist
+            watchlist,
+            watchStatus: watchlist ? getValidWatchStatus(entry.watchStatus) : DEFAULT_WATCH_STATUS
         }
 
         return normalizedLibrary
@@ -112,6 +121,7 @@ const updateLibraryFlag = (movie, key, value) => (previousLibrary) => {
             movie: currentEntry.movie || movie,
             favorite: Boolean(currentEntry.favorite),
             watchlist: Boolean(currentEntry.watchlist),
+            watchStatus: getValidWatchStatus(currentEntry.watchStatus),
             [key]: value
         }
     }
@@ -141,6 +151,22 @@ const removeLibraryFlag = (movieId, key) => (previousLibrary) => {
     }
 }
 
+const updateLibraryWatchStatus = (movieId, status) => (previousLibrary) => {
+    const currentEntry = previousLibrary[movieId]
+
+    if (!currentEntry?.watchlist) {
+        return previousLibrary
+    }
+
+    return {
+        ...previousLibrary,
+        [movieId]: {
+            ...currentEntry,
+            watchStatus: getValidWatchStatus(status)
+        }
+    }
+}
+
 export const MovieProvider = ({children}) => {
     const [library, setLibrary] = useState(getStoredLibrary)
 
@@ -164,7 +190,22 @@ export const MovieProvider = ({children}) => {
     }
 
     const addToWatchlist = (movie) => {
-        setLibrary(updateLibraryFlag(movie, "watchlist", true))
+        setLibrary((previousLibrary) => {
+            const currentEntry = previousLibrary[movie?.id]
+            const nextLibrary = updateLibraryFlag(movie, "watchlist", true)(previousLibrary)
+
+            if (!movie?.id) {
+                return nextLibrary
+            }
+
+            return {
+                ...nextLibrary,
+                [movie.id]: {
+                    ...nextLibrary[movie.id],
+                    watchStatus: getValidWatchStatus(currentEntry?.watchStatus)
+                }
+            }
+        })
     }
 
     const removeFromWatchlist = (movieId) => {
@@ -173,6 +214,14 @@ export const MovieProvider = ({children}) => {
 
     const isInWatchlist = (movieId) => {
         return Boolean(library[movieId]?.watchlist)
+    }
+
+    const getWatchStatus = (movieId) => {
+        return getValidWatchStatus(library[movieId]?.watchStatus)
+    }
+
+    const updateWatchStatus = (movieId, status) => {
+        setLibrary(updateLibraryWatchStatus(movieId, status))
     }
 
     const value = {
@@ -184,7 +233,9 @@ export const MovieProvider = ({children}) => {
         watchlist,
         addToWatchlist,
         removeFromWatchlist,
-        isInWatchlist
+        isInWatchlist,
+        getWatchStatus,
+        updateWatchStatus
     }
 
     return <MovieContext.Provider value={value}>
