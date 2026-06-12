@@ -17,12 +17,16 @@ function MovieDetailsModal() {
             }
         }
 
-        const originalOverflow = document.body.style.overflow
+        const originalBodyOverflow = document.body.style.overflow
+        const originalHtmlOverflow = document.documentElement.style.overflow
+
+        document.documentElement.style.overflow = "hidden"
         document.body.style.overflow = "hidden"
         window.addEventListener("keydown", handleKeyDown)
 
         return () => {
-            document.body.style.overflow = originalOverflow
+            document.documentElement.style.overflow = originalHtmlOverflow
+            document.body.style.overflow = originalBodyOverflow
             window.removeEventListener("keydown", handleKeyDown)
         }
     }, [closeMovieDetails, isOpen])
