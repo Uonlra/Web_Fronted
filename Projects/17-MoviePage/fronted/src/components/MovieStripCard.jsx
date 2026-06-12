@@ -1,12 +1,20 @@
+import { useMovieDetailsModal } from "../Contexts/MovieDetailsModalContext"
 import { getMovieImage, getRating, getReleaseYear } from "../utils/movieFormatters"
 import FavoriteToggleButton from "./FavoriteToggleButton"
 import WatchlistToggleButton from "./WatchlistToggleButton"
 
 function MovieStripCard({ movie, favorite, inWatchlist, onToggleFavorite, onToggleWatchlist }) {
+    const { openMovieDetails } = useMovieDetailsModal()
     const imageUrl = getMovieImage(movie)
 
     return (
         <article className="strip-movie-card">
+            <button
+                type="button"
+                className="strip-card-link"
+                aria-label={`View details for ${movie.title}`}
+                onClick={() => openMovieDetails(movie.id)}
+            />
             <div className="strip-movie-image">
                 {imageUrl ? (
                     <img src={imageUrl} alt={movie.title} />

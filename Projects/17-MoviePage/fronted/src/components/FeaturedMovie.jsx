@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react"
+import { useMovieDetailsModal } from "../Contexts/MovieDetailsModalContext"
 import { getMovieImage, getRating, getReleaseYear } from "../utils/movieFormatters"
 import FavoriteToggleButton from "./FavoriteToggleButton"
 import WatchlistToggleButton from "./WatchlistToggleButton"
@@ -20,6 +21,7 @@ function FeaturedMovie({
     onToggleFavorite,
     onToggleWatchlist
 }) {
+    const { openMovieDetails } = useMovieDetailsModal()
     const featuredImage = getMovieImage(movie)
     const canSwitchMovies = movies.length > 1
     const featuredPanelRef = useRef(null)
@@ -94,6 +96,12 @@ function FeaturedMovie({
                         <div className="featured-placeholder">Featured movie</div>
                     )}
                 </div>
+                <button
+                    type="button"
+                    className="featured-art-link"
+                    aria-label={`View details for ${movie.title}`}
+                    onClick={() => openMovieDetails(movie.id)}
+                />
                 <FavoriteToggleButton
                     movie={movie}
                     favorite={favorite}
@@ -140,13 +148,13 @@ function FeaturedMovie({
                     {movie.overview || "A cinematic story with striking characters, high-stakes choices, and an atmosphere built for the big screen."}
                 </p>
                 <div className="featured-actions">
-                    <button className="play-button" type="button">
-                        <span aria-hidden="true">▶</span>
-                        Play
-                    </button>
-                    <button className="details-button" type="button">
+                    <button
+                        type="button"
+                        className="details-button featured-details-link"
+                        onClick={() => openMovieDetails(movie.id)}
+                    >
                         <span aria-hidden="true">↗</span>
-                        Details Soon
+                        View Details
                     </button>
                 </div>
             </div>

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react"
 import SortDropdown from "../components/SortDropdown"
+import { useMovieDetailsModal } from "../Contexts/MovieDetailsModalContext"
 import { useMovieContext } from "../Contexts/MovieContextCore"
 import { getMovieImage, getRating, getReleaseYear } from "../utils/movieFormatters"
 import "../css/Movies.css"
@@ -92,10 +93,17 @@ function WatchlistRow({
     onStatusChange,
     onRemove
 }) {
+    const { openMovieDetails } = useMovieDetailsModal()
     const imageUrl = getMovieImage(movie)
 
     return (
         <article className="watchlist-row">
+            <button
+                type="button"
+                className="watchlist-row-link"
+                aria-label={`View details for ${movie.title}`}
+                onClick={() => openMovieDetails(movie.id)}
+            />
             <div className="watchlist-rank">{index + 1}</div>
             <div className="watchlist-thumb">
                 {imageUrl ? (
