@@ -1,39 +1,12 @@
 import { useEffect, useMemo, useState } from "react"
+import EmptyState from "../components/EmptyState"
 import MovieCatalogCard from "../components/MovieCatalogCard"
+import PageHeader from "../components/PageHeader"
+import SearchField from "../components/SearchField"
 import SortDropdown from "../components/SortDropdown"
+import { MOVIE_GENRE_FILTERS, MOVIE_GENRE_NAMES } from "../constants/movieMeta"
 import { discoverMovies, searchMoviePage } from "../services/api"
 import "../css/Movies.css"
-
-const GENRE_FILTERS = [
-    { label: "All", value: "" },
-    { label: "Action", value: "28" },
-    { label: "Drama", value: "18" },
-    { label: "Sci-Fi", value: "878" },
-    { label: "Thriller", value: "53" },
-    { label: "Comedy", value: "35" }
-]
-
-const GENRE_NAMES = {
-    12: "Adventure",
-    14: "Fantasy",
-    16: "Animation",
-    18: "Drama",
-    27: "Horror",
-    28: "Action",
-    35: "Comedy",
-    36: "History",
-    37: "Western",
-    53: "Thriller",
-    80: "Crime",
-    99: "Documentary",
-    878: "Sci-Fi",
-    9648: "Mystery",
-    10402: "Music",
-    10749: "Romance",
-    10751: "Family",
-    10752: "War",
-    10770: "TV Movie"
-}
 
 const SORT_OPTIONS = [
     {
@@ -183,22 +156,21 @@ function Movies() {
 
     return (
         <section className="movies-page">
-            <header className="movies-page-header">
-                <h1>Movies</h1>
-                <p>Browse your favorite films</p>
-            </header>
+            <PageHeader
+                className="movies-page-header"
+                title="Movies"
+                description="Browse your favorite films"
+            />
 
             <div className="movies-toolbar">
-                <form className="movies-search" role="search" onSubmit={handleSearchSubmit}>
-                    <span aria-hidden="true">⌕</span>
-                    <input
-                        type="search"
-                        placeholder="Search movies..."
-                        aria-label="Search movies in catalog"
-                        value={searchValue}
-                        onChange={(event) => setSearchValue(event.target.value)}
-                    />
-                </form>
+                <SearchField
+                    className="movies-search"
+                    placeholder="Search movies..."
+                    ariaLabel="Search movies in catalog"
+                    value={searchValue}
+                    onChange={setSearchValue}
+                    onSubmit={handleSearchSubmit}
+                />
 
                 <SortDropdown
                     options={SORT_OPTIONS}
@@ -207,7 +179,7 @@ function Movies() {
                 />
 
                 <div className="movies-genres" aria-label="Movie genres">
-                    {GENRE_FILTERS.map((genre) => (
+                    {MOVIE_GENRE_FILTERS.map((genre) => (
                         <button
                             key={genre.label}
                             type="button"
@@ -249,7 +221,7 @@ function Movies() {
                             <MovieCatalogCard
                                 key={movie.id}
                                 movie={movie}
-                                genreNames={GENRE_NAMES}
+                                genreNames={MOVIE_GENRE_NAMES}
                             />
                         ))}
                     </div>
@@ -287,10 +259,11 @@ function Movies() {
                     </nav>
                 </>
             ) : (
-                <div className="movies-status">
-                    <h2>No movies found.</h2>
-                    <p>Try another title, genre, or sort option.</p>
-                </div>
+                <EmptyState
+                    className="movies-status"
+                    title="No movies found."
+                    description="Try another title, genre, or sort option."
+                />
             )}
         </section>
     )

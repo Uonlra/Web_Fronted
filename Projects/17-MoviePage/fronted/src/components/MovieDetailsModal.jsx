@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useMovieDetailsModal } from "../Contexts/MovieDetailsModalContext"
-import { MovieDetailsContent } from "../pages/MovieDetails"
+import MovieDetailsContent from "./MovieDetailsContent"
 
 function MovieDetailsModal() {
     const { selectedMovieId, closeMovieDetails } = useMovieDetailsModal()

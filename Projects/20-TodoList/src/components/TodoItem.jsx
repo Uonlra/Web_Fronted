@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { Link } from "react-router-dom";
 
 function TodoItem({
     todo,
@@ -44,6 +45,10 @@ function TodoItem({
                     <span>{todo.text}</span>
 
                     <div className="todo-actions">
+                        <Link className="todo-detail-link" to={`/todos/${todo.id}`}>
+                            详情
+                        </Link>
+
                         <button
                             className="todo-toggle-button"
                             onClick={() => onToggleTodo(todo.id)}

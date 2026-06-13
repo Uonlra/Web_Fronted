@@ -25,6 +25,7 @@ function FeaturedMovie({
     const featuredImage = getMovieImage(movie)
     const canSwitchMovies = movies.length > 1
     const featuredPanelRef = useRef(null)
+    const rating = getRating(movie)
 
     useEffect(() => {
         const handlePointerMove = (event) => {
@@ -140,9 +141,9 @@ function FeaturedMovie({
                 </div>
                 <div className="featured-rating">
                     <span>★</span>
-                    <strong>{getRating(movie)}</strong>
-                    <span>/10</span>
-                    <mark>IMDb</mark>
+                    <strong>{rating}</strong>
+                    {rating !== "Not rated" && <span>/10</span>}
+                    {rating !== "Not rated" && <mark>IMDb</mark>}
                 </div>
                 <p className="featured-description">
                     {movie.overview || "A cinematic story with striking characters, high-stakes choices, and an atmosphere built for the big screen."}

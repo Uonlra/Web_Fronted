@@ -87,6 +87,42 @@ body {
   background: #1d4ed8;
 }
 
+.detail-label {
+  margin: 0 0 8px;
+  color: #2563eb;
+  font-weight: 700;
+}
+
+.todo-detail-list {
+  display: grid;
+  gap: 12px;
+  margin: 18px 0 0;
+}
+
+.todo-detail-list div {
+  padding: 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f9fafb;
+}
+
+.todo-detail-list dt {
+  color: #64748b;
+  font-weight: 700;
+}
+
+.todo-detail-list dd {
+  margin: 6px 0 0;
+  color: #1f2937;
+}
+
+.todo-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -309,6 +345,24 @@ body {
   font: inherit;
   font-weight: 600;
   cursor: pointer;
+}
+
+.todo-detail-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid #d7dee8;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #374151;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.todo-detail-link:hover {
+  background: #f3f4f6;
 }
 
 .todo-edit-button {
