@@ -1,4 +1,7 @@
 import { useMemo, useState } from "react"
+import EmptyState from "../components/EmptyState"
+import PageHeader from "../components/PageHeader"
+import SearchField from "../components/SearchField"
 import SortDropdown from "../components/SortDropdown"
 import { LIBRARY_SORT_OPTIONS, MOVIE_GENRE_NAMES } from "../constants/movieMeta"
 import {
@@ -157,10 +160,11 @@ function Watchlist() {
     return (
         <section className="watchlist-page">
             <div className="watchlist-hero">
-                <header className="watchlist-header">
-                    <h1>Watchlist</h1>
-                    <p>Save movies to watch later</p>
-                </header>
+                <PageHeader
+                    className="watchlist-header"
+                    title="Watchlist"
+                    description="Save movies to watch later"
+                />
 
                 <div className="watchlist-stats" aria-label="Watchlist summary">
                     <div className="watchlist-stat">
@@ -203,16 +207,13 @@ function Watchlist() {
                 </div>
 
                 <div className="watchlist-tools">
-                    <form className="watchlist-search" role="search" onSubmit={(event) => event.preventDefault()}>
-                        <span aria-hidden="true">⌕</span>
-                        <input
-                            type="search"
-                            placeholder="Search watchlist..."
-                            aria-label="Search watchlist"
-                            value={searchValue}
-                            onChange={(event) => setSearchValue(event.target.value)}
-                        />
-                    </form>
+                    <SearchField
+                        className="watchlist-search"
+                        placeholder="Search watchlist..."
+                        ariaLabel="Search watchlist"
+                        value={searchValue}
+                        onChange={setSearchValue}
+                    />
 
                     <SortDropdown
                         options={LIBRARY_SORT_OPTIONS}
@@ -223,10 +224,11 @@ function Watchlist() {
             </div>
 
             {watchlist.length === 0 ? (
-                <div className="watchlist-empty">
-                    <h2>No Watchlist Movies Yet</h2>
-                    <p>Add movies from Home or Movies to build your planned-to-watch queue.</p>
-                </div>
+                <EmptyState
+                    className="watchlist-empty"
+                    title="No Watchlist Movies Yet"
+                    description="Add movies from Home or Movies to build your planned-to-watch queue."
+                />
             ) : visibleMovies.length > 0 ? (
                 <div className="watchlist-list">
                     {visibleMovies.map((movie, index) => (
@@ -242,10 +244,11 @@ function Watchlist() {
                     ))}
                 </div>
             ) : (
-                <div className="watchlist-empty">
-                    <h2>No matching watchlist items.</h2>
-                    <p>Try another title or status filter.</p>
-                </div>
+                <EmptyState
+                    className="watchlist-empty"
+                    title="No matching watchlist items."
+                    description="Try another title or status filter."
+                />
             )}
         </section>
     )

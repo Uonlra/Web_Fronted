@@ -1,9 +1,11 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import EmptyState from "../components/EmptyState"
 import { useSearchParams } from 'react-router-dom'
 import FeaturedMovie from "../components/FeaturedMovie"
 import HomeSkeleton from "../components/HomeSkeleton"
 import MovieSection from "../components/MovieSection"
 import WatchlistPanel from "../components/WatchlistPanel"
+import useFeaturedCarousel from "../hooks/useFeaturedCarousel"
 import {
     getNowPlayingMovies,
     getTopRatedMovies,
@@ -45,9 +47,6 @@ const getHomeMovieGroups = async () => {
 
 function Home() {
     const [featuredMovies, setFeaturedMovies] = useState([])
-    const [featuredIndex, setFeaturedIndex] = useState(0)
-    const [isFeaturedHovered, setIsFeaturedHovered] = useState(false)
-    const [isFeaturedFocused, setIsFeaturedFocused] = useState(false)
     const [sections, setSections] = useState(INITIAL_SECTIONS)
     const [isSearchMode, setIsSearchMode] = useState(false)
     const [error, setError] = useState(null)
@@ -63,6 +62,18 @@ function Home() {
         removeFromWatchlist,
         isInWatchlist
     } = useMovieContext()
+    const {
+        activeIndex: featuredIndex,
+        activeMovie: featuredMovie,
+        resetCarousel,
+        showMovie: showFeaturedMovie,
+        showNext: showNextFeaturedMovie,
+        showPrevious: showPreviousFeaturedMovie,
+        onHoverStart: handleFeaturedHoverStart,
+        onHoverEnd: handleFeaturedHoverEnd,
+        onFocusStart: handleFeaturedFocusStart,
+        onFocusEnd: handleFeaturedFocusEnd
+    } = useFeaturedCarousel(featuredMovies)
 
     useEffect(() => {
         let ignoreResult = false
@@ -79,9 +90,7 @@ function Home() {
                     if (ignoreResult) { return }
 
                     setFeaturedMovies(results.slice(0, 5))
-                    setFeaturedIndex(0)
-                    setIsFeaturedHovered(false)
-                    setIsFeaturedFocused(false)
+                    resetCarousel()
                     setSections({
                         trending: results.slice(5, 10),
                         newReleases: results.slice(10, 15),
@@ -96,9 +105,7 @@ function Home() {
                 if (ignoreResult) { return }
 
                 setFeaturedMovies(homeMovieGroups.featuredMovies)
-                setFeaturedIndex(0)
-                setIsFeaturedHovered(false)
-                setIsFeaturedFocused(false)
+                resetCarousel()
                 setSections(homeMovieGroups.sections)
                 setIsSearchMode(false)
             } catch (error) {
@@ -117,69 +124,11 @@ function Home() {
         return () => {
             ignoreResult = true
         }
-    }, [submittedQuery])
-
-    const showFeaturedMovie = useCallback((nextIndex) => {
-        setFeaturedIndex(() => {
-            if (featuredMovies.length === 0) {
-                return 0
-            }
-
-            return (nextIndex + featuredMovies.length) % featuredMovies.length
-        })
-    }, [featuredMovies.length])
-
-    const showNextFeaturedMovie = useCallback(() => {
-        setFeaturedIndex((currentIndex) => {
-            if (featuredMovies.length <= 1) {
-                return currentIndex
-            }
-
-            return (currentIndex + 1) % featuredMovies.length
-        })
-    }, [featuredMovies.length])
-
-    const showPreviousFeaturedMovie = useCallback(() => {
-        setFeaturedIndex((currentIndex) => {
-            if (featuredMovies.length <= 1) {
-                return currentIndex
-            }
-
-            return (currentIndex - 1 + featuredMovies.length) % featuredMovies.length
-        })
-    }, [featuredMovies.length])
-
-    const handleFeaturedHoverStart = useCallback(() => {
-        setIsFeaturedHovered(true)
-    }, [])
-
-    const handleFeaturedHoverEnd = useCallback(() => {
-        setIsFeaturedHovered(false)
-    }, [])
-
-    const handleFeaturedFocusStart = useCallback(() => {
-        setIsFeaturedFocused(true)
-    }, [])
-
-    const handleFeaturedFocusEnd = useCallback(() => {
-        setIsFeaturedFocused(false)
-    }, [])
+    }, [resetCarousel, submittedQuery])
 
     const handleClearSearch = () => {
         setSearchParams({})
     }
-
-    useEffect(() => {
-        const isFeaturedPaused = isFeaturedHovered || isFeaturedFocused
-
-        if (featuredMovies.length <= 1 || isFeaturedPaused) {
-            return undefined
-        }
-
-        const intervalId = window.setInterval(showNextFeaturedMovie, 5000)
-
-        return () => window.clearInterval(intervalId)
-    }, [featuredIndex, featuredMovies.length, isFeaturedFocused, isFeaturedHovered, showNextFeaturedMovie])
 
     const handleToggleFavorite = (movie) => {
         if (isFavorite(movie.id)) {
@@ -200,7 +149,6 @@ function Home() {
     }
 
     const watchlistMovies = watchlist.slice(0, 3)
-    const featuredMovie = featuredMovies[featuredIndex] || null
     const hasAnyMovies = featuredMovies.length > 0 || Object.values(sections).some((movies) => movies.length > 0)
     const sectionTitles = isSearchMode
         ? {
@@ -272,11 +220,13 @@ function Home() {
                     />
                 </>
             ) : (
-                <div className="empty-message">
-                    <h2>No movies found.</h2>
-                    <p>Try a different title or clear the search to return to the dashboard.</p>
+                <EmptyState
+                    className="empty-message"
+                    title="No movies found."
+                    description="Try a different title or clear the search to return to the dashboard."
+                >
                     <button type="button" className="search-button" onClick={handleClearSearch}>Clear Search</button>
-                </div>
+                </EmptyState>
             )}
         </div>
     )

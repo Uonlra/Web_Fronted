@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from "react"
+import EmptyState from "../components/EmptyState"
 import MovieCatalogCard from "../components/MovieCatalogCard"
+import PageHeader from "../components/PageHeader"
+import SearchField from "../components/SearchField"
 import SortDropdown from "../components/SortDropdown"
 import { MOVIE_GENRE_FILTERS, MOVIE_GENRE_NAMES } from "../constants/movieMeta"
 import { discoverMovies, searchMoviePage } from "../services/api"
@@ -153,22 +156,21 @@ function Movies() {
 
     return (
         <section className="movies-page">
-            <header className="movies-page-header">
-                <h1>Movies</h1>
-                <p>Browse your favorite films</p>
-            </header>
+            <PageHeader
+                className="movies-page-header"
+                title="Movies"
+                description="Browse your favorite films"
+            />
 
             <div className="movies-toolbar">
-                <form className="movies-search" role="search" onSubmit={handleSearchSubmit}>
-                    <span aria-hidden="true">⌕</span>
-                    <input
-                        type="search"
-                        placeholder="Search movies..."
-                        aria-label="Search movies in catalog"
-                        value={searchValue}
-                        onChange={(event) => setSearchValue(event.target.value)}
-                    />
-                </form>
+                <SearchField
+                    className="movies-search"
+                    placeholder="Search movies..."
+                    ariaLabel="Search movies in catalog"
+                    value={searchValue}
+                    onChange={setSearchValue}
+                    onSubmit={handleSearchSubmit}
+                />
 
                 <SortDropdown
                     options={SORT_OPTIONS}
@@ -257,10 +259,11 @@ function Movies() {
                     </nav>
                 </>
             ) : (
-                <div className="movies-status">
-                    <h2>No movies found.</h2>
-                    <p>Try another title, genre, or sort option.</p>
-                </div>
+                <EmptyState
+                    className="movies-status"
+                    title="No movies found."
+                    description="Try another title, genre, or sort option."
+                />
             )}
         </section>
     )
