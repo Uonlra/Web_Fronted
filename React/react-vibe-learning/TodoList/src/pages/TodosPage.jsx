@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import TodoFilters from "../components/TodoFilters.jsx";
 import TodoForm from "../components/TodoForm.jsx";
 import TodoHeader from "../components/TodoHeader.jsx";
@@ -5,9 +6,23 @@ import TodoList from "../components/TodoList.jsx";
 import useTodos from "../hooks/useTodos.js";
 
 export default function TodosPage() {
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlFilter = searchParams.get("filter");
+  const filter = ["all", "active", "completed"].includes(urlFilter)
+    ? urlFilter
+    : "all";
+
+  function handleFilterChange(nextFilter) {
+    if (nextFilter === "all") {
+      setSearchParams({});
+      return;
+    }
+    setSearchParams({ filter: nextFilter });
+  }
+
   const {
     todoText,
-    filter,
     editingId,
     editingText,
     editInputRef,
@@ -17,7 +32,6 @@ export default function TodosPage() {
     visibleTodos,
     emptyMessage,
     hasCompletedTodos,
-    setFilter,
     handleTodoTextChange,
     handleAddTodo,
     handleTodoKeyDown,
@@ -30,7 +44,7 @@ export default function TodosPage() {
     handleSaveEditing,
     handleCancelEditing,
     handleEditKeyDown,
-  } = useTodos();
+  } = useTodos(filter);
 
   return (
     <section className="todo-practice">
@@ -44,7 +58,7 @@ export default function TodosPage() {
         filter={filter}
         hasCompletedTodos={hasCompletedTodos}
         hasTodos={totalCount > 0}
-        onFilterChange={setFilter}
+        onFilterChange={handleFilterChange}
         onClearCompleted={handleClearCompleted}
         onClearAllTodos={handleClearAllTodos}
       />

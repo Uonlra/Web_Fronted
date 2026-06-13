@@ -15,10 +15,9 @@ function getInitialTodos() {
     }
 }
 
-export default function useTodos() {
+export default function useTodos(filter = "all") {
     const [todoText, setTodoText] = useState("");
     const [todos, dispatch] = useReducer(todosReducer, undefined, getInitialTodos);
-    const [filter, setFilter] = useState("all");
     const [editingId, setEditingId] = useState(null);
     const [editingText, setEditingText] = useState("");
     const editInputRef = useRef(null);
@@ -152,7 +151,6 @@ export default function useTodos() {
     return {
         todoText,
         todos,
-        filter,
         editingId,
         editingText,
         editInputRef,
@@ -162,7 +160,6 @@ export default function useTodos() {
         visibleTodos,
         emptyMessage,
         hasCompletedTodos,
-        setFilter,
         handleTodoTextChange,
         handleAddTodo,
         handleTodoKeyDown,
