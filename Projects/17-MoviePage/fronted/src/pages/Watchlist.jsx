@@ -1,63 +1,18 @@
 import { useMemo, useState } from "react"
 import SortDropdown from "../components/SortDropdown"
+import { LIBRARY_SORT_OPTIONS, MOVIE_GENRE_NAMES } from "../constants/movieMeta"
+import {
+    NEXT_WATCH_STATUS,
+    WATCH_STATUS_ACTION_LABELS,
+    WATCH_STATUS_FILTER_OPTIONS,
+    WATCH_STATUS_LABELS,
+    WATCH_STATUS_OPTIONS
+} from "../constants/watchStatus"
 import { useMovieDetailsModal } from "../Contexts/MovieDetailsModalContext"
 import { useMovieContext } from "../Contexts/MovieContextCore"
 import { getMovieImage, getRating, getReleaseYear } from "../utils/movieFormatters"
 import "../css/Movies.css"
 import "../css/Watchlist.css"
-
-const WATCH_STATUS_OPTIONS = [
-    { label: "All", value: "all" },
-    { label: "Not Started", value: "not-started" },
-    { label: "Watching", value: "watching" },
-    { label: "Watched", value: "watched" }
-]
-
-const WATCH_SORT_OPTIONS = [
-    { label: "Rating", value: "rating" },
-    { label: "Release Year", value: "year" },
-    { label: "Title", value: "title" }
-]
-
-const GENRE_NAMES = {
-    12: "Adventure",
-    14: "Fantasy",
-    16: "Animation",
-    18: "Drama",
-    27: "Horror",
-    28: "Action",
-    35: "Comedy",
-    36: "History",
-    37: "Western",
-    53: "Thriller",
-    80: "Crime",
-    99: "Documentary",
-    878: "Sci-Fi",
-    9648: "Mystery",
-    10402: "Music",
-    10749: "Romance",
-    10751: "Family",
-    10752: "War",
-    10770: "TV Movie"
-}
-
-const STATUS_LABELS = {
-    "not-started": "Not Started",
-    watching: "Watching",
-    watched: "Watched"
-}
-
-const NEXT_STATUS = {
-    "not-started": "watching",
-    watching: "watched",
-    watched: "watching"
-}
-
-const ACTION_LABELS = {
-    "not-started": "Start",
-    watching: "Mark Watched",
-    watched: "Rewatch"
-}
 
 const getReleaseYearNumber = (movie) => {
     return Number(movie?.release_date?.split("-")[0] || 0)
@@ -65,7 +20,7 @@ const getReleaseYearNumber = (movie) => {
 
 const getMovieGenres = (movie) => {
     return movie.genre_ids
-        ?.map((genreId) => GENRE_NAMES[genreId])
+        ?.map((genreId) => MOVIE_GENRE_NAMES[genreId])
         .filter(Boolean)
         .slice(0, 2)
         .join(", ") || "Cinema"
@@ -130,13 +85,13 @@ function WatchlistRow({
                     aria-label={`Watch status for ${movie.title}`}
                     onChange={(event) => onStatusChange(movie.id, event.target.value)}
                 >
-                    {WATCH_STATUS_OPTIONS.filter((option) => option.value !== "all").map((option) => (
+                    {WATCH_STATUS_OPTIONS.map((option) => (
                         <option key={option.value} value={option.value}>
                             {option.label}
                         </option>
                     ))}
                 </select>
-                <span>{STATUS_LABELS[status]}</span>
+                <span>{WATCH_STATUS_LABELS[status]}</span>
             </div>
             <button
                 type="button"
@@ -144,7 +99,7 @@ function WatchlistRow({
                 onClick={() => onAdvanceStatus(movie.id, status)}
             >
                 <span aria-hidden="true">{status === "watched" ? "↻" : "▶"}</span>
-                {ACTION_LABELS[status]}
+                {WATCH_STATUS_ACTION_LABELS[status]}
             </button>
             <button
                 type="button"
@@ -196,7 +151,7 @@ function Watchlist() {
     }, [activeStatus, getWatchStatus, searchValue, sortValue, watchlist])
 
     const handleAdvanceStatus = (movieId, currentStatus) => {
-        updateWatchStatus(movieId, NEXT_STATUS[currentStatus])
+        updateWatchStatus(movieId, NEXT_WATCH_STATUS[currentStatus])
     }
 
     return (
@@ -234,7 +189,7 @@ function Watchlist() {
 
             <div className="watchlist-controls">
                 <div className="watchlist-tabs" aria-label="Watchlist status filters">
-                    {WATCH_STATUS_OPTIONS.map((option) => (
+                    {WATCH_STATUS_FILTER_OPTIONS.map((option) => (
                         <button
                             key={option.value}
                             type="button"
@@ -260,7 +215,7 @@ function Watchlist() {
                     </form>
 
                     <SortDropdown
-                        options={WATCH_SORT_OPTIONS}
+                        options={LIBRARY_SORT_OPTIONS}
                         value={sortValue}
                         onChange={setSortValue}
                     />

@@ -10,9 +10,9 @@ export const getMoviePoster = (movie) => {
     return movie?.poster_path ? `${POSTER_BASE_URL}${movie.poster_path}` : null
 }
 
-export const getReleaseYear = (movie) => movie?.release_date?.split("-")[0] || "2024"
+export const getReleaseYear = (movie) => movie?.release_date?.split("-")[0] || "Unknown"
 
 export const getRating = (movie) => {
     const rating = Number(movie?.vote_average || 0)
-    return rating ? rating.toFixed(1) : "8.0"
+    return rating ? rating.toFixed(1) : "Not rated"
 }

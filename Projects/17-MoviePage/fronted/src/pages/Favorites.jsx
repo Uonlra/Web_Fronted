@@ -1,37 +1,10 @@
 import { useMemo, useState } from "react"
 import MovieCatalogCard from "../components/MovieCatalogCard"
 import SortDropdown from "../components/SortDropdown"
+import { LIBRARY_SORT_OPTIONS, MOVIE_GENRE_NAMES } from "../constants/movieMeta"
 import "../css/Movies.css"
 import "../css/Favorites.css"
 import { useMovieContext } from "../Contexts/MovieContextCore"
-
-const FAVORITE_SORT_OPTIONS = [
-    { label: "Rating", value: "rating" },
-    { label: "Release Year", value: "year" },
-    { label: "Title", value: "title" }
-]
-
-const GENRE_NAMES = {
-    12: "Adventure",
-    14: "Fantasy",
-    16: "Animation",
-    18: "Drama",
-    27: "Horror",
-    28: "Action",
-    35: "Comedy",
-    36: "History",
-    37: "Western",
-    53: "Thriller",
-    80: "Crime",
-    99: "Documentary",
-    878: "Sci-Fi",
-    9648: "Mystery",
-    10402: "Music",
-    10749: "Romance",
-    10751: "Family",
-    10752: "War",
-    10770: "TV Movie"
-}
 
 const getReleaseYearNumber = (movie) => {
     return Number(movie?.release_date?.split("-")[0] || 0)
@@ -116,7 +89,7 @@ function Favorites() {
                     </form>
 
                     <SortDropdown
-                        options={FAVORITE_SORT_OPTIONS}
+                        options={LIBRARY_SORT_OPTIONS}
                         value={sortValue}
                         onChange={setSortValue}
                     />
@@ -134,7 +107,7 @@ function Favorites() {
                         <MovieCatalogCard
                             key={movie.id}
                             movie={movie}
-                            genreNames={GENRE_NAMES}
+                            genreNames={MOVIE_GENRE_NAMES}
                         />
                     ))}
                 </div>

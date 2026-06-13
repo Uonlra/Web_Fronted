@@ -1,11 +1,9 @@
 import { useEffect, useMemo, useState } from "react"
+import { DEFAULT_WATCH_STATUS, VALID_WATCH_STATUSES } from "../constants/watchStatus"
 import { MovieContext } from "./MovieContextCore"
 
-const DEFAULT_WATCH_STATUS = "not-started"
-const WATCH_STATUSES = new Set(["not-started", "watching", "watched"])
-
 const getValidWatchStatus = (status) => {
-    return WATCH_STATUSES.has(status) ? status : DEFAULT_WATCH_STATUS
+    return VALID_WATCH_STATUSES.has(status) ? status : DEFAULT_WATCH_STATUS
 }
 
 const readJson = (key, fallback) => {
