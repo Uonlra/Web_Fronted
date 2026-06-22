@@ -1,4 +1,11 @@
-import { useEffect, useState, type ChangeEvent, type KeyboardEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type KeyboardEvent,
+} from "react";
 
 type GithubApiUser = {
   login: string;
@@ -29,19 +36,31 @@ function formatGithubUser(data: GithubApiUser): GithubUser {
   };
 }
 
+function isAbortError(error: unknown) {
+  return error instanceof DOMException && error.name === "AbortError";
+}
+
 export default function GithubPage() {
   const [username, setUsername] = useState<string>("octocat");
   const [user, setUser] = useState<GithubUser | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const abortControllerRef = useRef<AbortController | null>(null);
 
-  async function fetchGithubUser(nextUsername: string) {
+  const fetchGithubUser = useCallback(async (nextUsername: string) => {
+    abortControllerRef.current?.abort(); //abort 是一个 idempotent 操作，调用多次不会有副作用
+
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
     setLoading(true);
     setError("");
     setUser(null);
 
     try {
-      const response = await fetch(`https://api.github.com/users/${nextUsername}`);
+      const response = await fetch(`https://api.github.com/users/${nextUsername}`, {
+        signal: controller.signal,
+      });
 
       if (!response.ok) {
         throw new Error("没有找到这个 GitHub 用户");
@@ -50,19 +69,31 @@ export default function GithubPage() {
       const data: GithubApiUser = await response.json();
       setUser(formatGithubUser(data));
     } catch (error) {
+      if (isAbortError(error)) {
+        return;
+      }
+
       if (error instanceof Error) {
         setError(error.message);
       } else {
         setError("请求失败，请稍后再试");
       }
     } finally {
-      setLoading(false);
+      if (!controller.signal.aborted && abortControllerRef.current === controller) {
+        setLoading(false);
+        abortControllerRef.current = null;
+      }
     }
-  }
+  }, []);
 
   useEffect(() => {
     fetchGithubUser("octocat");
-  }, []);
+
+    return () => {
+      abortControllerRef.current?.abort();
+      abortControllerRef.current = null;
+    };
+  }, [fetchGithubUser]);
 
   function handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
     setUsername(event.target.value);
@@ -76,10 +107,6 @@ export default function GithubPage() {
 
   function handleSearch() {
     const nextUsername = username.trim();
-
-    if (loading) {
-      return;
-    }
 
     if (nextUsername === "") {
       setError("请输入 GitHub 用户名");
@@ -104,14 +131,9 @@ export default function GithubPage() {
           onChange={handleUsernameChange}
           onKeyDown={handleSearchKeyDown}
           placeholder="例如：octocat"
-          disabled={loading}
         />
 
-        <button
-          className="search-button"
-          onClick={handleSearch}
-          disabled={loading}
-        >
+        <button className="search-button" onClick={handleSearch}>
           {loading ? "搜索中..." : "搜索"}
         </button>
       </div>
