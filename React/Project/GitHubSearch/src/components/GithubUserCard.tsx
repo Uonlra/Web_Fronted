@@ -1,4 +1,4 @@
-import type { GithubUser } from "../hooks/useGithubUser";
+import type { GithubUser } from "../types/github";
 
 type GithubUserCardProps = {
   user: GithubUser;

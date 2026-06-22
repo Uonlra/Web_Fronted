@@ -1,33 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-
-type GithubApiUser = {
-  login: string;
-  name: string | null;
-  avatar_url: string;
-  bio: string | null;
-  public_repos: number;
-  followers: number;
-};
-
-export type GithubUser = {
-  login: string;
-  name: string | null;
-  avatarUrl: string;
-  bio: string | null;
-  publicRepos: number;
-  followers: number;
-};
-
-function formatGithubUser(data: GithubApiUser): GithubUser {
-  return {
-    login: data.login,
-    name: data.name,
-    avatarUrl: data.avatar_url,
-    bio: data.bio,
-    publicRepos: data.public_repos,
-    followers: data.followers,
-  };
-}
+import { getGithubUser } from "../services/githubApi";
+import type { GithubUser } from "../types/github";
 
 function isAbortError(error: unknown) {
   return error instanceof DOMException && error.name === "AbortError";
@@ -60,16 +33,8 @@ export default function useGithubUser(initialUsername = "octocat") {
     setUser(null);
 
     try {
-      const response = await fetch(`https://api.github.com/users/${nextUsername}`, {
-        signal: controller.signal,
-      });
-
-      if (!response.ok) {
-        throw new Error("没有找到这个 GitHub 用户");
-      }
-
-      const data: GithubApiUser = await response.json();
-      setUser(formatGithubUser(data));
+      const nextUser = await getGithubUser(nextUsername, controller.signal);
+      setUser(nextUser);
     } catch (error) {
       if (isAbortError(error)) {
         return;

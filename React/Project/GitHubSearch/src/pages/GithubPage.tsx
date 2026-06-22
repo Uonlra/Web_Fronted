@@ -1,4 +1,7 @@
 import { useState, type ChangeEvent, type KeyboardEvent } from "react";
+import GithubFeedback from "../components/GithubFeedback";
+import GithubSearchForm from "../components/GithubSearchForm";
+import GithubStatusPanel from "../components/GithubStatusPanel";
 import GithubUserCard from "../components/GithubUserCard";
 import useGithubUser from "../hooks/useGithubUser";
 
@@ -25,32 +28,22 @@ export default function GithubPage() {
       <h1>GitHub 用户搜索</h1>
       <p>页面打开时会自动加载 octocat，也可以输入 GitHub 用户名手动搜索。</p>
 
-      <div className="search-form">
-        <input
-          className="search-input"
-          type="text"
-          value={username}
-          onChange={handleUsernameChange}
-          onKeyDown={handleSearchKeyDown}
-          placeholder="例如：octocat"
-        />
+      <GithubSearchForm
+        username={username}
+        loading={loading}
+        onUsernameChange={handleUsernameChange}
+        onSearchKeyDown={handleSearchKeyDown}
+        onSearch={handleSearch}
+      />
 
-        <button className="search-button" onClick={handleSearch}>
-          {loading ? "搜索中..." : "搜索"}
-        </button>
-      </div>
+      <GithubStatusPanel
+        username={username}
+        userLogin={user?.login ?? null}
+        loading={loading}
+        error={error}
+      />
 
-      <div className="state-panel">
-        <h2>当前状态</h2>
-        <p>username: {username || "空字符串"}</p>
-        <p>user: {user ? user.login : "null"}</p>
-        <p>loading: {loading ? "true" : "false"}</p>
-        <p>error: {error || "空字符串"}</p>
-      </div>
-
-      {error && <p className="error-message">{error}</p>}
-
-      {loading && <p className="loading-message">正在请求 GitHub API...</p>}
+      <GithubFeedback loading={loading} error={error} />
 
       {user && <GithubUserCard user={user} />}
     </section>
