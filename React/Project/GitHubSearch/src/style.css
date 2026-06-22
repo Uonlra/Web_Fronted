@@ -117,3 +117,8 @@ body {
   color: #1d4ed8;
   font-weight: 700;
 }
+.search-input:disabled {
+  cursor: not-allowed;
+  background: #f3f4f6;
+  color: #6b7280;
+}

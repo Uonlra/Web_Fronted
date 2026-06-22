@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from "react";
+import { useEffect, useState, type ChangeEvent, type KeyboardEvent } from "react";
 
 type GithubApiUser = {
   login: string;
@@ -18,26 +18,24 @@ type GithubUser = {
   followers: number;
 };
 
+function formatGithubUser(data: GithubApiUser): GithubUser {
+  return {
+    login: data.login,
+    name: data.name,
+    avatarUrl: data.avatar_url,
+    bio: data.bio,
+    publicRepos: data.public_repos,
+    followers: data.followers,
+  };
+}
+
 export default function GithubPage() {
-  const [username, setUsername] = useState<string>("");
+  const [username, setUsername] = useState<string>("octocat");
   const [user, setUser] = useState<GithubUser | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  function handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
-    setUsername(event.target.value);
-  }
-
-  async function handleSearch() {
-    const nextUsername = username.trim();
-
-    if (nextUsername === "") {
-      setError("请输入 GitHub 用户名");
-      setUser(null);
-      setLoading(false);
-      return;
-    }
-
+  async function fetchGithubUser(nextUsername: string) {
     setLoading(true);
     setError("");
     setUser(null);
@@ -50,15 +48,7 @@ export default function GithubPage() {
       }
 
       const data: GithubApiUser = await response.json();
-
-      setUser({
-        login: data.login,
-        name: data.name,
-        avatarUrl: data.avatar_url,
-        bio: data.bio,
-        publicRepos: data.public_repos,
-        followers: data.followers,
-      });
+      setUser(formatGithubUser(data));
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -70,10 +60,41 @@ export default function GithubPage() {
     }
   }
 
+  useEffect(() => {
+    fetchGithubUser("octocat");
+  }, []);
+
+  function handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
+    setUsername(event.target.value);
+  }
+
+  function handleSearchKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  }
+
+  function handleSearch() {
+    const nextUsername = username.trim();
+
+    if (loading) {
+      return;
+    }
+
+    if (nextUsername === "") {
+      setError("请输入 GitHub 用户名");
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+
+    fetchGithubUser(nextUsername);
+  }
+
   return (
     <section className="github-page">
       <h1>GitHub 用户搜索</h1>
-      <p>输入 GitHub 用户名，请求 GitHub API 并展示用户信息。</p>
+      <p>页面打开时会自动加载 octocat，也可以输入 GitHub 用户名手动搜索。</p>
 
       <div className="search-form">
         <input
@@ -81,7 +102,9 @@ export default function GithubPage() {
           type="text"
           value={username}
           onChange={handleUsernameChange}
+          onKeyDown={handleSearchKeyDown}
           placeholder="例如：octocat"
+          disabled={loading}
         />
 
         <button
