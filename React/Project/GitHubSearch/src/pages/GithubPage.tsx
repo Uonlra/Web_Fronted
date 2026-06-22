@@ -3,11 +3,13 @@ import GithubFeedback from "../components/GithubFeedback";
 import GithubSearchForm from "../components/GithubSearchForm";
 import GithubStatusPanel from "../components/GithubStatusPanel";
 import GithubUserCard from "../components/GithubUserCard";
+import { useTheme } from "../context/ThemeContext";
 import useGithubUser from "../hooks/useGithubUser";
 
 export default function GithubPage() {
   const [username, setUsername] = useState<string>("octocat");
   const { user, loading, error, fetchGithubUser } = useGithubUser("octocat");
+  const { theme, toggleTheme } = useTheme();
 
   function handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
     setUsername(event.target.value);
@@ -24,9 +26,17 @@ export default function GithubPage() {
   }
 
   return (
-    <section className="github-page">
-      <h1>GitHub 用户搜索</h1>
-      <p>页面打开时会自动加载 octocat，也可以输入 GitHub 用户名手动搜索。</p>
+    <section className="github-page" data-theme={theme}>
+      <div className="page-header">
+        <div>
+          <h1>GitHub 用户搜索</h1>
+          <p>页面打开时会自动加载 octocat，也可以输入 GitHub 用户名手动搜索。</p>
+        </div>
+
+        <button className="theme-button" type="button" onClick={toggleTheme}>
+          {theme === "light" ? "切换暗色" : "切换亮色"}
+        </button>
+      </div>
 
       <GithubSearchForm
         username={username}
