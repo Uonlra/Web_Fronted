@@ -1,99 +1,10 @@
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  type ChangeEvent,
-  type KeyboardEvent,
-} from "react";
-
-type GithubApiUser = {
-  login: string;
-  name: string | null;
-  avatar_url: string;
-  bio: string | null;
-  public_repos: number;
-  followers: number;
-};
-
-type GithubUser = {
-  login: string;
-  name: string | null;
-  avatarUrl: string;
-  bio: string | null;
-  publicRepos: number;
-  followers: number;
-};
-
-function formatGithubUser(data: GithubApiUser): GithubUser {
-  return {
-    login: data.login,
-    name: data.name,
-    avatarUrl: data.avatar_url,
-    bio: data.bio,
-    publicRepos: data.public_repos,
-    followers: data.followers,
-  };
-}
-
-function isAbortError(error: unknown) {
-  return error instanceof DOMException && error.name === "AbortError";
-}
+import { useState, type ChangeEvent, type KeyboardEvent } from "react";
+import GithubUserCard from "../components/GithubUserCard";
+import useGithubUser from "../hooks/useGithubUser";
 
 export default function GithubPage() {
   const [username, setUsername] = useState<string>("octocat");
-  const [user, setUser] = useState<GithubUser | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
-  const abortControllerRef = useRef<AbortController | null>(null);
-
-  const fetchGithubUser = useCallback(async (nextUsername: string) => {
-    abortControllerRef.current?.abort(); //abort 是一个 idempotent 操作，调用多次不会有副作用
-
-    const controller = new AbortController();
-    abortControllerRef.current = controller;
-
-    setLoading(true);
-    setError("");
-    setUser(null);
-
-    try {
-      const response = await fetch(`https://api.github.com/users/${nextUsername}`, {
-        signal: controller.signal,
-      });
-
-      if (!response.ok) {
-        throw new Error("没有找到这个 GitHub 用户");
-      }
-
-      const data: GithubApiUser = await response.json();
-      setUser(formatGithubUser(data));
-    } catch (error) {
-      if (isAbortError(error)) {
-        return;
-      }
-
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("请求失败，请稍后再试");
-      }
-    } finally {
-      if (!controller.signal.aborted && abortControllerRef.current === controller) {
-        setLoading(false);
-        abortControllerRef.current = null;
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchGithubUser("octocat");
-
-    return () => {
-      abortControllerRef.current?.abort();
-      abortControllerRef.current = null;
-    };
-  }, [fetchGithubUser]);
+  const { user, loading, error, fetchGithubUser } = useGithubUser("octocat");
 
   function handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
     setUsername(event.target.value);
@@ -106,16 +17,7 @@ export default function GithubPage() {
   }
 
   function handleSearch() {
-    const nextUsername = username.trim();
-
-    if (nextUsername === "") {
-      setError("请输入 GitHub 用户名");
-      setUser(null);
-      setLoading(false);
-      return;
-    }
-
-    fetchGithubUser(nextUsername);
+    fetchGithubUser(username);
   }
 
   return (
@@ -150,18 +52,7 @@ export default function GithubPage() {
 
       {loading && <p className="loading-message">正在请求 GitHub API...</p>}
 
-      {user && (
-        <article className="user-card">
-          <img src={user.avatarUrl} alt={`${user.login} 的头像`} />
-          <div>
-            <h2>{user.name ?? user.login}</h2>
-            <p>{user.bio ?? "这个用户暂时没有简介。"}</p>
-            <p>
-              仓库: {user.publicRepos} / 粉丝: {user.followers}
-            </p>
-          </div>
-        </article>
-      )}
+      {user && <GithubUserCard user={user} />}
     </section>
   );
 }
