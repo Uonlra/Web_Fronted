@@ -175,6 +175,40 @@ body {
   color: #94a3b8;
 }
 
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.history-header h2 {
+  margin: 0;
+}
+
+.history-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.history-list li {
+  padding: 6px 10px;
+  border: 1px solid #d7dee8;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1f2937;
+}
+
+.github-page[data-theme="dark"] .history-list li {
+  border-color: #475569;
+  background: #0f172a;
+  color: #f9fafb;
+}
+
 @media (max-width: 520px) {
   .page-header,
   .search-form,
@@ -187,3 +221,4 @@ body {
     width: 100%;
   }
 }
+
