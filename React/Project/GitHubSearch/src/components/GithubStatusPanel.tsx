@@ -1,3 +1,5 @@
+import { useTheme } from "../context/ThemeContext";
+
 type GithubStatusPanelProps = {
   username: string;
   userLogin: string | null;
@@ -11,6 +13,8 @@ export default function GithubStatusPanel({
   loading,
   error,
 }: GithubStatusPanelProps) {
+  const { theme } = useTheme();
+
   return (
     <div className="state-panel">
       <h2>当前状态</h2>
@@ -18,6 +22,7 @@ export default function GithubStatusPanel({
       <p>user: {userLogin ?? "null"}</p>
       <p>loading: {loading ? "true" : "false"}</p>
       <p>error: {error || "空字符串"}</p>
+      <p>theme: {theme}</p>
     </div>
   );
 }
