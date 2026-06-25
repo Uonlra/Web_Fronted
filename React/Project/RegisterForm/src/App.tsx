@@ -5,10 +5,13 @@ type RegisterFormData = {
   username: string
   email: string
   password: string
+  confirmPassword: string
   gender: string
   bio: string
   agreeToTerms: boolean
 }
+
+type SubmitPayload = Omit<RegisterFormData, 'confirmPassword'> // omit用于从类型中排除某些属性，返回一个新的类型 
 
 type FormErrors = Partial<Record<keyof RegisterFormData, string>>
 
@@ -16,17 +19,21 @@ type FormChangeEvent = React.ChangeEvent<
   HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
 >
 
+const initialFormData: RegisterFormData = {
+  username: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+  gender: '',
+  bio: '',
+  agreeToTerms: false,
+}
+
 function App() {
-  const [formData, setFormData] = useState<RegisterFormData>({
-    username: '',
-    email: '',
-    password: '',
-    gender: '',
-    bio: '',
-    agreeToTerms: false,
-  })
+  const [formData, setFormData] = useState<RegisterFormData>(initialFormData)
   const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitMessage, setSubmitMessage] = useState('')
 
   const validateForm = () => {
     const nextErrors: FormErrors = {}
@@ -43,6 +50,12 @@ function App() {
 
     if (formData.password.length < 6) {
       nextErrors.password = '密码至少需要 6 位'
+    }
+
+    if (!formData.confirmPassword) {
+      nextErrors.confirmPassword = '请再次输入密码'
+    } else if (formData.confirmPassword !== formData.password) {
+      nextErrors.confirmPassword = '两次输入的密码不一致'
     }
 
     if (!formData.gender) {
@@ -62,19 +75,38 @@ function App() {
 
   const handleChange = (event: FormChangeEvent) => {
     const { name, value } = event.target
+    const fieldName = name as keyof RegisterFormData
+
+    if (submitMessage) {
+      setSubmitMessage('')
+    }
+
+    if (errors[fieldName]) {
+      setErrors((prevErrors) => {
+        const nextErrors = { ...prevErrors }
+        delete nextErrors[fieldName]
+        return nextErrors
+      })
+    }
 
     if (event.target instanceof HTMLInputElement && event.target.type === 'checkbox') {
       setFormData({
         ...formData,
-        [name]: event.target.checked,
+        [fieldName]: event.target.checked,
       })
       return
     }
 
     setFormData({
       ...formData,
-      [name]: value,
+      [fieldName]: value,
     })
+  }
+
+  const handleReset = () => {
+    setFormData(initialFormData)
+    setErrors({})
+    setSubmitMessage('')
   }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -84,17 +116,29 @@ function App() {
     setErrors(nextErrors)
 
     if (Object.keys(nextErrors).length > 0) {
+      setSubmitMessage('')
       console.log('表单校验失败', nextErrors)
       return
     }
 
+    const payload: SubmitPayload = {
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+      gender: formData.gender,
+      bio: formData.bio,
+      agreeToTerms: formData.agreeToTerms,
+    }
+
     setIsSubmitting(true)
+    setSubmitMessage('')
 
     await new Promise((resolve) => {
       window.setTimeout(resolve, 1000)
     })
 
-    console.log('提交成功', formData)
+    console.log('提交成功', payload)
+    setSubmitMessage('注册成功！')
     setIsSubmitting(false)
   }
 
@@ -105,7 +149,7 @@ function App() {
           <p className="eyebrow">React + TypeScript Form</p>
           <h1 id="form-title">注册资料</h1>
           <p className="description">
-            现在提交通过校验后会进入 1 秒提交状态，避免用户重复提交。
+            现在表单支持重置、提交中禁用、简介字数统计和提交数据整理。
           </p>
         </div>
 
@@ -120,6 +164,7 @@ function App() {
               value={formData.username}
               onChange={handleChange}
               aria-invalid={Boolean(errors.username)}
+              disabled={isSubmitting}
             />
             {errors.username && (
               <p className="field-error" role="alert">
@@ -138,6 +183,7 @@ function App() {
               value={formData.email}
               onChange={handleChange}
               aria-invalid={Boolean(errors.email)}
+              disabled={isSubmitting}
             />
             {errors.email && (
               <p className="field-error" role="alert">
@@ -156,10 +202,30 @@ function App() {
               value={formData.password}
               onChange={handleChange}
               aria-invalid={Boolean(errors.password)}
+              disabled={isSubmitting}
             />
             {errors.password && (
               <p className="field-error" role="alert">
                 {errors.password}
+              </p>
+            )}
+          </div>
+
+          <div className="form-field">
+            <label htmlFor="confirmPassword">确认密码</label>
+            <input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              placeholder="请再次输入密码"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              aria-invalid={Boolean(errors.confirmPassword)}
+              disabled={isSubmitting}
+            />
+            {errors.confirmPassword && (
+              <p className="field-error" role="alert">
+                {errors.confirmPassword}
               </p>
             )}
           </div>
@@ -172,6 +238,7 @@ function App() {
               value={formData.gender}
               onChange={handleChange}
               aria-invalid={Boolean(errors.gender)}
+              disabled={isSubmitting}
             >
               <option value="" disabled>
                 请选择
@@ -197,7 +264,11 @@ function App() {
               value={formData.bio}
               onChange={handleChange}
               aria-invalid={Boolean(errors.bio)}
+              disabled={isSubmitting}
             />
+            <p className={formData.bio.length > 100 ? 'char-count is-over' : 'char-count'}>
+              {formData.bio.length} / 100
+            </p>
             {errors.bio && (
               <p className="field-error" role="alert">
                 {errors.bio}
@@ -214,6 +285,7 @@ function App() {
                 checked={formData.agreeToTerms}
                 onChange={handleChange}
                 aria-invalid={Boolean(errors.agreeToTerms)}
+                disabled={isSubmitting}
               />
               <span>我已阅读并同意用户协议</span>
             </label>
@@ -224,9 +296,20 @@ function App() {
             )}
           </div>
 
-          <button className="submit-button" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? '提交中...' : '提交注册'}
-          </button>
+          {submitMessage && (
+            <p className="submit-message" role="status">
+              {submitMessage}
+            </p>
+          )}
+
+          <div className="form-actions">
+            <button className="reset-button" type="button" onClick={handleReset} disabled={isSubmitting}>
+              重置
+            </button>
+            <button className="submit-button" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? '提交中...' : '提交注册'}
+            </button>
+          </div>
         </form>
       </section>
     </main>
@@ -234,3 +317,4 @@ function App() {
 }
 
 export default App
+
