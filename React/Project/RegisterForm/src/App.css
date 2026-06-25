@@ -129,8 +129,13 @@ h1 {
   cursor: pointer;
 }
 
-.submit-button:hover {
+.submit-button:hover:not(:disabled) {
   background: #244ed4;
+}
+
+.submit-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.68;
 }
 
 .submit-button:focus-visible {
@@ -151,3 +156,4 @@ h1 {
     font-size: 28px;
   }
 }
+

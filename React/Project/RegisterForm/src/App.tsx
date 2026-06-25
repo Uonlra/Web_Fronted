@@ -25,10 +25,11 @@ function App() {
     bio: '',
     agreeToTerms: false,
   })
-  const [errors, setErrors] = useState<FormErrors>({}) // 创建一个新的状态来存储表单的错误信息，初始值为空对象
+  const [errors, setErrors] = useState<FormErrors>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const validateForm = () => {
-    const nextErrors: FormErrors = {} // 创建一个新的错误对象，为空值
+    const nextErrors: FormErrors = {}
 
     if (formData.username.trim().length < 2) {
       nextErrors.username = '用户名至少需要 2 个字符'
@@ -76,7 +77,7 @@ function App() {
     })
   }
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     const nextErrors = validateForm()
@@ -87,7 +88,14 @@ function App() {
       return
     }
 
-    console.log('提交表单数据', formData)
+    setIsSubmitting(true)
+
+    await new Promise((resolve) => {
+      window.setTimeout(resolve, 1000)
+    })
+
+    console.log('提交成功', formData)
+    setIsSubmitting(false)
   }
 
   return (
@@ -97,7 +105,7 @@ function App() {
           <p className="eyebrow">React + TypeScript Form</p>
           <h1 id="form-title">注册资料</h1>
           <p className="description">
-            现在错误信息会显示在对应字段下面，用户能直接看到哪里需要修改。
+            现在提交通过校验后会进入 1 秒提交状态，避免用户重复提交。
           </p>
         </div>
 
@@ -216,8 +224,8 @@ function App() {
             )}
           </div>
 
-          <button className="submit-button" type="submit">
-            提交注册
+          <button className="submit-button" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? '提交中...' : '提交注册'}
           </button>
         </form>
       </section>
