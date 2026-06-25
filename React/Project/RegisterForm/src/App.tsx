@@ -10,7 +10,7 @@ type RegisterFormData = {
   agreeToTerms: boolean
 }
 
-type FormErrors = Partial<Record<keyof RegisterFormData, string>> //错误对象的 key 必须来自 RegisterFormData
+type FormErrors = Partial<Record<keyof RegisterFormData, string>>
 
 type FormChangeEvent = React.ChangeEvent<
   HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -25,11 +25,10 @@ function App() {
     bio: '',
     agreeToTerms: false,
   })
-
-  const [, setErrors] = useState<FormErrors>({})
+  const [errors, setErrors] = useState<FormErrors>({}) // 创建一个新的状态来存储表单的错误信息，初始值为空对象
 
   const validateForm = () => {
-    const nextErrors: FormErrors = {} // 创建一个空的错误对象nextErrors,FormErrors类型，表示表单字段的错误信息。它是一个可选的对象，键是RegisterFormData的属性名，值是字符串类型的错误信息。
+    const nextErrors: FormErrors = {} // 创建一个新的错误对象，为空值
 
     if (formData.username.trim().length < 2) {
       nextErrors.username = '用户名至少需要 2 个字符'
@@ -80,10 +79,10 @@ function App() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    const nextErrors = validateForm() // 调用 validateForm 函数进行表单验证，返回一个包含错误信息的对象 nextErrors。这个对象的键是表单字段的名称，值是对应的错误信息字符串。如果某个字段没有错误，则不会在 nextErrors 中包含该字段。
+    const nextErrors = validateForm()
     setErrors(nextErrors)
 
-    if (Object.keys(nextErrors).length > 0) { //object.keys(nextErrors).length > 0 表示如果 nextErrors 对象中有任何属性（即存在错误），则执行以下代码块。
+    if (Object.keys(nextErrors).length > 0) {
       console.log('表单校验失败', nextErrors)
       return
     }
@@ -98,11 +97,11 @@ function App() {
           <p className="eyebrow">React + TypeScript Form</p>
           <h1 id="form-title">注册资料</h1>
           <p className="description">
-            现在提交时会先做基础校验，下一步再把错误显示到字段下面。
+            现在错误信息会显示在对应字段下面，用户能直接看到哪里需要修改。
           </p>
         </div>
 
-        <form className="register-form" onSubmit={handleSubmit}>
+        <form className="register-form" onSubmit={handleSubmit} noValidate>
           <div className="form-field">
             <label htmlFor="username">用户名</label>
             <input
@@ -112,7 +111,13 @@ function App() {
               placeholder="请输入用户名"
               value={formData.username}
               onChange={handleChange}
+              aria-invalid={Boolean(errors.username)}
             />
+            {errors.username && (
+              <p className="field-error" role="alert">
+                {errors.username}
+              </p>
+            )}
           </div>
 
           <div className="form-field">
@@ -124,7 +129,13 @@ function App() {
               placeholder="name@example.com"
               value={formData.email}
               onChange={handleChange}
+              aria-invalid={Boolean(errors.email)}
             />
+            {errors.email && (
+              <p className="field-error" role="alert">
+                {errors.email}
+              </p>
+            )}
           </div>
 
           <div className="form-field">
@@ -136,7 +147,13 @@ function App() {
               placeholder="至少 6 位"
               value={formData.password}
               onChange={handleChange}
+              aria-invalid={Boolean(errors.password)}
             />
+            {errors.password && (
+              <p className="field-error" role="alert">
+                {errors.password}
+              </p>
+            )}
           </div>
 
           <div className="form-field">
@@ -146,6 +163,7 @@ function App() {
               name="gender"
               value={formData.gender}
               onChange={handleChange}
+              aria-invalid={Boolean(errors.gender)}
             >
               <option value="" disabled>
                 请选择
@@ -154,6 +172,11 @@ function App() {
               <option value="female">女</option>
               <option value="other">其他</option>
             </select>
+            {errors.gender && (
+              <p className="field-error" role="alert">
+                {errors.gender}
+              </p>
+            )}
           </div>
 
           <div className="form-field">
@@ -165,19 +188,33 @@ function App() {
               placeholder="简单介绍一下自己"
               value={formData.bio}
               onChange={handleChange}
+              aria-invalid={Boolean(errors.bio)}
             />
+            {errors.bio && (
+              <p className="field-error" role="alert">
+                {errors.bio}
+              </p>
+            )}
           </div>
 
-          <label className="checkbox-field" htmlFor="agreeToTerms">
-            <input
-              id="agreeToTerms"
-              name="agreeToTerms"
-              type="checkbox"
-              checked={formData.agreeToTerms}
-              onChange={handleChange}
-            />
-            <span>我已阅读并同意用户协议</span>
-          </label>
+          <div className="agreement-field">
+            <label className="checkbox-field" htmlFor="agreeToTerms">
+              <input
+                id="agreeToTerms"
+                name="agreeToTerms"
+                type="checkbox"
+                checked={formData.agreeToTerms}
+                onChange={handleChange}
+                aria-invalid={Boolean(errors.agreeToTerms)}
+              />
+              <span>我已阅读并同意用户协议</span>
+            </label>
+            {errors.agreeToTerms && (
+              <p className="field-error" role="alert">
+                {errors.agreeToTerms}
+              </p>
+            )}
+          </div>
 
           <button className="submit-button" type="submit">
             提交注册

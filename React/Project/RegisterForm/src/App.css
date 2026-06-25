@@ -44,7 +44,8 @@ h1 {
   gap: 18px;
 }
 
-.form-field {
+.form-field,
+.agreement-field {
   display: grid;
   gap: 8px;
   text-align: left;
@@ -81,6 +82,19 @@ h1 {
   border-color: #3563e9;
 }
 
+.form-field input[aria-invalid='true'],
+.form-field select[aria-invalid='true'],
+.form-field textarea[aria-invalid='true'] {
+  border-color: #d92d20;
+}
+
+.form-field input[aria-invalid='true']:focus,
+.form-field select[aria-invalid='true']:focus,
+.form-field textarea[aria-invalid='true']:focus {
+  outline-color: rgba(217, 45, 32, 0.16);
+  border-color: #d92d20;
+}
+
 .checkbox-field {
   display: flex;
   align-items: center;
@@ -91,6 +105,17 @@ h1 {
 .checkbox-field input {
   width: 18px;
   height: 18px;
+}
+
+.checkbox-field input[aria-invalid='true'] {
+  accent-color: #d92d20;
+}
+
+.field-error {
+  margin: 0;
+  color: #d92d20;
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 .submit-button {
