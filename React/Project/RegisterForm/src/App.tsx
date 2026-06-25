@@ -11,11 +11,15 @@ type RegisterFormData = {
   agreeToTerms: boolean
 }
 
-type SubmitPayload = Omit<RegisterFormData, 'confirmPassword'> // omit用于从类型中排除某些属性，返回一个新的类型 
-
+type SubmitPayload = Omit<RegisterFormData, 'confirmPassword'>
 type FormErrors = Partial<Record<keyof RegisterFormData, string>>
+type TouchedFields = Partial<Record<keyof RegisterFormData, boolean>>
 
 type FormChangeEvent = React.ChangeEvent<
+  HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+>
+
+type FormBlurEvent = React.FocusEvent<
   HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
 >
 
@@ -29,9 +33,20 @@ const initialFormData: RegisterFormData = {
   agreeToTerms: false,
 }
 
+const formFieldOrder: Array<keyof RegisterFormData> = [
+  'username',
+  'email',
+  'password',
+  'confirmPassword',
+  'gender',
+  'bio',
+  'agreeToTerms',
+]
+
 function App() {
   const [formData, setFormData] = useState<RegisterFormData>(initialFormData)
   const [errors, setErrors] = useState<FormErrors>({})
+  const [touched, setTouched] = useState<TouchedFields>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitMessage, setSubmitMessage] = useState('')
 
@@ -73,6 +88,42 @@ function App() {
     return nextErrors
   }
 
+  const showError = (fieldName: keyof RegisterFormData) => {
+    return Boolean(touched[fieldName] && errors[fieldName])
+  }
+
+  const touchAllFields = () => {
+    const nextTouched: TouchedFields = {}
+
+    for (const fieldName of formFieldOrder) {
+      nextTouched[fieldName] = true
+    }
+
+    setTouched(nextTouched)
+  }
+
+  const focusFirstError = (nextErrors: FormErrors) => {
+    const firstErrorField = formFieldOrder.find((fieldName) => nextErrors[fieldName])
+
+    if (!firstErrorField) {
+      return
+    }
+
+    const fieldElement = document.querySelector<HTMLElement>(`[name="${firstErrorField}"]`)
+    fieldElement?.focus()
+  }
+
+  const handleBlur = (event: FormBlurEvent) => {
+    const fieldName = event.target.name as keyof RegisterFormData
+
+    setTouched((prevTouched) => ({
+      ...prevTouched,
+      [fieldName]: true,
+    }))
+
+    setErrors(validateForm())
+  }
+
   const handleChange = (event: FormChangeEvent) => {
     const { name, value } = event.target
     const fieldName = name as keyof RegisterFormData
@@ -106,6 +157,7 @@ function App() {
   const handleReset = () => {
     setFormData(initialFormData)
     setErrors({})
+    setTouched({})
     setSubmitMessage('')
   }
 
@@ -116,6 +168,8 @@ function App() {
     setErrors(nextErrors)
 
     if (Object.keys(nextErrors).length > 0) {
+      touchAllFields()
+      window.setTimeout(() => focusFirstError(nextErrors), 0)
       setSubmitMessage('')
       console.log('表单校验失败', nextErrors)
       return
@@ -149,7 +203,7 @@ function App() {
           <p className="eyebrow">React + TypeScript Form</p>
           <h1 id="form-title">注册资料</h1>
           <p className="description">
-            现在表单支持重置、提交中禁用、简介字数统计和提交数据整理。
+            字段失焦后才显示错误，提交失败时会自动定位到第一个错误字段。
           </p>
         </div>
 
@@ -163,10 +217,11 @@ function App() {
               placeholder="请输入用户名"
               value={formData.username}
               onChange={handleChange}
-              aria-invalid={Boolean(errors.username)}
+              onBlur={handleBlur}
+              aria-invalid={showError('username')}
               disabled={isSubmitting}
             />
-            {errors.username && (
+            {showError('username') && (
               <p className="field-error" role="alert">
                 {errors.username}
               </p>
@@ -182,10 +237,11 @@ function App() {
               placeholder="name@example.com"
               value={formData.email}
               onChange={handleChange}
-              aria-invalid={Boolean(errors.email)}
+              onBlur={handleBlur}
+              aria-invalid={showError('email')}
               disabled={isSubmitting}
             />
-            {errors.email && (
+            {showError('email') && (
               <p className="field-error" role="alert">
                 {errors.email}
               </p>
@@ -201,10 +257,11 @@ function App() {
               placeholder="至少 6 位"
               value={formData.password}
               onChange={handleChange}
-              aria-invalid={Boolean(errors.password)}
+              onBlur={handleBlur}
+              aria-invalid={showError('password')}
               disabled={isSubmitting}
             />
-            {errors.password && (
+            {showError('password') && (
               <p className="field-error" role="alert">
                 {errors.password}
               </p>
@@ -220,10 +277,11 @@ function App() {
               placeholder="请再次输入密码"
               value={formData.confirmPassword}
               onChange={handleChange}
-              aria-invalid={Boolean(errors.confirmPassword)}
+              onBlur={handleBlur}
+              aria-invalid={showError('confirmPassword')}
               disabled={isSubmitting}
             />
-            {errors.confirmPassword && (
+            {showError('confirmPassword') && (
               <p className="field-error" role="alert">
                 {errors.confirmPassword}
               </p>
@@ -237,7 +295,8 @@ function App() {
               name="gender"
               value={formData.gender}
               onChange={handleChange}
-              aria-invalid={Boolean(errors.gender)}
+              onBlur={handleBlur}
+              aria-invalid={showError('gender')}
               disabled={isSubmitting}
             >
               <option value="" disabled>
@@ -247,7 +306,7 @@ function App() {
               <option value="female">女</option>
               <option value="other">其他</option>
             </select>
-            {errors.gender && (
+            {showError('gender') && (
               <p className="field-error" role="alert">
                 {errors.gender}
               </p>
@@ -263,13 +322,14 @@ function App() {
               placeholder="简单介绍一下自己"
               value={formData.bio}
               onChange={handleChange}
-              aria-invalid={Boolean(errors.bio)}
+              onBlur={handleBlur}
+              aria-invalid={showError('bio')}
               disabled={isSubmitting}
             />
             <p className={formData.bio.length > 100 ? 'char-count is-over' : 'char-count'}>
               {formData.bio.length} / 100
             </p>
-            {errors.bio && (
+            {showError('bio') && (
               <p className="field-error" role="alert">
                 {errors.bio}
               </p>
@@ -284,12 +344,13 @@ function App() {
                 type="checkbox"
                 checked={formData.agreeToTerms}
                 onChange={handleChange}
-                aria-invalid={Boolean(errors.agreeToTerms)}
+                onBlur={handleBlur}
+                aria-invalid={showError('agreeToTerms')}
                 disabled={isSubmitting}
               />
               <span>我已阅读并同意用户协议</span>
             </label>
-            {errors.agreeToTerms && (
+            {showError('agreeToTerms') && (
               <p className="field-error" role="alert">
                 {errors.agreeToTerms}
               </p>
@@ -317,4 +378,3 @@ function App() {
 }
 
 export default App
-
