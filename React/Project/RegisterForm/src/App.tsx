@@ -43,6 +43,12 @@ const formFieldOrder: Array<keyof RegisterFormData> = [
   'agreeToTerms',
 ]
 
+const genderOptions = [
+  { label: '男', value: 'male' },
+  { label: '女', value: 'female' },
+  { label: '其他', value: 'other' },
+]
+
 function App() {
   const [formData, setFormData] = useState<RegisterFormData>(initialFormData)
   const [errors, setErrors] = useState<FormErrors>({})
@@ -88,8 +94,28 @@ function App() {
     return nextErrors
   }
 
-  const showError = (fieldName: keyof RegisterFormData) => {
-    return Boolean(touched[fieldName] && errors[fieldName])
+  const getFieldError = (fieldName: keyof RegisterFormData) => {
+    const message = errors[fieldName]
+    const shouldShow = Boolean(touched[fieldName] && message)
+
+    return {
+      message,
+      shouldShow,
+    }
+  }
+
+  const renderFieldError = (fieldName: keyof RegisterFormData) => {
+    const fieldError = getFieldError(fieldName)
+
+    if (!fieldError.shouldShow) {
+      return null
+    }
+
+    return (
+      <p className="field-error" role="alert">
+        {fieldError.message}
+      </p>
+    )
   }
 
   const touchAllFields = () => {
@@ -203,7 +229,7 @@ function App() {
           <p className="eyebrow">React + TypeScript Form</p>
           <h1 id="form-title">注册资料</h1>
           <p className="description">
-            字段失焦后才显示错误，提交失败时会自动定位到第一个错误字段。
+            这一步把选项和错误显示逻辑抽成配置与小函数，减少重复代码。
           </p>
         </div>
 
@@ -218,14 +244,10 @@ function App() {
               value={formData.username}
               onChange={handleChange}
               onBlur={handleBlur}
-              aria-invalid={showError('username')}
+              aria-invalid={getFieldError('username').shouldShow}
               disabled={isSubmitting}
             />
-            {showError('username') && (
-              <p className="field-error" role="alert">
-                {errors.username}
-              </p>
-            )}
+            {renderFieldError('username')}
           </div>
 
           <div className="form-field">
@@ -238,14 +260,10 @@ function App() {
               value={formData.email}
               onChange={handleChange}
               onBlur={handleBlur}
-              aria-invalid={showError('email')}
+              aria-invalid={getFieldError('email').shouldShow}
               disabled={isSubmitting}
             />
-            {showError('email') && (
-              <p className="field-error" role="alert">
-                {errors.email}
-              </p>
-            )}
+            {renderFieldError('email')}
           </div>
 
           <div className="form-field">
@@ -258,14 +276,10 @@ function App() {
               value={formData.password}
               onChange={handleChange}
               onBlur={handleBlur}
-              aria-invalid={showError('password')}
+              aria-invalid={getFieldError('password').shouldShow}
               disabled={isSubmitting}
             />
-            {showError('password') && (
-              <p className="field-error" role="alert">
-                {errors.password}
-              </p>
-            )}
+            {renderFieldError('password')}
           </div>
 
           <div className="form-field">
@@ -278,14 +292,10 @@ function App() {
               value={formData.confirmPassword}
               onChange={handleChange}
               onBlur={handleBlur}
-              aria-invalid={showError('confirmPassword')}
+              aria-invalid={getFieldError('confirmPassword').shouldShow}
               disabled={isSubmitting}
             />
-            {showError('confirmPassword') && (
-              <p className="field-error" role="alert">
-                {errors.confirmPassword}
-              </p>
-            )}
+            {renderFieldError('confirmPassword')}
           </div>
 
           <div className="form-field">
@@ -296,21 +306,19 @@ function App() {
               value={formData.gender}
               onChange={handleChange}
               onBlur={handleBlur}
-              aria-invalid={showError('gender')}
+              aria-invalid={getFieldError('gender').shouldShow}
               disabled={isSubmitting}
             >
               <option value="" disabled>
                 请选择
               </option>
-              <option value="male">男</option>
-              <option value="female">女</option>
-              <option value="other">其他</option>
+              {genderOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
             </select>
-            {showError('gender') && (
-              <p className="field-error" role="alert">
-                {errors.gender}
-              </p>
-            )}
+            {renderFieldError('gender')}
           </div>
 
           <div className="form-field">
@@ -323,17 +331,13 @@ function App() {
               value={formData.bio}
               onChange={handleChange}
               onBlur={handleBlur}
-              aria-invalid={showError('bio')}
+              aria-invalid={getFieldError('bio').shouldShow}
               disabled={isSubmitting}
             />
             <p className={formData.bio.length > 100 ? 'char-count is-over' : 'char-count'}>
               {formData.bio.length} / 100
             </p>
-            {showError('bio') && (
-              <p className="field-error" role="alert">
-                {errors.bio}
-              </p>
-            )}
+            {renderFieldError('bio')}
           </div>
 
           <div className="agreement-field">
@@ -345,16 +349,12 @@ function App() {
                 checked={formData.agreeToTerms}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                aria-invalid={showError('agreeToTerms')}
+                aria-invalid={getFieldError('agreeToTerms').shouldShow}
                 disabled={isSubmitting}
               />
               <span>我已阅读并同意用户协议</span>
             </label>
-            {showError('agreeToTerms') && (
-              <p className="field-error" role="alert">
-                {errors.agreeToTerms}
-              </p>
-            )}
+            {renderFieldError('agreeToTerms')}
           </div>
 
           {submitMessage && (
