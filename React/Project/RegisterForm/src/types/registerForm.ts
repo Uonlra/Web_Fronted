@@ -24,3 +24,13 @@ export type FormChangeEvent = React.ChangeEvent<
 export type FormBlurEvent = React.FocusEvent<
   HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
 >
+
+export type FieldErrorState = {
+  message?: string
+  shouldShow: boolean
+}
+
+export type FormFieldEventHandlers = {
+  onChange: (event: FormChangeEvent) => void
+  onBlur: (event: FormBlurEvent) => void
+}
