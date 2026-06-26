@@ -3,6 +3,14 @@ import { RegisterForm } from './components/RegisterForm'
 import type { FormErrors, SubmitPayload } from './types/registerForm'
 
 function App() {
+  const handleSubmitRegister = async (payload: SubmitPayload) => {
+    console.log('模拟接口提交注册数据', payload)
+
+    await new Promise((resolve) => {
+      window.setTimeout(resolve, 1000)
+    })
+  }
+
   const handleRegisterSuccess = (payload: SubmitPayload) => {
     console.log('App 收到注册成功数据', payload)
   }
@@ -22,17 +30,18 @@ function App() {
           <p className="eyebrow">React + TypeScript Form</p>
           <h1 id="form-title">注册资料</h1>
           <p className="description" id="form-description">
-            useRegisterForm 现在支持成功、失败和重置回调，页面可以订阅表单关键事件。
+            useRegisterForm 现在支持真实提交函数、初始值和提交失败提示。
           </p>
         </div>
 
         <RegisterForm
           descriptionId="form-description"
+          onSubmit={handleSubmitRegister}
           onSubmitSuccess={handleRegisterSuccess}
           onSubmitError={handleRegisterError}
           onReset={handleRegisterReset}
-          submitDelayMs={1000}
           successMessage="注册成功！"
+          errorMessage="注册提交失败，请稍后再试"
         />
       </section>
     </main>
