@@ -56,6 +56,29 @@ export function useRegisterForm(options: UseRegisterFormOptions = {}) {
     return { message, shouldShow }
   }
 
+  const clearSubmitFeedback = () => {
+    setSubmitMessage('')
+    setSubmitErrorMessage('')
+  }
+
+  const resetFormState = () => {
+    setErrors({})
+    setTouched({})
+    clearSubmitFeedback()
+  }
+
+  const clearFieldError = (fieldName: FormFieldName) => {
+    if (!errors[fieldName]) {
+      return
+    }
+
+    setErrors((prevErrors) => {
+      const nextErrors = { ...prevErrors }
+      delete nextErrors[fieldName]
+      return nextErrors
+    })
+  }
+
   const touchAllFields = () => {
     const nextTouched: TouchedFields = {}
 
@@ -77,85 +100,17 @@ export function useRegisterForm(options: UseRegisterFormOptions = {}) {
     fieldElement?.focus()
   }
 
-  const handleBlur = (event: FormBlurEvent) => {
-    const fieldName = event.target.name as FormFieldName
-
-    setTouched((prevTouched) => ({
-      ...prevTouched,
-      [fieldName]: true,
-    }))
-
-    setErrors(validateRegisterForm(formData))
+  const handleInvalidSubmit = (nextErrors: FormErrors) => {
+    touchAllFields()
+    window.setTimeout(() => focusFirstError(nextErrors), 0)
+    clearSubmitFeedback()
+    onSubmitError?.(nextErrors)
+    console.log('表单校验失败', nextErrors)
   }
 
-  const handleChange = (event: FormChangeEvent) => {
-    const { name, value } = event.target
-    const fieldName = name as FormFieldName
-
-    if (submitMessage) {
-      setSubmitMessage('')
-    }
-
-    if (submitErrorMessage) {
-      setSubmitErrorMessage('')
-    }
-
-    if (errors[fieldName]) {
-      setErrors((prevErrors) => {
-        const nextErrors = { ...prevErrors }
-        delete nextErrors[fieldName]
-        return nextErrors
-      })
-    }
-
-    if (event.target instanceof HTMLInputElement && event.target.type === 'checkbox') {
-      setFormData({
-        ...formData,
-        [fieldName]: event.target.checked,
-      })
-      return
-    }
-
-    setFormData({
-      ...formData,
-      [fieldName]: value,
-    })
-  }
-
-  const handleReset = () => {
-    setFormData(initialValues)
-    setErrors({})
-    setTouched({})
-    setSubmitMessage('')
-    setSubmitErrorMessage('')
-    onReset?.()
-  }
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
-    if (isSubmitting) {
-      return
-    }
-
-    const nextErrors = validateRegisterForm(formData)
-    setErrors(nextErrors)
-
-    if (Object.keys(nextErrors).length > 0) {
-      touchAllFields()
-      window.setTimeout(() => focusFirstError(nextErrors), 0)
-      setSubmitMessage('')
-      setSubmitErrorMessage('')
-      onSubmitError?.(nextErrors)
-      console.log('表单校验失败', nextErrors)
-      return
-    }
-
-    const submitPayload = createSubmitPayload(formData)
-
+  const runSubmit = async (submitPayload: SubmitPayload) => {
     setIsSubmitting(true)
-    setSubmitMessage('')
-    setSubmitErrorMessage('')
+    clearSubmitFeedback()
 
     try {
       if (onSubmit) {
@@ -181,6 +136,62 @@ export function useRegisterForm(options: UseRegisterFormOptions = {}) {
         setIsSubmitting(false)
       }
     }
+  }
+
+  const handleBlur = (event: FormBlurEvent) => {
+    const fieldName = event.target.name as FormFieldName
+
+    setTouched((prevTouched) => ({
+      ...prevTouched,
+      [fieldName]: true,
+    }))
+
+    setErrors(validateRegisterForm(formData))
+  }
+
+  const handleChange = (event: FormChangeEvent) => {
+    const { name, value } = event.target
+    const fieldName = name as FormFieldName
+
+    clearSubmitFeedback()
+    clearFieldError(fieldName)
+
+    if (event.target instanceof HTMLInputElement && event.target.type === 'checkbox') {
+      setFormData({
+        ...formData,
+        [fieldName]: event.target.checked,
+      })
+      return
+    }
+
+    setFormData({
+      ...formData,
+      [fieldName]: value,
+    })
+  }
+
+  const handleReset = () => {
+    setFormData(initialValues)
+    resetFormState()
+    onReset?.()
+  }
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    if (isSubmitting) {
+      return
+    }
+
+    const nextErrors = validateRegisterForm(formData)
+    setErrors(nextErrors)
+
+    if (Object.keys(nextErrors).length > 0) {
+      handleInvalidSubmit(nextErrors)
+      return
+    }
+
+    await runSubmit(createSubmitPayload(formData))
   }
 
   return {
