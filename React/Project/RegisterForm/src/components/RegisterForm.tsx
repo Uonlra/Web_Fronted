@@ -1,12 +1,24 @@
 import { genderOptions } from '../constants/registerForm'
 import { useRegisterForm } from '../hooks/useRegisterForm'
-import type { FormFieldName } from '../types/registerForm'
+import type { FormErrors, FormFieldName, SubmitPayload } from '../types/registerForm'
 
 type RegisterFormProps = {
   descriptionId?: string
+  onSubmitSuccess?: (payload: SubmitPayload) => void | Promise<void>
+  onSubmitError?: (errors: FormErrors) => void
+  onReset?: () => void
+  submitDelayMs?: number
+  successMessage?: string
 }
 
-export function RegisterForm({ descriptionId }: RegisterFormProps) {
+export function RegisterForm({
+  descriptionId,
+  onSubmitSuccess,
+  onSubmitError,
+  onReset,
+  submitDelayMs,
+  successMessage,
+}: RegisterFormProps) {
   const {
     formData,
     isSubmitting,
@@ -16,7 +28,13 @@ export function RegisterForm({ descriptionId }: RegisterFormProps) {
     handleChange,
     handleReset,
     handleSubmit,
-  } = useRegisterForm()
+  } = useRegisterForm({
+    onSubmitSuccess,
+    onSubmitError,
+    onReset,
+    submitDelayMs,
+    successMessage,
+  })
 
   const renderFieldError = (fieldName: FormFieldName) => {
     const fieldError = getFieldError(fieldName)

@@ -11,7 +11,23 @@ import type {
 } from '../types/registerForm'
 import { validateRegisterForm } from '../utils/validateRegisterForm'
 
-export function useRegisterForm() {
+type UseRegisterFormOptions = {
+  onSubmitSuccess?: (payload: SubmitPayload) => void | Promise<void>
+  onSubmitError?: (errors: FormErrors) => void
+  onReset?: () => void
+  submitDelayMs?: number
+  successMessage?: string
+}
+
+export function useRegisterForm(options: UseRegisterFormOptions = {}) {
+  const {
+    onSubmitSuccess,
+    onSubmitError,
+    onReset,
+    submitDelayMs = 1000,
+    successMessage = '注册成功！',
+  } = options
+
   const [formData, setFormData] = useState<RegisterFormData>(initialFormData)
   const [errors, setErrors] = useState<FormErrors>({})
   const [touched, setTouched] = useState<TouchedFields>({})
@@ -92,6 +108,7 @@ export function useRegisterForm() {
     setErrors({})
     setTouched({})
     setSubmitMessage('')
+    onReset?.()
   }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -104,22 +121,25 @@ export function useRegisterForm() {
       touchAllFields()
       window.setTimeout(() => focusFirstError(nextErrors), 0)
       setSubmitMessage('')
+      onSubmitError?.(nextErrors)
       console.log('表单校验失败', nextErrors)
       return
     }
 
     const { confirmPassword: _confirmPassword, ...payload }: RegisterFormData = formData
     void _confirmPassword
+    const submitPayload = payload satisfies SubmitPayload
 
     setIsSubmitting(true)
     setSubmitMessage('')
 
     await new Promise((resolve) => {
-      window.setTimeout(resolve, 1000)
+      window.setTimeout(resolve, submitDelayMs)
     })
 
-    console.log('提交成功', payload satisfies SubmitPayload)
-    setSubmitMessage('注册成功！')
+    await onSubmitSuccess?.(submitPayload)
+    console.log('提交成功', submitPayload)
+    setSubmitMessage(successMessage)
     setIsSubmitting(false)
   }
 
