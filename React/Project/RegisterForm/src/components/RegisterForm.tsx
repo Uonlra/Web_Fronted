@@ -3,6 +3,8 @@ import { textFields } from '../constants/registerFormFields'
 import { useRegisterForm } from '../hooks/useRegisterForm'
 import type { FormErrors, RegisterFormData, SubmitPayload } from '../types/registerForm'
 import { CheckboxField } from './CheckboxField'
+import { FormActions } from './FormActions'
+import { FormSubmitStatus } from './FormSubmitStatus'
 import { SelectField } from './SelectField'
 import { TextareaField } from './TextareaField'
 import { TextInputField } from './TextInputField'
@@ -102,26 +104,8 @@ export function RegisterForm({
         onBlur={handleBlur}
       />
 
-      {submitMessage && (
-        <p className="submit-message" role="status">
-          {submitMessage}
-        </p>
-      )}
-
-      {submitErrorMessage && (
-        <p className="submit-error-message" role="alert">
-          {submitErrorMessage}
-        </p>
-      )}
-
-      <div className="form-actions">
-        <button className="reset-button" type="button" onClick={handleReset} disabled={isSubmitting}>
-          重置
-        </button>
-        <button className="submit-button" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? '提交中...' : '提交注册'}
-        </button>
-      </div>
+      <FormSubmitStatus submitMessage={submitMessage} submitErrorMessage={submitErrorMessage} />
+      <FormActions isSubmitting={isSubmitting} onReset={handleReset} />
     </form>
   )
 }
