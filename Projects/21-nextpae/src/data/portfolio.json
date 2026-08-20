@@ -1,0 +1,346 @@
+{
+  "version": 1,
+  "profile": {
+    "name": "Jiang Junfeng",
+    "headline": "前端开发工程师",
+    "location": "成都 · 中国",
+    "summary": "专注于 React、TypeScript 与 Next.js，能够独立完成从需求拆解、数据建模、界面实现到测试验证的产品开发。",
+    "availability": "正在寻找前端开发机会",
+    "skills": [
+      {
+        "id": "skill-react",
+        "name": "React",
+        "level": "advanced",
+        "evidenceProjectIds": ["project-taskflow", "project-redditlike"]
+      },
+      {
+        "id": "skill-typescript",
+        "name": "TypeScript",
+        "level": "advanced",
+        "evidenceProjectIds": ["project-taskflow", "project-redditlike", "project-u-s-cinema"]
+      },
+      {
+        "id": "skill-nextjs",
+        "name": "Next.js",
+        "level": "proficient",
+        "evidenceProjectIds": ["project-taskflow"]
+      },
+      {
+        "id": "skill-state",
+        "name": "状态管理",
+        "level": "proficient",
+        "evidenceProjectIds": ["project-taskflow", "project-u-s-cinema"]
+      },
+      {
+        "id": "skill-testing",
+        "name": "测试与工程化",
+        "level": "proficient",
+        "evidenceProjectIds": ["project-taskflow", "project-redditlike"]
+      }
+    ],
+    "links": [
+      {
+        "id": "profile-github",
+        "label": "GitHub",
+        "href": "https://github.com/example",
+        "type": "github"
+      },
+      {
+        "id": "profile-website",
+        "label": "个人网站",
+        "href": "https://example.com",
+        "type": "other"
+      }
+    ]
+  },
+  "projects": [
+    {
+      "id": "project-taskflow",
+      "slug": "taskflow",
+      "title": "TaskFlow",
+      "category": "workbench",
+      "summary": "一个面向个人工作流的任务管理工作台，覆盖任务、截止风险、日历、统计和个人设置。",
+      "featured": true,
+      "published": true,
+      "order": 1,
+      "timeRange": "2024 - 2025",
+      "stack": ["Next.js", "React", "TypeScript", "Appwrite", "Zustand", "React Hook Form", "Zod", "ECharts"],
+      "role": [
+        "独立完成需求拆解与页面规划",
+        "设计服务端访问边界和数据权限",
+        "实现任务管理、筛选、日历和统计模块",
+        "补充异常状态和测试流程"
+      ],
+      "outcomes": [
+        "完成认证、任务管理、截止风险、总览统计、日历和个人设置闭环",
+        "使用 URL 状态同步筛选条件，支持刷新恢复和链接分享",
+        "使用服务端边界保护 Appwrite 密钥，并通过权限规则限制任务访问",
+        "覆盖表单校验、加载状态、错误状态和空数据状态"
+      ],
+      "background": "希望将日常任务、截止日期和风险信息集中到一个能够持续使用的个人工作台中，减少信息分散和重复整理。",
+      "quality": {
+        "summary": "围绕类型安全、输入校验、权限边界和关键用户流程建立质量保障。",
+        "checks": ["TypeScript strict", "ESLint 与 Prettier", "生产构建检查"],
+        "testing": ["Vitest 单元测试", "Testing Library 组件测试", "Playwright 关键流程测试"],
+        "engineering": [
+          "Next.js App Router",
+          "Server/Client Component 边界",
+          "服务端 API 访问边界",
+          "响应式桌面与移动布局"
+        ]
+      },
+      "evidence": {
+        "heroImage": {
+          "id": "taskflow-hero",
+          "src": "/projects/taskflow/hero-placeholder.svg",
+          "alt": "TaskFlow 任务管理工作台预览",
+          "caption": "任务工作台总览"
+        },
+        "gallery": [
+          {
+            "id": "taskflow-dashboard",
+            "src": "/projects/taskflow/dashboard-placeholder.svg",
+            "alt": "TaskFlow 总览和统计区域",
+            "caption": "总览与统计",
+            "group": "工作台"
+          },
+          {
+            "id": "taskflow-calendar",
+            "src": "/projects/taskflow/calendar-placeholder.svg",
+            "alt": "TaskFlow 日历和截止日期视图",
+            "caption": "日历与截止轨道",
+            "group": "工作台"
+          }
+        ],
+        "architectureDiagram": {
+          "source": "flowchart LR\n  Browser --> NextApp\n  NextApp --> ServerBoundary\n  ServerBoundary --> Appwrite\n  ServerBoundary --> PermissionRules",
+          "description": "浏览器通过 Next.js 服务端边界访问 Appwrite，避免敏感配置直接暴露到客户端。"
+        },
+        "routeCount": 6,
+        "moduleCount": 7,
+        "highlights": [
+          {
+            "id": "taskflow-challenge-boundary",
+            "title": "服务端访问边界",
+            "problem": "客户端直接访问数据服务会暴露不应公开的服务端配置，也不利于统一处理权限和异常。",
+            "decision": "将敏感访问集中到 Next.js 服务端边界，客户端只消费业务需要的数据。",
+            "implementation": "通过服务端接口封装账号、任务和资料访问，并在请求入口完成输入校验。",
+            "result": "降低客户端暴露敏感配置的风险，同时让权限和错误处理集中在一个边界内。"
+          },
+          {
+            "id": "taskflow-challenge-url",
+            "title": "筛选状态与 URL 同步",
+            "problem": "任务筛选条件只保存在组件状态时，刷新页面或分享链接会丢失当前视图。",
+            "decision": "将关键词、标签、状态、优先级和截止日期统一编码到 URL query。",
+            "implementation": "由页面读取 search params，交互操作通过 router.replace 更新筛选协议。",
+            "result": "筛选视图可以刷新恢复，也能从统计页和日历页回放到任务列表。"
+          }
+        ]
+      },
+      "links": [
+        {
+          "id": "taskflow-github",
+          "label": "GitHub 仓库",
+          "href": "https://github.com/example/taskflow",
+          "type": "github"
+        },
+        {
+          "id": "taskflow-demo",
+          "label": "在线演示",
+          "href": "https://example.com/taskflow",
+          "type": "demo"
+        }
+      ],
+      "updatedAt": "2026-08-20T00:00:00.000Z"
+    },
+    {
+      "id": "project-redditlike",
+      "slug": "redditlike",
+      "title": "RedditLike",
+      "category": "community",
+      "summary": "一个支持实时订阅、社区、帖子、评论、投票、搜索和数据分析的社区内容平台。",
+      "featured": false,
+      "published": true,
+      "order": 2,
+      "timeRange": "2024 - 2025",
+      "stack": ["React", "TypeScript", "Vite", "React Router", "Convex", "Clerk", "ECharts"],
+      "role": [
+        "设计社区、帖子、评论和投票数据模型",
+        "实现实时查询、分页加载和搜索流程",
+        "处理身份校验和资源归属",
+        "实现社区分析和用户活跃度图表"
+      ],
+      "outcomes": [
+        "完成社区、帖子详情、发帖、评论、个人主页和分析页",
+        "实现赞同/反对切换和相反投票自动撤销",
+        "使用分页查询支持社区帖子和个人历史增量加载",
+        "通过实时订阅让内容变化自动反映到页面"
+      ],
+      "background": "以 Reddit 的内容社区模式为参考，练习实时数据、关系数据建模、分页和互动状态设计。",
+      "quality": {
+        "summary": "重点验证实时数据、身份校验、分页查询和互动状态的一致性。",
+        "checks": ["TypeScript strict", "ESLint 与 Prettier", "生产构建检查"],
+        "testing": ["数据转换与业务函数测试", "组件交互测试", "关键页面流程测试"],
+        "engineering": ["Convex Schema 与索引", "Clerk 会话注入", "分页查询", "图表懒加载与响应式尺寸处理"]
+      },
+      "evidence": {
+        "heroImage": {
+          "id": "redditlike-hero",
+          "src": "/projects/redditlike/hero-placeholder.svg",
+          "alt": "RedditLike 社区内容平台预览",
+          "caption": "社区内容流"
+        },
+        "gallery": [
+          {
+            "id": "redditlike-feed",
+            "src": "/projects/redditlike/feed-placeholder.svg",
+            "alt": "RedditLike 帖子和社区内容流",
+            "caption": "帖子流与社区",
+            "group": "社区"
+          },
+          {
+            "id": "redditlike-analytics",
+            "src": "/projects/redditlike/analytics-placeholder.svg",
+            "alt": "RedditLike 数据分析页面",
+            "caption": "社区分析",
+            "group": "分析"
+          }
+        ],
+        "architectureDiagram": {
+          "source": "flowchart LR\n  Browser --> ReactApp\n  ReactApp --> ConvexProvider\n  ConvexProvider --> Convex\n  ReactApp --> Clerk\n  Convex --> RealtimeSubscription",
+          "description": "React 客户端通过身份上下文访问 Convex，查询结果通过实时订阅更新。"
+        },
+        "routeCount": 7,
+        "moduleCount": 8,
+        "highlights": [
+          {
+            "id": "redditlike-challenge-realtime",
+            "title": "实时内容订阅",
+            "problem": "社区内容和投票变化需要及时反映，手动刷新会破坏连续浏览体验。",
+            "decision": "使用 Convex 查询订阅，让服务端数据变化自动驱动页面更新。",
+            "implementation": "通过 Convex Provider 注入身份和查询上下文，并将列表、评论和投票拆分为可更新的查询。",
+            "result": "帖子、评论和投票变化可以自动出现在当前页面。"
+          },
+          {
+            "id": "redditlike-challenge-vote",
+            "title": "投票切换一致性",
+            "problem": "用户切换赞同和反对时，需要同步当前用户状态与统计总数。",
+            "decision": "将投票切换抽象成明确的状态转换，并在服务端校验资源归属。",
+            "implementation": "新增相反投票前撤销旧投票，统计数量通过服务端计数逻辑维护。",
+            "result": "避免同一用户同时存在相反投票，交互规则保持一致。"
+          }
+        ]
+      },
+      "links": [
+        {
+          "id": "redditlike-github",
+          "label": "GitHub 仓库",
+          "href": "https://github.com/example/redditlike",
+          "type": "github"
+        },
+        {
+          "id": "redditlike-demo",
+          "label": "在线演示",
+          "href": "https://example.com/redditlike",
+          "type": "demo"
+        }
+      ],
+      "updatedAt": "2026-08-20T00:00:00.000Z"
+    },
+    {
+      "id": "project-u-s-cinema",
+      "slug": "u-s-cinema",
+      "title": "U-s-cinema",
+      "category": "media",
+      "summary": "一个接入电影数据服务的浏览与观影清单系统，支持收藏、想看和观看状态管理。",
+      "featured": false,
+      "published": true,
+      "order": 3,
+      "timeRange": "2023 - 2024",
+      "stack": ["React", "TypeScript", "Vite", "React Router", "Context API", "TMDB API"],
+      "role": [
+        "完成 JavaScript 到 TypeScript 的渐进迁移",
+        "封装泛型 API 请求方法",
+        "设计本地片库状态和持久化结构",
+        "处理加载、错误、空数据和图片兜底"
+      ],
+      "outcomes": [
+        "完成首页推荐、电影目录、详情、收藏和想看清单",
+        "通过泛型请求方法统一处理分页响应和接口错误",
+        "使用 Context API 管理片库状态并持久化到 localStorage",
+        "使用 Promise.all 并发加载多个首页数据区域"
+      ],
+      "background": "通过电影浏览和个人片库场景，练习第三方 API 封装、响应类型建模、全局状态和本地持久化。",
+      "quality": {
+        "summary": "重点展示 TypeScript 迁移、接口封装和异常体验处理。",
+        "checks": ["TypeScript strict", "ESLint 与 Prettier", "生产构建检查"],
+        "testing": ["请求函数测试", "状态管理测试", "页面状态测试"],
+        "engineering": ["泛型 API 封装", "Context API", "localStorage 持久化", "并发请求"]
+      },
+      "evidence": {
+        "heroImage": {
+          "id": "cinema-hero",
+          "src": "/projects/u-s-cinema/hero-placeholder.svg",
+          "alt": "U-s-cinema 电影浏览系统预览",
+          "caption": "电影浏览与片库"
+        },
+        "gallery": [
+          {
+            "id": "cinema-catalog",
+            "src": "/projects/u-s-cinema/catalog-placeholder.svg",
+            "alt": "U-s-cinema 电影目录",
+            "caption": "电影目录",
+            "group": "浏览"
+          },
+          {
+            "id": "cinema-library",
+            "src": "/projects/u-s-cinema/library-placeholder.svg",
+            "alt": "U-s-cinema 个人观影清单",
+            "caption": "个人片库",
+            "group": "片库"
+          }
+        ],
+        "architectureDiagram": {
+          "source": "flowchart LR\n  Browser --> ReactApp\n  ReactApp --> TmdbClient\n  ReactApp --> ContextStore\n  ContextStore --> LocalStorage",
+          "description": "React 客户端通过统一请求方法访问电影数据，并将个人片库状态持久化到浏览器。"
+        },
+        "routeCount": 5,
+        "moduleCount": 5,
+        "highlights": [
+          {
+            "id": "cinema-challenge-request",
+            "title": "泛型接口封装",
+            "problem": "不同电影接口的分页响应和错误结构容易在页面中产生重复解析逻辑。",
+            "decision": "使用泛型请求函数统一处理参数、响应解析、分页和异常。",
+            "implementation": "将响应类型作为泛型传入请求方法，页面只接收已经解析的业务数据。",
+            "result": "接口调用方式保持一致，类型错误能够在编译阶段暴露。"
+          },
+          {
+            "id": "cinema-challenge-persistence",
+            "title": "本地片库持久化",
+            "problem": "收藏和观看状态需要在刷新后保留，同时还要兼容历史数据结构。",
+            "decision": "由 Context 统一管理状态，并在持久化层处理默认值和旧数据迁移。",
+            "implementation": "读取 localStorage 后进行结构校验和迁移，更新状态时同步保存。",
+            "result": "浏览体验连续，状态管理和数据迁移逻辑保持集中。"
+          }
+        ]
+      },
+      "links": [
+        {
+          "id": "cinema-github",
+          "label": "GitHub 仓库",
+          "href": "https://github.com/example/u-s-cinema",
+          "type": "github"
+        },
+        {
+          "id": "cinema-demo",
+          "label": "在线演示",
+          "href": "https://example.com/u-s-cinema",
+          "type": "demo"
+        }
+      ],
+      "updatedAt": "2026-08-20T00:00:00.000Z"
+    }
+  ],
+  "updatedAt": "2026-08-20T00:00:00.000Z"
+}
