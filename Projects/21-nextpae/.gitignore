@@ -38,3 +38,7 @@ next-env.d.ts
 # OS
 .DS_Store
 Thumbs.db
+
+# docs
+DEVELOPMENT.md
+.agents
